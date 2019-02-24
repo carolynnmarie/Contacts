@@ -6,16 +6,17 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Data.SqlClient;
-
+using System.Text;
 
 namespace ContactsEmpty{
 
     public partial class WebForm2 : System.Web.UI.Page{
 
         protected void Page_Load(object sender, EventArgs e){
+            
             DataSet dataSet = getDetails(1);
-            GridView1.DataSource = dataSet.Tables["Contact"];
-            GridView1.DataBind();
+            Label1.Text = printName(dataSet.Tables["Contact"]);
+            Label2.Text = printAddresses(dataSet.Tables["Address"]);
             GridView2.DataSource = dataSet.Tables["Address"];
             GridView2.DataBind();
             GridView3.DataSource = dataSet.Tables["Phone"];
@@ -83,9 +84,32 @@ namespace ContactsEmpty{
                 dataSet.Relations.Add(phoneRelation);
                 */
                 return dataSet;
-            }
+            }       
 
         }
 
+        private static string printName(DataTable nameTable){
+            string name = nameTable.Rows[0][1].ToString() + " " + nameTable.Rows[0][2].ToString() + " " + nameTable.Rows[0][0];
+            return name;
+        }
+
+        private static string printAddresses(DataTable addressTable){
+            StringBuilder builder = new StringBuilder();
+            foreach(DataRow row in addressTable.Rows){
+                builder.Append(row[0])
+                    .Append("\n");
+                if (row[1] != null){
+                    builder.Append(row[1])
+                        .Append("\n");
+                };
+                builder.Append(row[2])
+                    .Append(", ")
+                    .Append(row[3])
+                    .Append(" ")
+                    .Append(row[4])
+                    .Append("\n\n");
+            }
+            return builder.ToString();
+        }
     }
 }

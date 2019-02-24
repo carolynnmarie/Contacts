@@ -11,10 +11,15 @@
         <div>
             CONTACT DETAILS<br />
             <br />
-            Name<asp:GridView ID="GridView1" runat="server">
-            </asp:GridView>
+            Name<br />
+            <asp:Label ID="Label1" runat="server" Text="Label"></asp:Label>
             <br />
-            Addresses</div>
+            <br />
+            Addresses<br />
+            <asp:TextBox ID="TextBox1" runat="server"></asp:TextBox>
+            <br />
+            <asp:Label ID="Label2" runat="server" Text="Label"></asp:Label>
+        </div>
         <asp:GridView ID="GridView2" runat="server">
         </asp:GridView>
         <br />
