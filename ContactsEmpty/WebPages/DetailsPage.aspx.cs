@@ -29,9 +29,9 @@ namespace ContactsEmpty{
                 "Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
 
             string contactQueryString = $"SELECT LastName, FirstName, MiddleInitial FROM Contact WHERE ContactId = {ContactId}";
-            string addressQueryString = $"SELECT Street, StreetLineTwo,City,State,ZipCode FROM Address WHERE ContactId = {ContactId}";
-            string eMailQueryString = $"SELECT UserName, Domain FROM Email WHERE ContactId = {ContactId}";
-            string phoneQueryString = $"SELECT PhoneNumber,Extension FROM Phone WHERE ContactId = {ContactId}";
+            string addressQueryString = $"SELECT Street, StreetLineTwo,City,State,ZipCode, PrimaryAddress FROM Address WHERE ContactId = {ContactId}";
+            string eMailQueryString = $"SELECT UserName, Domain, PrimaryEmail FROM Email WHERE ContactId = {ContactId}";
+            string phoneQueryString = $"SELECT PhoneNumber,Extension, PrimaryPhoneNumber FROM Phone WHERE ContactId = {ContactId}";
 
             using(SqlConnection connection = new SqlConnection(connectionString)){
                 SqlDataAdapter contactAdapter = new SqlDataAdapter();
