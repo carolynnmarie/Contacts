@@ -75,10 +75,11 @@
     <Content Include="Web.config" />
     <Content Include="WebPages\ContactsPage.aspx" />
     <Content Include="WebPages\DetailsPage.aspx" />
-    <Content Include="WebPages\AddContactPage.aspx" />
+    <Content Include="WebPages\AddContact.aspx" />
     <Content Include="WebPages\EditPage.aspx" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ContactName.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="WebPages\ContactsPage.aspx.cs">
       <DependentUpon>ContactsPage.aspx</DependentUpon>
@@ -94,12 +95,12 @@
     <Compile Include="WebPages\DetailsPage.aspx.designer.cs">
       <DependentUpon>DetailsPage.aspx</DependentUpon>
     </Compile>
-    <Compile Include="WebPages\AddContactPage.aspx.cs">
-      <DependentUpon>AddContactPage.aspx</DependentUpon>
+    <Compile Include="WebPages\AddContact.aspx.cs">
+      <DependentUpon>AddContact.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="WebPages\AddContactPage.aspx.designer.cs">
-      <DependentUpon>AddContactPage.aspx</DependentUpon>
+    <Compile Include="WebPages\AddContact.aspx.designer.cs">
+      <DependentUpon>AddContact.aspx</DependentUpon>
     </Compile>
     <Compile Include="WebPages\EditPage.aspx.cs">
       <DependentUpon>EditPage.aspx</DependentUpon>

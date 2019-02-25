@@ -16,9 +16,8 @@
             <br />
             <br />
             Addresses<br />
-            <asp:TextBox ID="TextBox1" runat="server"></asp:TextBox>
+            <asp:Label ID="Label2" runat="server" Text="Label" CssClass="white-space: pre-wrap"></asp:Label>
             <br />
-            <asp:Label ID="Label2" runat="server" Text="Label"></asp:Label>
         </div>
         <asp:GridView ID="GridView2" runat="server">
         </asp:GridView>
@@ -29,6 +28,11 @@
         <br />
         Email<asp:GridView ID="GridView4" runat="server">
         </asp:GridView>
+        <br />
+        <asp:Button ID="Button1" runat="server" Text="Edit Contact" OnClick="Edit" />
+        <p>
+        <asp:Button ID="Button2" runat="server" Text="Back To Contacts" OnClick="BackToContacts" />
+        </p>
     </form>
 </body>
 </html>

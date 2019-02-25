@@ -13,16 +13,28 @@ namespace ContactsEmpty{
     public partial class WebForm2 : System.Web.UI.Page{
 
         protected void Page_Load(object sender, EventArgs e){
-            
-            DataSet dataSet = getDetails(1);
+            string id = Request.QueryString["id"];
+            int x = -1;
+            Int32.TryParse(id, out x);
+            this.bindData(x);
+        }
+
+        private void bindData(int contactId) {
+            DataSet dataSet = getDetails(contactId);
             Label1.Text = printName(dataSet.Tables["Contact"]);
             Label2.Text = printAddresses(dataSet.Tables["Address"]);
-            GridView2.DataSource = dataSet.Tables["Address"];
-            GridView2.DataBind();
             GridView3.DataSource = dataSet.Tables["Phone"];
             GridView3.DataBind();
             GridView4.DataSource = dataSet.Tables["Email"];
             GridView4.DataBind();
+        }
+
+        protected void Edit(object sender, EventArgs e) {
+            Response.Redirect("EditPage.aspx");
+        }
+
+        protected void BackToContacts(object sender, EventArgs e) {
+            Response.Redirect("ContactsPage.aspx");
         }
 
         private static DataSet getDetails(int ContactId){
@@ -30,9 +42,9 @@ namespace ContactsEmpty{
                 "Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
 
             string contactQueryString = $"SELECT LastName, FirstName, MiddleInitial FROM Contact WHERE ContactId = {ContactId}";
-            string addressQueryString = $"SELECT Street, StreetLineTwo,City,State,ZipCode, PrimaryAddress FROM Address WHERE ContactId = {ContactId}";
-            string eMailQueryString = $"SELECT UserName, Domain, PrimaryEmail FROM Email WHERE ContactId = {ContactId}";
-            string phoneQueryString = $"SELECT PhoneNumber,Extension, PrimaryPhoneNumber FROM Phone WHERE ContactId = {ContactId}";
+            string addressQueryString = $"SELECT Street, StreetLineTwo,City,State,ZipCode,PrimaryAddress FROM Address WHERE ContactId = {ContactId}";
+            string eMailQueryString = $"SELECT UserName,Domain,PrimaryEmail FROM Email WHERE ContactId = {ContactId}";
+            string phoneQueryString = $"SELECT PhoneNumber,Extension,PrimaryNumber FROM Phone WHERE ContactId = {ContactId}";
 
             using(SqlConnection connection = new SqlConnection(connectionString)){
                 SqlDataAdapter contactAdapter = new SqlDataAdapter();
@@ -68,48 +80,53 @@ namespace ContactsEmpty{
                 phoneAdapter.Fill(dataSet);
 
                 connection.Close();
-                /*
-                DataColumn parentColumn = dataSet.Tables["Contact"].Columns["ContactId"];
-
-                DataColumn addressChildColumn = dataSet.Tables["Address"].Columns["ContactId"];
-                DataRelation addressRelation = new DataRelation("ContactAddress", parentColumn, addressChildColumn);
-                dataSet.Relations.Add(addressRelation);
-
-                DataColumn emailChildColumn = dataSet.Tables["Email"].Columns["ContactId"];
-                DataRelation emailRelation = new DataRelation("ContactEmail", parentColumn, emailChildColumn);
-                dataSet.Relations.Add(emailRelation);
-
-                DataColumn phoneChildColumn = dataSet.Tables["Phone"].Columns["ContactId"];
-                DataRelation phoneRelation = new DataRelation("ContactPhone", parentColumn, phoneChildColumn);
-                dataSet.Relations.Add(phoneRelation);
-                */
+                foreach(DataRow row in dataSet.Tables["Phone"].Rows) {
+                    row["PhoneNumber"] = "(" + row["PhoneNumber"].ToString().Substring(0,3) + ")" + row["PhoneNumber"].ToString().Substring(3, 3)
+                        + "-" + row["PhoneNumber"].ToString().Substring(6);
+                }
                 return dataSet;
             }       
-
         }
 
-        private static string printName(DataTable nameTable){
-            string name = nameTable.Rows[0][1].ToString() + " " + nameTable.Rows[0][2].ToString() + " " + nameTable.Rows[0][0];
+
+        private static string printName(DataTable table){
+            string name = "";
+            if (table.Rows.Count>0) {
+                name = table.Rows[0][1].ToString() + " " + table.Rows[0][2].ToString() + " " + table.Rows[0][0].ToString();
+            }
             return name;
         }
 
-        private static string printAddresses(DataTable addressTable){
+        private string printAddresses(DataTable addressTable){
             StringBuilder builder = new StringBuilder();
+            if(addressTable.Rows.Count>0){
             foreach(DataRow row in addressTable.Rows){
-                builder.Append(row[0])
-                    .Append("\n");
-                if (row[1] != null){
-                    builder.Append(row[1])
-                        .Append("\n");
+                    builder.Append(row[0]);
+                    string x = row[1].ToString();
+                if ( !String.IsNullOrEmpty(x)){
+                        builder.Append("<br/>")
+                        .Append(row[1]);                        
                 };
-                builder.Append(row[2])
+                builder.Append("<br/>")
+                        .Append(row[2])
                     .Append(", ")
                     .Append(row[3])
                     .Append(" ")
                     .Append(row[4])
-                    .Append("\n\n");
+                    .Append("<br/>");
+
+               // Fix: still displays *primary address when row[5] value is 0
+                if(row[5].ToString().Equals(1)){
+                    builder.Append("* Primary Address <br/>");
+                 };
+                 
+                 builder.Append("<br/>");
+             }      
             }
             return builder.ToString();
         }
+
+        
+
     }
 }
