@@ -26,8 +26,9 @@ namespace ContactsEmpty {
             "INSERT INTO Address(Street,StreetLineTwo,City,State,ZipCode,ContactId) VALUES " +
                 "(@Street,@StreetLineTwo,@City,@State,@ZipCode,(SELECT ContactId FROM Contact WHERE LastName=@LastName AND FirstName=@FirstName" +
                 " AND MiddleInitial=@MiddleInitial))" +
-                "INSERT INTO Phone(Type,PhoneNumber,Extension,ContactId) VALUES (@Type,@PhoneNumber,@Extension,(SELECT ContactId FROM Contact WHERE " +
-                "LastName=@LastName AND FirstName=@FirstName AND MiddleInitial=@MiddleInitial))" +
+                "INSERT INTO Phone(Type,AreaCode,PhoneNumberPOne,PhoneNumberPTwo,Extension,ContactId) VALUES (@Type,@AreaCode," +
+                "@PhoneNumberPTwo,@PhoneNumberPTwo,@Extension,(SELECT ContactId FROM Contact WHERE LastName=@LastName AND " +
+                "FirstName=@FirstName AND MiddleInitial=@MiddleInitial))" +
                 "INSERT INTO Email(UserName,Domain,ContactId) VALUES (@UserName,@Domain,(SELECT ContactId FROM Contact WHERE LastName=@LastName" +
                 " AND FirstName=@FirstName AND MiddleInitial=@MiddleInitial))";
             
@@ -55,8 +56,12 @@ namespace ContactsEmpty {
 
                 string phoneNumberType = PhoneTypeList.Text;
                 command.Parameters.AddWithValue("Type", phoneNumberType);
-                string phoneNumber = AreaCodeTextBox.Text + NumberPart1TextBox.Text + NumberPart2TextBox.Text;
-                command.Parameters.AddWithValue("PhoneNumber", phoneNumber);
+                string areaCode = AreaCodeTextBox.Text;
+                command.Parameters.AddWithValue("AreaCode", areaCode);
+                string phoneNumberP1 =  NumberPart1TextBox.Text;
+                command.Parameters.AddWithValue("PhoneNumberPOne", phoneNumberP1);
+                string phoneNumberP2 = NumberPart2TextBox.Text;
+                command.Parameters.AddWithValue("PhoneNumberPTwo", phoneNumberP2);
                 string ext = ExtTextBox.Text;
                 command.Parameters.AddWithValue("Extension", ext);
 

@@ -50,7 +50,6 @@
         <p>
             <asp:Label ID="PhoneNumber" runat="server" Text="Phone Number" Font-Underline="true"></asp:Label>
         </p>
-
         <asp:Label ID="TypeLabel" runat="server" Text="Phone Number Type: "></asp:Label>
         <asp:DropDownList ID="PhoneTypeList" AutoPostBack="true" runat="server">
             <asp:ListItem Selected="True" Value="">Select</asp:ListItem>
@@ -60,10 +59,8 @@
             <asp:ListItem Value="Fax">Fax</asp:ListItem>
             <asp:ListItem Value="Google">Google</asp:ListItem>
             <asp:ListItem Value="Other">Other</asp:ListItem>
-        </asp:DropDownList>
-        
-        <br />
-        
+        </asp:DropDownList>        
+        <br />        
         <br />
         <asp:Label ID="PhoneNumberLabel" runat="server" Text="Phone Number: " Width="130px"></asp:Label>
         <asp:Label ID="FrontParenthesis" runat="server" Text="("></asp:Label>
