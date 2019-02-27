@@ -40,8 +40,8 @@ namespace ContactsEmpty {
                 string lastName = LastNameTextBox.Text;
                 command.Parameters.AddWithValue("LastName", lastName);
                 string middleInitial = MiddleInitialTextBox.Text;
-
                 command.Parameters.AddWithValue("MiddleInitial", middleInitial);
+
                 string streetLineOne = StreetTextBox.Text;
                 command.Parameters.AddWithValue("Street",streetLineOne);
                 string streetLineTwo = StreetLine2TextBox.Text;

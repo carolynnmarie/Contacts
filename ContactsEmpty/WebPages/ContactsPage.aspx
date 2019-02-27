@@ -12,14 +12,24 @@
             <asp:Label ID="Label1" runat="server" Text="Contacts" Font-Size="X-Large" Font-Underline="true" Font-Bold="true"></asp:Label>
             <br />
         </div>
-        <asp:GridView ID="GridView1" DataKeyNames="ContactId" AutoGenerateColumns="False" OnRowCommand="Details" runat="server" CellPadding="4" ForeColor="#333333" GridLines="None" OnSelectedIndexChanged="GridView1_SelectedIndexChanged">
+        <asp:GridView ID="GridView1" 
+            DataKeyNames="ContactId"
+            AutoGenerateColumns="False"  
+            OnRowCommand="DetailsOrDelete"
+            runat="server" 
+            CellPadding="4" 
+            ForeColor="#333333" 
+            GridLines="None" 
+            OnSelectedIndexChanged="GridView1_SelectedIndexChanged" >
             <AlternatingRowStyle BackColor="White" />
             <Columns>
-                <asp:ButtonField ButtonType="Button" CommandName="Details" Text="Details" />
+                <asp:ButtonField ButtonType="Button" CommandName="Details" Text="View Contact Details" />
                 <asp:BoundField DataField="FirstName" />
                 <asp:BoundField DataField="MiddleInitial" Visible ="false" />
                 <asp:BoundField DataField="LastName" />
                 <asp:BoundField DataField="ContactId" Visible="false" />
+                <asp:ButtonField ButtonType="Button" CommandName="Delete" Text="Delete Contact" />
+                
                 
             </Columns>
             <EditRowStyle BackColor="#7C6F57" />
