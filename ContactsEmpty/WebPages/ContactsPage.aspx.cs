@@ -11,6 +11,9 @@ namespace ContactsEmpty{
 
     public partial class WebForm1 : System.Web.UI.Page {
 
+        private string connectionString = "Data Source=LAPTOP-8VAG7JTV\\SQLEXPRESS;Initial Catalog=ContactsDataBase;Integrated Security=True;" +
+            "Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
+
         protected void Page_Load(object sender, EventArgs e) {
             
             GridView1.DataSource = getContacts();
@@ -18,9 +21,8 @@ namespace ContactsEmpty{
                      
         }
     
-        private static DataSet getContacts(){
+        private DataSet getContacts(){
             string contactQueryString = "SELECT * FROM dbo.Contact ORDER BY LastName";
-            string connectionString = "Data Source=LAPTOP-8VAG7JTV\\SQLEXPRESS;Initial Catalog=ContactsDataBase;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
 
             using (SqlConnection connection = new SqlConnection(connectionString)){
                 SqlDataAdapter contactAdapter = new SqlDataAdapter();
@@ -32,16 +34,26 @@ namespace ContactsEmpty{
             } 
         }
 
-        protected void DetailsOrDelete(Object sender, GridViewCommandEventArgs e) {            
+        protected void Details(Object sender, GridViewCommandEventArgs e) {            
             int index = Convert.ToInt32(e.CommandArgument);
             string x = GridView1.DataKeys[index].Value.ToString();
             if (e.CommandName == "Details") {
                 Response.Redirect($"DetailsPage.aspx?id=" + x);
+            }           
+        }
+
+        protected void DeleteContact(Object sender, GridViewDeleteEventArgs e) {
+            string contactId = Convert.ToInt32(GridView1.DataKeys[e.RowIndex]).ToString();
+            string commandQuery = "DELETE FROM Contact WHERE ContactId=@ContactId DELETE FROM Address WHERE ContactId=@ContactId AND ContactId IS NOT NULL" +
+                " DELETE FROM Phone WHERE ContactId=@ContactId AND ContactId IS NOT NULL DELETE FROM Email WHERE ContactId=@ContactId AND ContactId IS NOT NULL";
+            using (SqlConnection connection = new SqlConnection(connectionString)) {
+                connection.Open();
+                SqlCommand deleteCommand = new SqlCommand(commandQuery, connection);
+                deleteCommand.Parameters.AddWithValue("ContactId", contactId);
+                deleteCommand.ExecuteNonQuery();
+                connection.Close();
             }
-            if(e.CommandName == "Delete") {
-                DeleteContactSqlDB(x);
-            }
-            Response.Redirect(Request.RawUrl);
+            GridView1.DataBind();
         }
 
 
@@ -50,18 +62,7 @@ namespace ContactsEmpty{
         }
 
         protected void DeleteContactSqlDB(string key) {
-            string connectionString = "Data Source=LAPTOP-8VAG7JTV\\SQLEXPRESS;Initial Catalog=ContactsDataBase;Integrated Security=True;" +
-                "Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
-            string commandQuery = "DELETE FROM Contact WHERE ContactId=@ContactId DELETE FROM Address WHERE ContactId=@ContactId AND ContactId IS NOT NULL" +
-                " DELETE FROM Phone WHERE ContactId=@ContactId AND ContactId IS NOT NULL DELETE FROM Email WHERE ContactId=@ContactId AND ContactId IS NOT NULL";
-            using(SqlConnection connection = new SqlConnection(connectionString)) {
-                connection.Open();
-                SqlCommand deleteCommand = new SqlCommand(commandQuery, connection);
-                string contactId = key;
-                deleteCommand.Parameters.AddWithValue("ContactId", contactId);
-                deleteCommand.ExecuteNonQuery();
-                connection.Close();
-            }
+            
             
         }
 

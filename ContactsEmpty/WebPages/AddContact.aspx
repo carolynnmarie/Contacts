@@ -11,7 +11,7 @@
 <body>
     <form id="form1" runat="server" autocomplete="off" >
         <div>
-            <asp:Label ID="ContactName" runat="server" Text="Contact Name" Font-Underline="true"></asp:Label>
+            <asp:Label ID="ContactName" runat="server" Text="Contact Name" Font-Underline="true" Font-Size="Large"></asp:Label>
             <br />
             <br />
             <asp:Label ID="FirstName" runat="server" Text="First Name: "></asp:Label>
@@ -24,7 +24,7 @@
         </div>
 
         <br />
-        <asp:Label ID="Address" runat="server" Text="Address" Font-Underline="true"></asp:Label>
+        <asp:Label ID="Address" runat="server" Text="Address" Font-Underline="true" Font-Size="Large"></asp:Label>
 
         <p>
         <asp:Label ID="Street" runat="server" Text="Street: " Width="100px"></asp:Label>
@@ -48,7 +48,7 @@
             <asp:Label ID="PrimaryAddressLabel" runat="server" Text="Primary Address"></asp:Label>
         </p>
         <p>
-            <asp:Label ID="PhoneNumber" runat="server" Text="Phone Number" Font-Underline="true"></asp:Label>
+            <asp:Label ID="PhoneNumber" runat="server" Text="Phone Number" Font-Underline="true" Font-Size="Large"></asp:Label>
         </p>
         <asp:Label ID="TypeLabel" runat="server" Text="Phone Number Type: "></asp:Label>
         <asp:DropDownList ID="PhoneTypeList" AutoPostBack="true" runat="server">
@@ -75,15 +75,16 @@
         <asp:TextBox ID="ExtTextBox" runat="server" Width="75px"></asp:TextBox>
         <br />
         <br />
-        <asp:Label ID="EMail" runat="server" Text="E-Mail Address" Font-Underline="true"></asp:Label>
+        <asp:Label ID="EMail" runat="server" Text="E-Mail Address" Font-Underline="true" Font-Size="Large"></asp:Label>
         <br />
         <br />
         <asp:Label ID="EmailLabel" runat="server" Text="E-Mail Address: "></asp:Label>
         <asp:TextBox ID="UserNameTextBox" runat="server"></asp:TextBox>
         <asp:Label ID="At" runat="server" Text="@"></asp:Label>
         <asp:TextBox ID="DomainTextBox" runat="server"></asp:TextBox>
-
-        <asp:Button ID="Save" runat="server" Text="Save Contact" OnClick="Save_Click"/>
+        <br />
+        <br />
+        <asp:Button ID="Save" runat="server" Text="Save Contact" OnClick="Save_Click" Font-Size="Medium"/>
     </form>
 </body>
 </html>

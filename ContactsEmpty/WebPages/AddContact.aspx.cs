@@ -67,7 +67,7 @@ namespace ContactsEmpty {
 
                 string userName = UserNameTextBox.Text;
                 command.Parameters.AddWithValue("UserName", userName);
-                string domain = "@" + DomainTextBox.Text;
+                string domain = DomainTextBox.Text;
                 command.Parameters.AddWithValue("Domain", domain);
 
                 command.ExecuteNonQuery();

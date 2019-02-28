@@ -40,31 +40,31 @@ namespace ContactsEmpty {
         protected global::System.Web.UI.UpdatePanel UpdateContactDetailPanel;
         
         /// <summary>
-        /// ContactInformation control.
+        /// BackToContactsButton control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label ContactInformation;
+        protected global::System.Web.UI.WebControls.Button BackToContactsButton;
         
         /// <summary>
-        /// NameLabel control.
+        /// GridView1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label NameLabel;
+        protected global::System.Web.UI.WebControls.GridView GridView1;
         
         /// <summary>
-        /// AddressLabel control.
+        /// Addresses control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label AddressLabel;
+        protected global::System.Web.UI.WebControls.Label Addresses;
         
         /// <summary>
         /// AddressGridView control.
@@ -74,15 +74,6 @@ namespace ContactsEmpty {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.GridView AddressGridView;
-        
-        /// <summary>
-        /// AddNewAddressLabel control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label AddNewAddressLabel;
         
         /// <summary>
         /// AddStreetLabel control.
@@ -389,14 +380,5 @@ namespace ContactsEmpty {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button AddEmailButton;
-        
-        /// <summary>
-        /// BackToContactsButton control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button BackToContactsButton;
     }
 }

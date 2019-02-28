@@ -4,7 +4,7 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
-    <title></title>
+    <title></title>   
 </head>
 <body>
     <form id="form1" runat="server">
@@ -13,16 +13,33 @@
         <div id="DetailsGridDiv">
             <asp:UpdatePanel ID="UpdateContactDetailPanel" runat="server">
                 <ContentTemplate>
-                    CONTACT DETAILS<br />
-                    <br /> 
-                    <asp:Label ID="ContactInformation" runat="server" Text="Name" Font-Underline="true"></asp:Label>
+                    <asp:Button ID="BackToContactsButton" runat="server" Text="Back To Contacts" OnClick="BackToContacts" />
+                    <br />                                     
+
+                    <asp:GridView ID="GridView1" DataKeyNames="ContactId" AutoGenerateColumns="False" OnRowEditing="EditName" OnRowUpdating="UpdateName"
+                        runat="server" GridLines="None">
+                        <Columns>
+                            <asp:BoundField DataField="ContactId" Visible="false" />
+                            <asp:TemplateField>
+                                <ItemTemplate>
+                                    <asp:Label ID="FirstName" runat="server" Text='<%# Bind("FirstName") %>' Font-Size="X-Large" Font-Bold="true"></asp:Label>
+                                    <asp:Label ID="MiddleInitial" runat="server" Text='<%# Bind("MiddleInitial") %>' Font-Size="X-Large" Font-Bold="true" ></asp:Label>
+                                    <asp:Label ID="LastName" runat="server" Text='<%# Bind("LastName") %>' Font-Size="X-Large" Font-Bold="true" ></asp:Label>
+                                </ItemTemplate>
+                                <EditItemTemplate>
+                                    <asp:TextBox ID="FirstNameTxtBx" runat="server" Text='<%# Eval("FirstName") %>'></asp:TextBox>
+                                    <asp:TextBox ID="MITxtBx" runat="server" Text='<%# Eval("MiddleInitial") %>' Width="15px"></asp:TextBox>
+                                    <asp:TextBox ID="LastNameTxtBx" runat="server" Text='<%# Eval("LastName") %>'></asp:TextBox>
+                                </EditItemTemplate>
+                            </asp:TemplateField>
+                            <asp:CommandField ButtonType="Button" ShowEditButton="true" />
+                        </Columns>
+                    </asp:GridView>
                     <br />
-                    <asp:Label ID="NameLabel" runat="server"></asp:Label>
-                    <br />
-                    <asp:Label ID="AddressLabel" runat="server" Text="Addresses" Font-Underline="true"></asp:Label>
+                    <asp:Label ID="Addresses" runat="server" Text="Addresses" Font-Underline="true" Font-Size="Large"></asp:Label>
                     <br />
                     <asp:GridView ID="AddressGridView" runat="server" AutoGenerateColumns="false" DataKeyNames="AddressId" OnRowEditing="EditAddress" 
-                        OnRowUpdating="UpdateAddress" OnRowDeleting="DeleteAddress" OnRowCancelingEdit="OnRowCancelingEditAddress" OnRowDataBound="OnRowDataBoundAddress">
+                        OnRowUpdating="UpdateAddress" OnRowDeleting="DeleteAddress" OnRowCancelingEdit="OnRowCancelingEditAddress" GridLines="None">
                         <Columns>
                             <asp:BoundField DataField="AddressId"  Visible="false" />                           
                             <asp:BoundField DataField="ContactId" Visible="false" />  
@@ -65,30 +82,18 @@
                                 <EditItemTemplate>
                                     <asp:TextBox ID="ZipCodeTextBox" runat="server" Text ='<%# Eval("ZipCode") %>'></asp:TextBox>
                                 </EditItemTemplate>
-                            </asp:TemplateField>
-                            <%--
-                            <asp:TemplateField HeaderText="Primary">
-                                <ItemTemplate>
-                                    <asp:CheckBox ID="PrimaryAddrChkBox" runat="server" Text='<%# Bind("PrimaryAddress") %>'/>
-                                </ItemTemplate>
-                                <EditItemTemplate>
-                                    <asp:CheckBox ID="PrimaryAddrChkBoxEdit" runat="server" Text='<%# Eval("PrimaryAddress") %>'/>
-                                </EditItemTemplate>
-                            </asp:TemplateField>
-                                 --%>
-                            <asp:CommandField ButtonType="Button" ShowEditButton="true" ShowDeleteButton="true" ItemStyle-Width="150" />
+                            </asp:TemplateField>                           
+                            <asp:CommandField ButtonType="Button" ShowEditButton="true" ShowDeleteButton="true" />
                         </Columns>                           
-                    </asp:GridView>                            
+                    </asp:GridView>
                     <br />
-                       <asp:Label ID="AddNewAddressLabel" runat="server" Text="Add New Address" Font-Underline="true"></asp:Label>
                     <br />
-                    <asp:Label ID="AddStreetLabel" runat="server" Text="Street: " Width="150px"></asp:Label>
+                    <asp:Label ID="AddStreetLabel" runat="server" Text="Street: " Width="60px"></asp:Label>
                     <asp:TextBox ID="AddStreetTextBox" runat="server"></asp:TextBox>
-                    <br />
-                    <asp:Label ID="AddStrLnTwoLabel" runat="server" Text="Street Line Two: " Width="150px"></asp:Label>
+                    <asp:Label ID="AddStrLnTwoLabel" runat="server" Text="Street Line Two: " Width="120px"></asp:Label>
                     <asp:TextBox ID="AddStrLnTwoTextBox" runat="server"></asp:TextBox>
                     <br />
-                    <asp:Label ID="AddCityLabel" runat="server" Text="City: " Width="150px"></asp:Label>
+                    <asp:Label ID="AddCityLabel" runat="server" Text="City: " Width="60px"></asp:Label>
                     <asp:TextBox ID="AddCityTextBox" runat="server"></asp:TextBox>
                     <asp:Label ID="AddStateLabel" runat="server" Text="State: "></asp:Label>
                     <asp:TextBox ID="AddStateTextBox" runat="server" MaxLength="2" Width="25px"></asp:TextBox>
@@ -96,17 +101,18 @@
                     <asp:TextBox ID="AddZipCodeTextBox" runat="server" Width="45px" MaxLength="5"></asp:TextBox>
                     <asp:CheckBox ID="AddPrimaryAddrChk" runat="server" />
                     <asp:Label ID="AddPrimaryAddrLabel" runat="server" Text="Primary Address"></asp:Label>
-                    <br />
                     <asp:Button ID="AddAddressButton" runat="server" Text="Add Address" OnClick="AddAddress" />
-                    <br />       
-                    <asp:Label ID="PhoneNumbers" runat="server" Text="Phone Numbers" Font-Underline="true"></asp:Label>
+                    <br />    
+                    <br />
+                    <br />
+                    <asp:Label ID="PhoneNumbers" runat="server" Text="Phone Numbers" Font-Underline="true" Font-Size="Large"></asp:Label>
                     <br /> 
-                    <asp:GridView ID= "PhoneGridView" runat="server" AutoGenerateColumns="false" DataKeyNames="PhoneId" 
+                    <asp:GridView ID= "PhoneGridView" runat="server" AutoGenerateColumns="false" DataKeyNames="PhoneId"  GridLines="None" 
                         OnRowEditing="EditPhone" OnRowUpdating="UpdatePhone" OnRowDeleting="DeletePhone" OnRowCancelingEdit="OnRowCancelingEditPhone">
                         <Columns>
                             <asp:BoundField DataField="PhoneId" Visible="false" />
                             <asp:BoundField DataField="ContactId" Visible="false" />
-                            <asp:TemplateField HeaderText="Number Type">
+                            <asp:TemplateField>
                                 <ItemTemplate>
                                     <asp:Label ID="TypeLabel" runat="server" Text='<%# Bind("Type") %>'></asp:Label>
                                 </ItemTemplate>
@@ -114,7 +120,7 @@
                                     <asp:TextBox ID="TypeTextBox" runat="server" Width="40px" Text='<%# Eval("Type") %>'></asp:TextBox>
                                 </EditItemTemplate>
                                 </asp:TemplateField>
-                            <asp:TemplateField HeaderText="Area Code">
+                            <asp:TemplateField>
                                 <ItemTemplate>
                                     <asp:Label ID="ACFrontParen" runat="server" Text="("></asp:Label>
                                     <asp:Label ID="AreaCodeLabel" runat="server" Text='<%# Bind("AreaCode") %>'></asp:Label>
@@ -141,28 +147,21 @@
                                         MaxLength="4" Width="35px"></asp:TextBox>
                                 </EditItemTemplate>
                              </asp:TemplateField>
-                            <asp:TemplateField HeaderText="Ext">
+                            <asp:TemplateField>
                                 <ItemTemplate>
+                                    <asp:Label ID="Ext" runat="server" Text="ext:" Width="25px"></asp:Label>
                                     <asp:Label ID="ExtLabel" runat="server" Text='<%# Bind("Extension") %>'></asp:Label>
                                 </ItemTemplate>
                                 <EditItemTemplate>
+                                    <asp:Label ID="Ext" runat="server" Text="ext:" Width="25px"></asp:Label>
                                     <asp:TextBox ID="ExtTextBox" runat="server" Text='<%# Eval("Extension") %>'
                                         Width="45px"></asp:TextBox>
                                 </EditItemTemplate>
                             </asp:TemplateField>
-                            <%--
-                            <asp:TemplateField HeaderText="Primary">                                
-                                <ItemTemplate>
-                                    <asp:CheckBox ID="PrimaryChkBox" runat="server" Text='<%# Bind("PrimaryNumber") %>' />
-                                </ItemTemplate>
-                                <EditItemTemplate>
-                                    <asp:CheckBox ID="PrimaryChkBoxEdit" runat="server" Text='<%# Eval("PrimaryNumber") %>' />
-                                </EditItemTemplate>                                    
-                            </asp:TemplateField>
-                                 --%>
                             <asp:CommandField ButtonType="Button" ShowEditButton="true" ShowDeleteButton="true" ItemStyle-Width="150" />
                         </Columns>
                     </asp:GridView>
+                    <br />
                     <br />
                     <asp:Label ID="TypeLabel" runat="server" Text="Number Type: "></asp:Label> 
                     <asp:DropDownList ID="PhoneTypeList" AutoPostBack="true" runat="server">
@@ -183,14 +182,14 @@
                     <asp:TextBox ID="NumberPart2TextBox" runat="server" MaxLength="4" Width="35px"></asp:TextBox>
                     <asp:Label ID="Ext" runat="server" Text="Ext: " Width="30px"></asp:Label>
                     <asp:TextBox ID="ExtTextBox" runat="server" Width="75px"></asp:TextBox>
-                    <br />
                     <asp:Button ID="AddPhoneButton" runat="server" Text="Add Phone Number" OnClick="AddPhone" />
                     <br />
                     <br />
-                    <asp:Label ID="Email" runat="server" Text="Email Addresses" Font-Underline="true"></asp:Label>
+                    <br />
+                    <asp:Label ID="Email" runat="server" Text="Email Addresses" Font-Underline="true" Font-Size="Large"></asp:Label>
                     <br />
                     <asp:GridView ID="EmailGridView" runat="server" DataKeyNames="EmailId" AutoGenerateColumns="false" OnRowEditing="EditEmail" 
-                        OnRowDeleting="DeleteEmail" OnRowUpdating="UpdateEmail" OnRowCancelingEdit="OnRowCancelingEditEmail">
+                        OnRowDeleting="DeleteEmail" OnRowUpdating="UpdateEmail" OnRowCancelingEdit="OnRowCancelingEditEmail" GridLines="None">
                         <Columns>
                             <asp:BoundField DataField="EmailId" Visible="false" />
                             <asp:BoundField DataField="ContactId" Visible="false" />
@@ -210,18 +209,15 @@
                         </Columns>
                     </asp:GridView>
                     <br />
+                    <br />
                     <asp:Label ID="EmailLabel" runat="server" Text="E-Mail Address: "></asp:Label>
                     <asp:TextBox ID="AddUserNameTxtBx" runat="server"></asp:TextBox>
                     <asp:Label ID="At" runat="server" Text="@"></asp:Label>
                     <asp:TextBox ID="AddDomainTxtBx" runat="server"></asp:TextBox>
-                    <br />
-                    <asp:Button ID="AddEmailButton" runat="server" Text="Add E-Mail Address"/>
+                    <asp:Button ID="AddEmailButton" runat="server" Text="Add E-Mail Address" OnClick="AddEmail"/>
                 </ContentTemplate>
             </asp:UpdatePanel>
         </div>
-        <p>
-        <asp:Button ID="BackToContactsButton" runat="server" Text="Back To Contacts" OnClick="BackToContacts" />
-        </p>
     </form>
 </body>
 </html>
