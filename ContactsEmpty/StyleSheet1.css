@@ -1,2 +1,67 @@
 ﻿body {
+    background-color:#fffae6;
+}
+.addbtn {
+    margin-top: 5px;
+    margin-bottom: 4px;
+    margin-left: 4px;
+    margin-right: 4px;
+}
+
+.cbtn {
+    border-style: solid;
+    border-width: 1px;
+    border-color: black;
+    padding-bottom: 2px;
+    padding-left: 2px;
+    padding-top: 2px;
+    padding-right: 4px;
+}
+
+.itempdg {
+    border-bottom:solid;
+    border-bottom-width:1px;
+    padding-bottom: 3px;
+    padding-top: 3px;
+    padding-left:2px;
+    padding-right:2px;
+}
+.lfpdg {
+    padding-right:4px;
+    padding-left: 9px;
+}
+.cntbtn {
+    margin-top: 1px;
+    margin-bottom: 1px;
+    margin-left: 1px;
+}
+.linemrgn{
+    margin-top: 2px;
+    margin-bottom: 2px;
+}
+
+.row::after{
+    content:"";
+    display:table;
+    clear:both;
+}
+
+.leftColumn{
+    float: left;
+    width: 33.33%;
+
+}
+.rightColumn{
+    float: right;
+    width: 66.66%;
+
+}
+
+@media screen and (max-width:600px){
+    .leftColumn{
+        width: 100%
+    }
+    .rightColumn{
+        width: 100%
+    }
 }

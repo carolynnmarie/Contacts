@@ -7,6 +7,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <title></title>
+
 </head>
 <body>
     <form id="form1" runat="server" autocomplete="off" >
@@ -85,6 +86,7 @@
         <br />
         <br />
         <asp:Button ID="Save" runat="server" Text="Save Contact" OnClick="Save_Click" Font-Size="Medium"/>
+        <asp:Button ID="Cancel" runat="server" Text="Cancel" OnClick="CancelContact" Font-Size="Medium" />
     </form>
 </body>
 </html>

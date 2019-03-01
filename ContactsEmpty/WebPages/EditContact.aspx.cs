@@ -1,14 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data;
-using System.Linq;
-using System.Web;
-using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Data.SqlClient;
-using System.Text;
 
-namespace ContactsEmpty{
+namespace ContactsEmpty {
 
     public partial class WebForm2 : System.Web.UI.Page{
 
@@ -24,6 +19,9 @@ namespace ContactsEmpty{
                 this.BindGrid(x);
             }
             contactId = x;
+            if (contactId == 0) {
+                Response.Redirect("Contacts.aspx");
+            }
         }       
 
         private DataSet GetDetails(int ContactId) {
@@ -84,7 +82,6 @@ namespace ContactsEmpty{
 
         protected void BindGrid(int key) {
             DataSet dataSet = GetDetails(key);
-//          NameLabel.Text = printName(dataSet.Tables["Contact"]);
             GridView1.DataSource = dataSet.Tables["Contact"];
             GridView1.DataBind();
             AddressGridView.DataSource = dataSet.Tables["Address"];
@@ -95,6 +92,25 @@ namespace ContactsEmpty{
             EmailGridView.DataBind();            
         }
 
+        protected void DeleteContact(object sender, EventArgs e) {
+            string deleteQuery = "DELETE FROM Contact WHERE ContactId=@ContactId" +
+                " DELETE FROM Address WHERE ContactId=@ContactId" +
+                " DELETE FROM Phone WHERE ContactId=@ContactId" +
+                " DELETE FROM Email WHERE ContactId=@ContactId";
+            using(SqlConnection connection = new SqlConnection(connectionString)) {
+                connection.Open();
+                SqlCommand deleteCommand = new SqlCommand(deleteQuery, connection);
+                deleteCommand.Parameters.AddWithValue("ContactId", contactId);
+                deleteCommand.ExecuteNonQuery();
+                connection.Close();               
+            }
+            Response.Redirect("Contacts.aspx");
+        }
+
+        protected void BackToContacts(object sender, EventArgs e) {
+            Response.Redirect("Contacts.aspx");
+        }
+
         protected void EditName(object sender, GridViewEditEventArgs e) {
             GridView1.EditIndex = e.NewEditIndex;
             this.BindGrid(contactId);
@@ -103,13 +119,14 @@ namespace ContactsEmpty{
 
         protected void UpdateName(object sender, GridViewUpdateEventArgs e) {
             GridViewRow row = GridView1.Rows[e.RowIndex];
-            string query = "UPDATE Contact SET FirstName=@FirstName, LastName=@LastName, MiddleInitial=@MiddleInitial";
+            string query = "UPDATE Contact SET FirstName=@FirstName, LastName=@LastName, MiddleInitial=@MiddleInitial WHERE ContactId=@ContactId";
             using (SqlConnection connection = new SqlConnection(connectionString)) {
                 string firstName = (row.FindControl("FirstNameTxtBx") as TextBox).ToString();
                 string mI = (row.FindControl("MITxtBx") as TextBox).ToString();
                 string lastName = (row.FindControl("LastNameTxtBx") as TextBox).ToString();
                 connection.Open();
                 SqlCommand command = new SqlCommand(query, connection);
+                command.Parameters.AddWithValue("ContactId", contactId);
                 command.Parameters.AddWithValue("FirstName", firstName);
                 command.Parameters.AddWithValue("MiddleInitial", mI);
                 command.Parameters.AddWithValue("LastName", lastName);
@@ -128,7 +145,7 @@ namespace ContactsEmpty{
         protected void UpdateAddress(object sender, GridViewUpdateEventArgs e) {
             GridViewRow row = AddressGridView.Rows[e.RowIndex];
             string addressId = Convert.ToInt32(AddressGridView.DataKeys[e.RowIndex].Value).ToString();
-            string updateAddressQuery = "UPDATE Address SET Street=@Street,StreetLineTwo=@StreetLineTwo,City=@City,State=@State,ZipCode=@ZipCode," +
+            string updateAddressQuery = "UPDATE Address SET Street=@Street,StreetLineTwo=@StreetLineTwo,City=@City,State=@State,ZipCode=@ZipCode" +
                 " WHERE AddressId=@AddressId AND AddressId IS NOT NULL";
             using(SqlConnection connection= new SqlConnection(connectionString)) {                
                 SqlCommand updateCommand = new SqlCommand(updateAddressQuery, connection);
@@ -144,8 +161,8 @@ namespace ContactsEmpty{
                 updateCommand.Parameters.AddWithValue("State", state);
                 string zipCode = (row.FindControl("ZipCodeTextBox") as TextBox).Text;
                 updateCommand.Parameters.AddWithValue("ZipCode", zipCode);
-//                string primary = (row.FindControl("PrimaryAddrChkBoxEdit") as CheckBox).Text;
-  //              updateCommand.Parameters.AddWithValue("PrimaryAddress", primary);
+//                string primary = (row.FindControl("Checkbox1") as CheckBox).Text;
+//                updateCommand.Parameters.AddWithValue("PrimaryAddress", primary);
 
                 updateCommand.ExecuteNonQuery();
                 connection.Close();            
@@ -174,26 +191,12 @@ namespace ContactsEmpty{
         }
 /*
         protected void OnRowDataBoundAddress(object sender, GridViewRowEventArgs e) {
-            string addressName = Convert.ToString(DataBinder.Eval(e.Row.DataItem, "Name"));
-            this.BindGrid(contactId);
-            if (e.Row.RowType == DataControlRowType.DataRow) {
-                string id = e.Row.Cells[0].Text;
-                LinkButton linkButton = (LinkButton)e.Row.Cells[7].Controls[2];
-                if (linkButton.Text == "Delete") {
-                    linkButton.Attributes.Add("onclick", "return confirm('Are you sure you want to delete" + addressName + "?');");
-//                    linkButton.OnClientClick = "return confirm('Are you sure you want to delete this address?');";
-                }
-
- //               if (e.Row.RowIndex >= 0 && e.Row.Cells.Count>0) {
- //                   (e.Row.Cells[6].Controls[1] as LinkButton).Attributes["onclick"] = "return confirm('Delete This Address?');";
-//                }
-
-            }
+            
         }
 */        
         protected void AddAddress(object sender, EventArgs e) {
             string insertQuery = "INSERT INTO Address(Street,StreetLineTwo,City,State,ZipCode,PrimaryAddress,ContactId) VALUES " +
-                "(@Street,@StreetLineTwo,@City,@State,@ZipCode,@PrimaryAddress,@ContactId)";
+                "(@Street,@StreetLineTwo,@City,@State,@ZipCode,@ContactId)";
             using(SqlConnection connection= new SqlConnection(connectionString)) {
                 SqlCommand command = new SqlCommand(insertQuery,connection);
                 connection.Open();
@@ -207,8 +210,8 @@ namespace ContactsEmpty{
                 command.Parameters.AddWithValue("State", state);
                 string zipCode = AddZipCodeTextBox.Text;
                 command.Parameters.AddWithValue("ZipCode", zipCode);
-                string primary = AddPrimaryAddrChk.Text;
-                command.Parameters.AddWithValue("PrimaryAddress", primary);
+//                string primary = Checkbox2.Value;
+//                command.Parameters.AddWithValue("PrimaryAddress", primary);
                 command.Parameters.AddWithValue("ContactId", contactId);
 
                 command.ExecuteNonQuery();
@@ -325,6 +328,7 @@ namespace ContactsEmpty{
                 command.Parameters.AddWithValue("UserName", userName);
                 string domain = (row.FindControl("DomainTxtBx") as TextBox).Text;
                 command.Parameters.AddWithValue("Domain", domain);
+                command.Parameters.AddWithValue("EmailId", emailId);
                 command.ExecuteNonQuery();
                 connection.Close();
             }
@@ -366,19 +370,7 @@ namespace ContactsEmpty{
             this.BindGrid(contactId);
             AddUserNameTxtBx.Text = "";
             AddDomainTxtBx.Text = "";
-        }
-
-        protected void BackToContacts(object sender, EventArgs e) {
-            Response.Redirect("ContactsPage.aspx");
-        }
-
-        private static string printName(DataTable table){
-            string name = "";
-            if (table.Rows.Count>0) {
-                name = table.Rows[0][2].ToString() + " " + table.Rows[0][3].ToString() + " " + table.Rows[0][1].ToString();
-            }
-            return name;
-        }
+        }      
        
         protected void GridView4_SelectedIndexChanged(object sender, EventArgs e) {
 
