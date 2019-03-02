@@ -39,24 +39,27 @@ namespace ContactsEmpty {
                 }
 
                 string streetLineOne = StreetTextBox.Text;
-                string streetLineTwo = StreetLine2TextBox.Text;
+                string streetLineTwo = StreetLine2TextBox.Text;               
                 string city = CityTextBox.Text;
                 string state = StateTextBox.Text;
                 string zipCode = ZipCodeTextBox.Text;
+                if (!String.IsNullOrEmpty(StreetLine2TextBox.Text)) {
+                    streetLineOne = StreetTextBox.Text + ", ";
+                }
                 if(!String.IsNullOrEmpty(streetLineOne)||!String.IsNullOrEmpty(streetLineTwo)||!String.IsNullOrEmpty(city)||!String.IsNullOrEmpty(state)||
-                    !String.IsNullOrEmpty(zipCode)){
-                    SqlCommand commandAddr = new SqlCommand(insertAddr, connection);
-                    commandAddr.Parameters.AddWithValue("FirstName", firstName);
-                    commandAddr.Parameters.AddWithValue("LastName", lastName);
-                    commandAddr.Parameters.AddWithValue("MiddleInitial", middleInitial);
-                    commandAddr.Parameters.AddWithValue("Street", streetLineOne);
-                    commandAddr.Parameters.AddWithValue("StreetLineTwo", streetLineTwo);
-                    commandAddr.Parameters.AddWithValue("City", city);
-                    commandAddr.Parameters.AddWithValue("State", state);
-                    commandAddr.Parameters.AddWithValue("ZipCode", zipCode);
-                    connection.Open();
-                    commandAddr.ExecuteNonQuery();
-                    connection.Close();
+                    !String.IsNullOrEmpty(zipCode)){                   
+                        SqlCommand commandAddr = new SqlCommand(insertAddr, connection);
+                        commandAddr.Parameters.AddWithValue("FirstName", firstName);
+                        commandAddr.Parameters.AddWithValue("LastName", lastName);
+                        commandAddr.Parameters.AddWithValue("MiddleInitial", middleInitial);
+                        commandAddr.Parameters.AddWithValue("Street", streetLineOne);
+                        commandAddr.Parameters.AddWithValue("StreetLineTwo", streetLineTwo);
+                        commandAddr.Parameters.AddWithValue("City", city);
+                        commandAddr.Parameters.AddWithValue("State", state);
+                        commandAddr.Parameters.AddWithValue("ZipCode", zipCode);
+                        connection.Open();
+                        commandAddr.ExecuteNonQuery();
+                        connection.Close();                    
                 }
             
                 string phoneNumberType = PhoneTypeList.Text;
