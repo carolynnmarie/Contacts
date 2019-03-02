@@ -25,7 +25,7 @@
                         runat="server" GridLines="None">
                         <Columns>
                             <asp:BoundField DataField="ContactId" Visible="false" />
-                            <asp:TemplateField ItemStyle-CssClass="bottombdr">
+                            <asp:TemplateField ItemStyle-CssClass="bottombdr" ItemStyle-HorizontalAlign="Left">
                                 <ItemTemplate>
                                     <asp:Label ID="FirstName" runat="server" Text='<%# Bind("FirstName") %>' Font-Size="X-Large" Font-Bold="true"></asp:Label>
                                     <asp:Label ID="MiddleInitial" runat="server" Text='<%# Bind("MiddleInitial") %>' Font-Size="X-Large" Font-Bold="true"></asp:Label>
@@ -37,7 +37,7 @@
                                     <asp:TextBox ID="LastNameTxtBx" runat="server" Text='<%# Eval("LastName") %>'></asp:TextBox>
                                 </EditItemTemplate>
                             </asp:TemplateField>
-                            <asp:CommandField ButtonType="Link" ShowEditButton="true" />
+                            <asp:CommandField ButtonType="Link" ShowEditButton="true"  />
                         </Columns>
                     </asp:GridView>
                     <br />
@@ -54,7 +54,7 @@
                                     <asp:TextBox ID="TypeTextBox" runat="server" Width="40px" Text='<%# Eval("Type") %>'></asp:TextBox>
                                 </EditItemTemplate>
                             </asp:TemplateField>
-                            <asp:TemplateField HeaderText="Phone Numbers" HeaderStyle-Font-Size="Large" HeaderStyle-Font-Underline="true">
+                            <asp:TemplateField ItemStyle-HorizontalAlign="Left"  HeaderText="Phone Numbers" HeaderStyle-Font-Size="Large" HeaderStyle-Font-Underline="true">
                                 <ItemTemplate>
                                     <asp:Label ID="ACFrontParen" runat="server" Text="("></asp:Label>
                                     <asp:Label ID="AreaCodeLabel" runat="server" Text='<%# Bind("AreaCode") %>'></asp:Label>
@@ -115,7 +115,7 @@
                         <Columns>
                             <asp:BoundField DataField="EmailId" Visible="false" />
                             <asp:BoundField DataField="ContactId" Visible="false" />
-                            <asp:TemplateField HeaderText="E-Mail Addresses" HeaderStyle-Font-Size="Large" HeaderStyle-Font-Underline="true">
+                            <asp:TemplateField HeaderStyle-HorizontalAlign="Left" ItemStyle-HorizontalAlign="Left" HeaderText="E-Mail Addresses" HeaderStyle-Font-Size="Large" HeaderStyle-Font-Underline="true">
                                 <ItemTemplate>
                                     <asp:Label ID="UserNameLbl" runat="server" Text='<%# Bind("UserName") %>'></asp:Label>
                                     <asp:Label ID="atLbl" runat="server" Text="@" Width="15px"></asp:Label>
@@ -143,7 +143,7 @@
                         <Columns>
                             <asp:BoundField DataField="AddressId" Visible="false" />
                             <asp:BoundField DataField="ContactId" Visible="false" />
-                            <asp:TemplateField HeaderText="Addresses" HeaderStyle-Font-Size="Large" HeaderStyle-Font-Underline="true" ItemStyle-CssClass="itempdg">
+                            <asp:TemplateField ItemStyle-HorizontalAlign="Left" HeaderText="Addresses" HeaderStyle-HorizontalAlign="Left" HeaderStyle-Font-Size="Large" HeaderStyle-Font-Underline="true" ItemStyle-CssClass="itempdg">
                                 <ItemTemplate>
                                     <asp:Label ID="StreetLbl" runat="server" Text='<%# Bind("Street")%>'></asp:Label>                                    
                                     <asp:Label ID="StreetLine2Lbl" runat="server" Text='<%# Bind("StreetLineTwo") %>'></asp:Label>
@@ -180,8 +180,10 @@
                     <asp:Button ID="AddAddressButton" runat="server" Text="Add Address" OnClick="AddAddress" CssClass="addbtn"/>
                     <br />
                     <br />
+                    <asp:Button ID="FinishedEditButton" runat="server" Text="Finish" OnClick="BackToContacts" Font-Size="Larger" />
                     <br />
-                    <asp:LinkButton ID="DeleteContactButton" runat="server" Font-Size="Medium" Text="Delete Contact" OnClick="DeleteContact"
+                    <br />
+                    <asp:LinkButton ID="DeleteContactButton" runat="server" Font-Size="Large" Text="Delete Contact" OnClick="DeleteContact"
                          OnClientClick="if (!confirm('Do you want to delete this contact and all of the contact's information?')) return false;"/>
                 </ContentTemplate>
             </asp:UpdatePanel>
