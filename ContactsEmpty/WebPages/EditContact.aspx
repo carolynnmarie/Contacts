@@ -6,6 +6,11 @@
 <head runat="server">
     <title></title>
     <link rel="stylesheet" type="text/css" href="../StyleSheet1.css" />
+    <style>
+        body {
+            background-color: #fffcef;
+        }
+    </style>
 </head>
 <body>
     <form id="form1" runat="server">
@@ -20,7 +25,7 @@
                         runat="server" GridLines="None">
                         <Columns>
                             <asp:BoundField DataField="ContactId" Visible="false" />
-                            <asp:TemplateField>
+                            <asp:TemplateField ItemStyle-CssClass="bottombdr">
                                 <ItemTemplate>
                                     <asp:Label ID="FirstName" runat="server" Text='<%# Bind("FirstName") %>' Font-Size="X-Large" Font-Bold="true"></asp:Label>
                                     <asp:Label ID="MiddleInitial" runat="server" Text='<%# Bind("MiddleInitial") %>' Font-Size="X-Large" Font-Bold="true"></asp:Label>
@@ -32,12 +37,12 @@
                                     <asp:TextBox ID="LastNameTxtBx" runat="server" Text='<%# Eval("LastName") %>'></asp:TextBox>
                                 </EditItemTemplate>
                             </asp:TemplateField>
-                            <asp:CommandField ButtonType="Button" ShowEditButton="true" ControlStyle-CssClass="edbtn" />
+                            <asp:CommandField ButtonType="Link" ShowEditButton="true" />
                         </Columns>
                     </asp:GridView>
                     <br />
-                    <asp:GridView ID="PhoneGridView" runat="server" AutoGenerateColumns="false" DataKeyNames="PhoneId" GridLines="None"
-                        OnRowEditing="EditPhone" OnRowUpdating="UpdatePhone" OnRowDeleting="DeletePhone" OnRowCancelingEdit="OnRowCancelingEditPhone">
+                    <asp:GridView ID="PhoneGridView" runat="server" AutoGenerateColumns="false" DataKeyNames="PhoneId" GridLines="None" OnRowDataBound="PhoneGridView_RowDataBound"
+                        OnRowEditing="EditPhone" OnRowUpdating="UpdatePhone" OnRowDeleting="DeletePhone" OnRowCancelingEdit="OnRowCancelingEditPhone" CellPadding="4">
                         <Columns>
                             <asp:BoundField DataField="PhoneId" Visible="false" />
                             <asp:BoundField DataField="ContactId" Visible="false" />
@@ -67,7 +72,7 @@
                                         MaxLength="3" Width="25px"></asp:TextBox>
                                     <asp:Label ID="DashLblEdit" runat="server" Text="-"></asp:Label>
                                     <asp:TextBox ID="PhoneNumberP2TextBox" runat="server" Text='<%# Eval("PhoneNumberPTwo") %>'
-                                        MaxLength="4" Width="25px"></asp:TextBox>
+                                        MaxLength="4" Width="35px"></asp:TextBox>
                                 </EditItemTemplate>
                             </asp:TemplateField>
                             <asp:TemplateField>
@@ -81,7 +86,7 @@
                                         Width="45px"></asp:TextBox>
                                 </EditItemTemplate>
                             </asp:TemplateField>
-                            <asp:CommandField ButtonType="Button" ShowEditButton="true" ShowDeleteButton="true" />
+                            <asp:CommandField ButtonType="Link" ShowEditButton="true" ShowDeleteButton="true" ControlStyle-CssClass="editbtn" />
                         </Columns>
                     </asp:GridView>                   
                     <asp:DropDownList ID="PhoneTypeList" AutoPostBack="true" runat="server">
@@ -105,8 +110,8 @@
                     <asp:Button ID="AddPhoneButton" runat="server" Text="Add Phone Number" OnClick="AddPhone" CssClass="addbtn"/>
                     <br />
                     <br />
-                    <asp:GridView ID="EmailGridView" runat="server" DataKeyNames="EmailId" AutoGenerateColumns="false" OnRowEditing="EditEmail"
-                        OnRowDeleting="DeleteEmail" OnRowUpdating="UpdateEmail" OnRowCancelingEdit="OnRowCancelingEditEmail" GridLines="None">
+                    <asp:GridView ID="EmailGridView" runat="server" DataKeyNames="EmailId" AutoGenerateColumns="false" OnRowEditing="EditEmail" OnRowDataBound="EmailGridView_RowDataBound"
+                        OnRowDeleting="DeleteEmail" OnRowUpdating="UpdateEmail" OnRowCancelingEdit="OnRowCancelingEditEmail" GridLines="None" CellPadding="4">
                         <Columns>
                             <asp:BoundField DataField="EmailId" Visible="false" />
                             <asp:BoundField DataField="ContactId" Visible="false" />
@@ -122,7 +127,7 @@
                                     <asp:TextBox ID="DomainTxtBx" runat="server" Text='<%# Eval("Domain") %>'></asp:TextBox>
                                 </EditItemTemplate>
                             </asp:TemplateField>
-                            <asp:CommandField ButtonType="Button" ShowEditButton="true" ShowDeleteButton="true" />
+                            <asp:CommandField ButtonType="Link" ShowEditButton="true" ShowDeleteButton="true" ControlStyle-CssClass="editbtn" />
                         </Columns>
                     </asp:GridView>                  
                     <asp:TextBox ID="AddUserNameTxtBx" runat="server" CssClass="linemrgn"></asp:TextBox>
@@ -133,7 +138,8 @@
                     <br />
                     <br />
                     <asp:GridView ID="AddressGridView" runat="server" AutoGenerateColumns="false" DataKeyNames="AddressId" OnRowEditing="EditAddress"
-                        OnRowUpdating="UpdateAddress" OnRowDeleting="DeleteAddress" OnRowCancelingEdit="OnRowCancelingEditAddress" GridLines="None" >
+                        OnRowUpdating="UpdateAddress" OnRowDeleting="DeleteAddress" OnRowCancelingEdit="OnRowCancelingEditAddress" GridLines="None" CellPadding="4" 
+                         OnRowDataBound="AddressGridView_RowDataBound">
                         <Columns>
                             <asp:BoundField DataField="AddressId" Visible="false" />
                             <asp:BoundField DataField="ContactId" Visible="false" />
@@ -156,7 +162,7 @@
                                     <asp:TextBox ID="ZipCodeTextBox" runat="server" Text='<%# Eval("ZipCode") %>'></asp:TextBox>
                                 </EditItemTemplate>
                             </asp:TemplateField>                                  
-                            <asp:CommandField ButtonType="Button" ShowEditButton="true" ShowDeleteButton="true" />
+                            <asp:CommandField ButtonType="Link" ShowEditButton="true" ShowDeleteButton="true" ControlStyle-CssClass="editbtn"/>
                         </Columns>
                     </asp:GridView>
                     <asp:Label ID="AddStreetLabel" runat="server" Text="Street: " Width="60px" CssClass="linemrgn"></asp:Label>
@@ -175,7 +181,8 @@
                     <br />
                     <br />
                     <br />
-                    <asp:Button ID="DeleteContactButton" runat="server" Text="Delete Contact" OnClick="DeleteContact" Font-Size="Medium"/>
+                    <asp:LinkButton ID="DeleteContactButton" runat="server" Font-Size="Medium" Text="Delete Contact" OnClick="DeleteContact"
+                         OnClientClick="if (!confirm('Do you want to delete this contact and all of the contact's information?')) return false;"/>
                 </ContentTemplate>
             </asp:UpdatePanel>
         </div>

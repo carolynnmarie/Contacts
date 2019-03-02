@@ -184,24 +184,6 @@ namespace ContactsEmpty {
         protected global::System.Web.UI.WebControls.TextBox ZipCodeTextBox;
         
         /// <summary>
-        /// PrimaryAddress control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox PrimaryAddress;
-        
-        /// <summary>
-        /// PrimaryAddressLabel control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label PrimaryAddressLabel;
-        
-        /// <summary>
         /// PhoneNumber control.
         /// </summary>
         /// <remarks>
@@ -265,13 +247,13 @@ namespace ContactsEmpty {
         protected global::System.Web.UI.WebControls.Label EndParenthesis;
         
         /// <summary>
-        /// NumberPart1TextBox control.
+        /// NumbPt1TxtBx control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox NumberPart1TextBox;
+        protected global::System.Web.UI.WebControls.TextBox NumbPt1TxtBx;
         
         /// <summary>
         /// Dash control.

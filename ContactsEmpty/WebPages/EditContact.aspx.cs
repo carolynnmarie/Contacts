@@ -9,28 +9,33 @@ namespace ContactsEmpty {
 
         private string connectionString = "Data Source=LAPTOP-8VAG7JTV\\SQLEXPRESS;Initial Catalog=ContactsDataBase;Integrated Security=True;" +
                 "Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
-        private int contactId { get; set; }
+        private string contactId { get; set; }
 
         protected void Page_Load(object sender, EventArgs e){
-            string id = Request.QueryString["id"];
-            int x=0;
-            Int32.TryParse(id, out x);
-            if (!this.IsPostBack) {                
-                this.BindGrid(x);
-            }
-            contactId = x;
-            if (contactId == 0) {
+            contactId = "0";
+            contactId = Request.QueryString["id"];
+            if (!this.IsPostBack) {
+                DataSet dataSet = GetDetails(contactId);
+                GridView1.DataSource = dataSet.Tables["Contact"];
+                GridView1.DataBind();
+                AddressGridView.DataSource = dataSet.Tables["Address"];
+                AddressGridView.DataBind();
+                PhoneGridView.DataSource = dataSet.Tables["Phone"];
+                PhoneGridView.DataBind();
+                EmailGridView.DataSource = dataSet.Tables["Email"];
+                EmailGridView.DataBind();
+            }            
+            if (contactId.Equals("0")) {
                 Response.Redirect("Contacts.aspx");
-            }
+            }           
         }       
 
-        private DataSet GetDetails(int ContactId) {
+        private DataSet GetDetails(string ContactId) {
             string contactQueryString = "SELECT ContactId, LastName, FirstName, MiddleInitial FROM Contact WHERE ContactId = @ContactId";
             string addressQueryString = "SELECT AddressId, Street, StreetLineTwo,City,State,ZipCode,PrimaryAddress, ContactId FROM Address WHERE ContactId = @ContactId";
             string eMailQueryString = "SELECT EmailId, UserName,Domain,PrimaryEmail, ContactId FROM Email WHERE ContactId = @ContactId";
             string phoneQueryString = "SELECT PhoneId, Type, AreaCode, PhoneNumberPOne,PhoneNumberPTwo,Extension,PrimaryNumber, ContactId FROM Phone WHERE ContactId = @ContactId";
 
-            string contactId = ContactId.ToString();
 
             using (SqlConnection connection = new SqlConnection(connectionString)) {
                 SqlDataAdapter contactAdapter = new SqlDataAdapter();
@@ -39,7 +44,7 @@ namespace ContactsEmpty {
                 connection.Open();
                 DataSet dataSet = new DataSet();
                 SqlCommand cCommand = new SqlCommand(contactQueryString, connection);
-                cCommand.Parameters.AddWithValue("ContactId", contactId);
+                cCommand.Parameters.AddWithValue("ContactId", ContactId);
                 contactAdapter.SelectCommand = cCommand;                
                 contactAdapter.Fill(dataSet);
 
@@ -80,7 +85,7 @@ namespace ContactsEmpty {
             }            
         }
 
-        protected void BindGrid(int key) {
+        protected void BindGrid(string key) {
             DataSet dataSet = GetDetails(key);
             GridView1.DataSource = dataSet.Tables["Contact"];
             GridView1.DataBind();
@@ -92,29 +97,14 @@ namespace ContactsEmpty {
             EmailGridView.DataBind();            
         }
 
-        protected void DeleteContact(object sender, EventArgs e) {
-            string deleteQuery = "DELETE FROM Contact WHERE ContactId=@ContactId" +
-                " DELETE FROM Address WHERE ContactId=@ContactId" +
-                " DELETE FROM Phone WHERE ContactId=@ContactId" +
-                " DELETE FROM Email WHERE ContactId=@ContactId";
-            using(SqlConnection connection = new SqlConnection(connectionString)) {
-                connection.Open();
-                SqlCommand deleteCommand = new SqlCommand(deleteQuery, connection);
-                deleteCommand.Parameters.AddWithValue("ContactId", contactId);
-                deleteCommand.ExecuteNonQuery();
-                connection.Close();               
-            }
-            Response.Redirect("Contacts.aspx");
-        }
-
+        
         protected void BackToContacts(object sender, EventArgs e) {
             Response.Redirect("Contacts.aspx");
         }
 
         protected void EditName(object sender, GridViewEditEventArgs e) {
             GridView1.EditIndex = e.NewEditIndex;
-            this.BindGrid(contactId);
-            
+            this.BindGrid(contactId);            
         }
 
         protected void UpdateName(object sender, GridViewUpdateEventArgs e) {
@@ -161,9 +151,6 @@ namespace ContactsEmpty {
                 updateCommand.Parameters.AddWithValue("State", state);
                 string zipCode = (row.FindControl("ZipCodeTextBox") as TextBox).Text;
                 updateCommand.Parameters.AddWithValue("ZipCode", zipCode);
-//                string primary = (row.FindControl("Checkbox1") as CheckBox).Text;
-//                updateCommand.Parameters.AddWithValue("PrimaryAddress", primary);
-
                 updateCommand.ExecuteNonQuery();
                 connection.Close();            
             }
@@ -189,13 +176,16 @@ namespace ContactsEmpty {
             }
             this.BindGrid(contactId);
         }
-/*
-        protected void OnRowDataBoundAddress(object sender, GridViewRowEventArgs e) {
-            
+
+        protected void AddressGridView_RowDataBound(object sender, GridViewRowEventArgs e) {
+            if (e.Row.RowType == DataControlRowType.DataRow && e.Row.RowIndex != AddressGridView.EditIndex) {
+                LinkButton addrDltLink = (LinkButton)e.Row.Cells[3].Controls[2];
+                addrDltLink.OnClientClick = "return confirm('Delete this address?');";
+            }
         }
-*/        
+       
         protected void AddAddress(object sender, EventArgs e) {
-            string insertQuery = "INSERT INTO Address(Street,StreetLineTwo,City,State,ZipCode,PrimaryAddress,ContactId) VALUES " +
+            string insertQuery = "INSERT INTO Address(Street,StreetLineTwo,City,State,ZipCode,ContactId) VALUES " +
                 "(@Street,@StreetLineTwo,@City,@State,@ZipCode,@ContactId)";
             using(SqlConnection connection= new SqlConnection(connectionString)) {
                 SqlCommand command = new SqlCommand(insertQuery,connection);
@@ -210,8 +200,6 @@ namespace ContactsEmpty {
                 command.Parameters.AddWithValue("State", state);
                 string zipCode = AddZipCodeTextBox.Text;
                 command.Parameters.AddWithValue("ZipCode", zipCode);
-//                string primary = Checkbox2.Value;
-//                command.Parameters.AddWithValue("PrimaryAddress", primary);
                 command.Parameters.AddWithValue("ContactId", contactId);
 
                 command.ExecuteNonQuery();
@@ -224,9 +212,6 @@ namespace ContactsEmpty {
             AddStateTextBox.Text = "";
             AddZipCodeTextBox.Text = "";
         }
-        
-//        protected void OnRowDataBoundPhone(object sender, GridViewRowEventArgs e) {
-//        }
 
         protected void EditPhone(object sender, GridViewEditEventArgs e) {
             PhoneGridView.EditIndex = e.NewEditIndex;
@@ -251,8 +236,6 @@ namespace ContactsEmpty {
                 command.Parameters.AddWithValue("PhoneNumberPTwo", phoneNumberP2);
                 string ext = (row.FindControl("ExtTextBox") as TextBox).Text;
                 command.Parameters.AddWithValue("Extension", ext);
-//                string primaryNumber = (row.FindControl("PrimaryChkBoxEdit") as CheckBox).Text;
-//                command.Parameters.AddWithValue("PrimaryNumber", primaryNumber);
                 command.Parameters.AddWithValue("PhoneId", phoneId);
                 command.ExecuteNonQuery();
                 connection.Close();
@@ -277,6 +260,13 @@ namespace ContactsEmpty {
                 connection.Close();
             }
             this.BindGrid(contactId);
+        }
+
+        protected void PhoneGridView_RowDataBound(object sender, GridViewRowEventArgs e) {
+            if (e.Row.RowType == DataControlRowType.DataRow && e.Row.RowIndex != PhoneGridView.EditIndex) {
+                LinkButton deleteLink = (LinkButton)e.Row.Cells[5].Controls[2];
+                deleteLink.OnClientClick = "return confirm('Delete this phone number?');";
+            }
         }
 
         protected void AddPhone(object sender, EventArgs e){
@@ -354,6 +344,13 @@ namespace ContactsEmpty {
             this.BindGrid(contactId);
         }
 
+        protected void EmailGridView_RowDataBound(object sender, GridViewRowEventArgs e) {
+            if (e.Row.RowType == DataControlRowType.DataRow && e.Row.RowIndex != EmailGridView.EditIndex) {
+                LinkButton dtlEmailLink = (LinkButton)e.Row.Cells[3].Controls[2];
+                dtlEmailLink.OnClientClick = "return confirm('Delete this e-mail address?');";
+            }
+        }
+
         protected void AddEmail(object sender, EventArgs e) {
             string insertQuery = "INSERT INTO Email(UserName,Domain,ContactId) VALUES (@UserName, @Domain, @ContactId)";
             using(SqlConnection connection = new SqlConnection(connectionString)) {
@@ -379,5 +376,27 @@ namespace ContactsEmpty {
         protected void GridView1_SelectedIndexChanged(object sender, EventArgs e) {
 
         }
+
+        protected void DeleteContact(object sender, EventArgs e) {
+            string deleteQuery = "DELETE FROM Contact WHERE ContactId=@ContactId" +
+                " DELETE FROM Address WHERE ContactId=@ContactId" +
+                " DELETE FROM Phone WHERE ContactId=@ContactId" +
+                " DELETE FROM Email WHERE ContactId=@ContactId";
+            using (SqlConnection connection = new SqlConnection(connectionString)) {
+                connection.Open();
+                SqlCommand deleteCommand = new SqlCommand(deleteQuery, connection);
+                deleteCommand.Parameters.AddWithValue("ContactId", contactId);
+                deleteCommand.ExecuteNonQuery();
+                connection.Close();
+            }
+            Response.Redirect("Contacts.aspx");
+        }
+/*
+        protected void ConfirmDeleteContact(object sender, EventArgs e) {
+            if(e.)
+        }
+*/
+
+
     }
 }

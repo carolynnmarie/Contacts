@@ -13,41 +13,44 @@
         </asp:ScriptManager>
         <div id="Contacts">
             <div class="row">
-                <div class="leftColumn">
+                <div class="Column left">
                     <asp:UpdatePanel ID="ContactName" runat="server">
                         <ContentTemplate>
                             <div>
+                                <br />
                                 <asp:Label ID="Label1" runat="server" Text="Contacts" Font-Size="X-Large" Font-Underline="true" Font-Bold="true"></asp:Label>
                                 <br />
                             </div>
-                            <asp:GridView ID="GridView1" DataKeyNames="ContactId" AutoGenerateColumns="False" OnRowCommand="EditDelete"
-                                runat="server" OnSelectedIndexChanged="GridView1_SelectedIndexChanged" GridLines="None" RowStyle-CssClass="cbtn">
+                            <asp:GridView ID="GridView2" DataKeyNames="ContactId" AutoGenerateColumns="false" runat="server" OnRowCommand="Edit" OnSelectedIndexChanged="GridView1_SelectedIndexChanged" 
+                                OnRowDeleting="DeleteContact" OnRowDataBound="GridView2_RowDataBound" GridLines="None" RowStyle-CssClass="contactName" CellPadding="4">
                                 <Columns>
                                     <asp:BoundField DataField="ContactId" Visible="false" />
-                                    <asp:ButtonField ButtonType="Button" CommandName="DeleteContact" Text="Delete" ControlStyle-CssClass="cntbtn" />
-                                    <asp:TemplateField ItemStyle-CssClass="lfpdg">
+  
+                                    <asp:TemplateField>
                                         <ItemTemplate>
-                                            <asp:Label ID="FirstName" runat="server" Text='<%# Bind("FirstName") %>'></asp:Label>
-                                            <asp:Label ID="MiddleInitial" runat="server" Text='<%# Bind("MiddleInitial") %>'></asp:Label>
-                                            <asp:Label ID="LastName" runat="server" Text='<%# Bind("LastName") %>'></asp:Label>
+                                            <asp:Label ID="FirstName" runat="server" Text='<%# Bind("FirstName") %>' Font-Size="Large"></asp:Label>
+                                            <asp:Label ID="MiddleInitial" runat="server" Text='<%# Bind("MiddleInitial") %>' Font-Size="Large"></asp:Label>
+                                            <asp:Label ID="LastName" runat="server" Text='<%# Bind("LastName") %>' Font-Size="Large"></asp:Label>                                            
                                         </ItemTemplate>
                                     </asp:TemplateField>
-                                    <asp:ButtonField ButtonType="Button" CommandName="Details" Text="Edit" ControlStyle-CssClass="cntbtn" />
-                                    <asp:CommandField ButtonType="Button" ShowSelectButton="true" SelectText="View Details"/>
+                                    <asp:ButtonField ButtonType="Link" CommandName="Details" Text="Edit" ItemStyle-CssClass="SelectDeleteBtn" /> 
+                                    <asp:CommandField ButtonType="Link" ShowSelectButton="true" SelectText="Display" DeleteText="Delete" ShowDeleteButton="true" 
+                                        ControlStyle-CssClass="SelectDeleteBtn"/>
                                 </Columns>
-                            </asp:GridView>
+                            </asp:GridView>                            
                             <br />
                             <asp:Button ID="AddContact" runat="server" Text="Add New Contact" OnClick="Add" />
                         </ContentTemplate>
                     </asp:UpdatePanel>
                     </div>
-                    <div class="rightColumn">
+                    <div class="Column right">
                         <asp:UpdatePanel ID="ContactDetails" runat="server" UpdateMode="Always">
                             <ContentTemplate>
-                                <asp:GridView ID="GridViewName" DataKeyNames="ContactId" AutoGenerateColumns="False" runat="server" GridLines="None">
+                                <asp:GridView ID="GridViewName" DataKeyNames="ContactId" AutoGenerateColumns="False" runat="server" GridLines="None" RowStyle-HorizontalAlign="Left"
+                                     RowStyle-CssClass="bottombdr">
                                     <Columns>
                                         <asp:BoundField DataField="ContactId" Visible="false" />
-                                        <asp:TemplateField>
+                                        <asp:TemplateField ItemStyle-HorizontalAlign="Left">
                                             <ItemTemplate>
                                                 <asp:Label ID="FirstName" runat="server" Text='<%# Bind("FirstName") %>' Font-Size="X-Large" Font-Bold="true"></asp:Label>
                                                 <asp:Label ID="MiddleInitial" runat="server" Text='<%# Bind("MiddleInitial") %>' Font-Size="X-Large" Font-Bold="true"></asp:Label>
@@ -58,17 +61,14 @@
                                 </asp:GridView>
                                 <br />
                                 <br />
-                                <asp:GridView ID="PhoneGridView" runat="server" AutoGenerateColumns="false" DataKeyNames="PhoneId" GridLines="None" RowStyle-CssClass="itempdg">
+                                <asp:GridView ID="PhoneGridView" runat="server" AutoGenerateColumns="false" DataKeyNames="PhoneId" RowStyle-HorizontalAlign="Left" GridLines="None"
+                                    RowStyle-CssClass="contactdisplay" >
                                     <Columns>
                                         <asp:BoundField DataField="PhoneId" Visible="false" />
                                         <asp:BoundField DataField="ContactId" Visible="false" />
-                                        <asp:TemplateField>
+                                        <asp:TemplateField HeaderStyle-HorizontalAlign="Left" HeaderText="Phone Numbers" HeaderStyle-Font-Size="Large" HeaderStyle-Font-Underline="true">
                                             <ItemTemplate>
-                                                <asp:Label ID="TypeLabel" runat="server" Text='<%# Bind("Type") %>'></asp:Label>
-                                            </ItemTemplate>
-                                        </asp:TemplateField>
-                                        <asp:TemplateField HeaderText="Phone Numbers" HeaderStyle-Font-Size="Large" HeaderStyle-Font-Underline="true">
-                                            <ItemTemplate>
+                                                <asp:Label ID="TypeLabel" runat="server" Text='<%# Bind("Type") %>' Width="50px"></asp:Label>
                                                 <asp:Label ID="ACFrontParen" runat="server" Text="("></asp:Label>
                                                 <asp:Label ID="AreaCodeLabel" runat="server" Text='<%# Bind("AreaCode") %>'></asp:Label>
                                                 <asp:Label ID="ACEndParen" runat="server" Text=")"></asp:Label>
@@ -87,11 +87,13 @@
                                 </asp:GridView>
                                 <br />
                                 <br />
-                                <asp:GridView ID="EmailGridView" runat="server" DataKeyNames="EmailId" AutoGenerateColumns="false" GridLines="None" RowStyle-CssClass="itempdg">
+                                <asp:GridView ID="EmailGridView" runat="server" DataKeyNames="EmailId" AutoGenerateColumns="false" HeaderStyle-HorizontalAlign="Left" GridLines="None"
+                                     RowStyle-CssClass="contactdisplay">
                                     <Columns>
                                         <asp:BoundField DataField="EmailId" Visible="false" />
                                         <asp:BoundField DataField="ContactId" Visible="false" />
-                                        <asp:TemplateField HeaderText="E-Mail Addresses" HeaderStyle-Font-Size="Large" HeaderStyle-Font-Underline="true">
+                                        <asp:TemplateField HeaderText="E-Mail Addresses"  HeaderStyle-Font-Size="Large" HeaderStyle-Font-Underline="true" 
+                                            HeaderStyle-CssClass="headeralign">
                                             <ItemTemplate>
                                                 <asp:Label ID="UserNameLbl" runat="server" Text='<%# Bind("UserName") %>'></asp:Label>
                                                 <asp:Label ID="atLbl" runat="server" Text="@" Width="15px"></asp:Label>
@@ -101,11 +103,11 @@
                                     </Columns>
                                 </asp:GridView>
                                 <br />
-                                <asp:GridView ID="AddressGridView" runat="server" AutoGenerateColumns="false" DataKeyNames="AddressId" GridLines="None" RowStyle-CssClass="itempdg">
+                                <asp:GridView ID="AddressGridView" runat="server" AutoGenerateColumns="false" DataKeyNames="AddressId" GridLines="None" RowStyle-CssClass="contactdisplay">
                                     <Columns>
                                         <asp:BoundField DataField="AddressId" Visible="false" />
                                         <asp:BoundField DataField="ContactId" Visible="false" />
-                                        <asp:TemplateField HeaderText="Addresses" HeaderStyle-Font-Size="Large" HeaderStyle-Font-Underline="true">
+                                        <asp:TemplateField HeaderText="Addresses" HeaderStyle-Font-Size="Large" HeaderStyle-Font-Underline="true" HeaderStyle-HorizontalAlign="Left">
                                             <ItemTemplate>
                                                 <asp:Label ID="StreetLbl" runat="server" Text='<%# Bind("Street")%>'></asp:Label>
                                                 <asp:Label ID="StreetLine2Lbl" runat="server" Text='<%# Bind("StreetLineTwo") %>'></asp:Label>

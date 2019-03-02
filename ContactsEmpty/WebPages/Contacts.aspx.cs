@@ -12,9 +12,8 @@ namespace ContactsEmpty{
 
         protected void Page_Load(object sender, EventArgs e) {
             
-            GridView1.DataSource = getContacts();
-            GridView1.DataBind();
-                     
+            GridView2.DataSource = getContacts();
+            GridView2.DataBind();
         }
     
         private DataSet getContacts(){
@@ -29,20 +28,33 @@ namespace ContactsEmpty{
             } 
         }
 
-        protected void EditDelete(Object sender, GridViewCommandEventArgs e) {            
+        protected void Edit(Object sender, GridViewCommandEventArgs e) {            
             int index = Convert.ToInt32(e.CommandArgument);
-            string x = GridView1.DataKeys[index].Value.ToString();
+            string x = GridView2.DataKeys[index].Value.ToString();
             if (e.CommandName == "Details") {
                 Response.Redirect($"EditContact.aspx?id=" + x);
-            }
-            if(e.CommandName == "DeleteContact") {
-                DeleteContact(x);
-            }
+            }           
         }
 
-        protected void DeleteContact(string contactId) {
+        protected void DeleteContactButton_Command(object sender, CommandEventArgs e) {
+            string contactId = Convert.ToInt32(e.CommandArgument).ToString();
             DisplayContactDetails(contactId);
             string commandQuery = "DELETE FROM Address WHERE ContactId=@ContactId;  DELETE FROM Phone WHERE ContactId=@ContactId; " +
+                                    "DELETE FROM Email WHERE ContactId=@ContactId; DELETE FROM Contact WHERE ContactId=@ContactId;";
+            using (SqlConnection connection = new SqlConnection(connectionString)) {
+                connection.Open();
+                SqlCommand deleteCommand = new SqlCommand(commandQuery, connection);
+                deleteCommand.Parameters.AddWithValue("ContactId", contactId);
+                deleteCommand.ExecuteNonQuery();
+                connection.Close();
+            }
+            GridView2.DataBind();
+        }
+
+        protected void DeleteContact(object sender, GridViewDeleteEventArgs e) {
+            string contactId = Convert.ToInt32(GridView2.DataKeys[e.RowIndex].Value).ToString();
+            DisplayContactDetails(contactId);
+            string commandQuery = "DELETE FROM Address WHERE ContactId=@ContactId;  DELETE FROM Phone WHERE ContactId=@ContactId; " + 
                 "DELETE FROM Email WHERE ContactId=@ContactId; DELETE FROM Contact WHERE ContactId=@ContactId;";
             using (SqlConnection connection = new SqlConnection(connectionString)) {
                 connection.Open();
@@ -51,17 +63,25 @@ namespace ContactsEmpty{
                 deleteCommand.ExecuteNonQuery();
                 connection.Close();
             }
-            GridView1.DataBind();
+            GridView2.DataBind();
             Response.Redirect(Request.RawUrl);
         }
 
 
+
+        protected void GridView2_RowDataBound(object sender, GridViewRowEventArgs e) {
+            if (e.Row.RowType == DataControlRowType.DataRow) {
+                LinkButton dltLink = (LinkButton)e.Row.Cells[3].Controls[0];
+                dltLink.OnClientClick= "return confirm('Delete this contact?');";
+            }
+        }
+        
         protected void Add(Object sender, EventArgs e) {
             Response.Redirect("AddContact.aspx");
         }
 
         protected void GridView1_SelectedIndexChanged(object sender, EventArgs e) {
-            string contactId = GridView1.SelectedDataKey.Value.ToString();
+            string contactId = GridView2.SelectedDataKey.Value.ToString();
             DisplayContactDetails(contactId);
         }
 
