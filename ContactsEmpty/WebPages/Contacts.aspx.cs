@@ -86,54 +86,80 @@ namespace ContactsEmpty{
         }
 
         private void DisplayContactDetails(string contactId) {
-            string contactQueryString = "SELECT ContactId, LastName, FirstName, MiddleInitial FROM Contact WHERE ContactId = @ContactId";
-            string addressQueryString = "SELECT AddressId, Street, StreetLineTwo,City,State,ZipCode,PrimaryAddress, ContactId FROM Address WHERE ContactId = @ContactId";
-            string eMailQueryString = "SELECT EmailId, UserName,Domain,PrimaryEmail, ContactId FROM Email WHERE ContactId = @ContactId";
-            string phoneQueryString = "SELECT PhoneId, Type, AreaCode, PhoneNumberPOne,PhoneNumberPTwo,Extension,PrimaryNumber, ContactId FROM Phone WHERE ContactId = @ContactId";           
+
+            string selectQuery = "SELECT cont.FirstName, cont.LastName, cont.MiddleInitial, addr.Street, addr.StreetLineTwo, addr.City, addr.State, addr.ZipCode," +
+                "phn.Type, phn.AreaCode, phn.PhoneNumberPOne, phn.PhoneNumberPTwo, eml.UserName, eml.Domain FROM Contact cont JOIN Address addr ON " +
+                "cont.ContactId = addr.ContactId JOIN Phone phn ON cont.ContactId = phn.ContactId JOIN Email eml ON cont.ContactId = eml.ContactId " +
+                "WHERE cont.ContactId=@ContactId;";
 
             using (SqlConnection connection = new SqlConnection(connectionString)) {
-                
                 connection.Open();
+                
                 DataSet dataSet = new DataSet();
                 SqlDataAdapter contactAdapter = new SqlDataAdapter();
-                contactAdapter.TableMappings.Add("Table", "Contact");
-                SqlCommand cCommand = new SqlCommand(contactQueryString, connection);
-                cCommand.Parameters.AddWithValue("ContactId", contactId);
-                contactAdapter.SelectCommand = cCommand;
+                SqlCommand command = new SqlCommand(selectQuery, connection);
+                command.Parameters.AddWithValue("ContactId",contactId);
+                contactAdapter.TableMappings.Add("Table", "Information");
+                contactAdapter.SelectCommand = command;
                 contactAdapter.Fill(dataSet);
-
-                SqlCommand aCommand = new SqlCommand(addressQueryString, connection);
-                aCommand.Parameters.AddWithValue("ContactId", contactId);
-                SqlDataAdapter addressAdapter = new SqlDataAdapter();
-                addressAdapter.TableMappings.Add("Table", "Address");
-                addressAdapter.SelectCommand = aCommand;
-                addressAdapter.Fill(dataSet);
-
-                SqlCommand eCommand = new SqlCommand(eMailQueryString, connection);
-                eCommand.Parameters.AddWithValue("ContactId", contactId);
-                SqlDataAdapter eMailAdapter = new SqlDataAdapter();
-                eMailAdapter.TableMappings.Add("Table", "Email");
-                eMailAdapter.SelectCommand = eCommand;
-                eMailAdapter.Fill(dataSet);
-
-                SqlCommand pCommand = new SqlCommand(phoneQueryString, connection);
-                pCommand.Parameters.AddWithValue("ContactId", contactId);
-                SqlDataAdapter phoneAdapter = new SqlDataAdapter();
-                phoneAdapter.TableMappings.Add("Table", "Phone");
-                phoneAdapter.SelectCommand = pCommand;
-                phoneAdapter.Fill(dataSet);
-
                 connection.Close();
+                ContInfoGridView.DataSource = dataSet.Tables["Information"];
+                ContInfoGridView.DataBind();
 
-                GridViewName.DataSource = dataSet.Tables["Contact"];
-                GridViewName.DataBind();
-                AddressGridView.DataSource = dataSet.Tables["Address"];
-                AddressGridView.DataBind();
-                EmailGridView.DataSource = dataSet.Tables["Email"];
-                EmailGridView.DataBind();
-                PhoneGridView.DataSource = dataSet.Tables["Phone"];
-                PhoneGridView.DataBind();
+
             }
+
+                /*
+                string contactQueryString = "SELECT ContactId, LastName, FirstName, MiddleInitial FROM Contact WHERE ContactId = @ContactId";
+                string addressQueryString = "SELECT AddressId, Street, StreetLineTwo,City,State,ZipCode,PrimaryAddress, ContactId FROM Address WHERE ContactId = @ContactId";
+                string eMailQueryString = "SELECT EmailId, UserName,Domain,PrimaryEmail, ContactId FROM Email WHERE ContactId = @ContactId";
+                string phoneQueryString = "SELECT PhoneId, Type, AreaCode, PhoneNumberPOne,PhoneNumberPTwo,Extension,PrimaryNumber, ContactId FROM Phone WHERE ContactId = @ContactId";           
+
+                using (SqlConnection connection = new SqlConnection(connectionString)) {
+
+                    connection.Open();
+                    DataSet dataSet = new DataSet();
+                    SqlDataAdapter contactAdapter = new SqlDataAdapter();
+                    contactAdapter.TableMappings.Add("Table", "Contact");
+                    SqlCommand cCommand = new SqlCommand(contactQueryString, connection);
+                    cCommand.Parameters.AddWithValue("ContactId", contactId);
+                    contactAdapter.SelectCommand = cCommand;
+                    contactAdapter.Fill(dataSet);
+
+                    SqlCommand aCommand = new SqlCommand(addressQueryString, connection);
+                    aCommand.Parameters.AddWithValue("ContactId", contactId);
+                    SqlDataAdapter addressAdapter = new SqlDataAdapter();
+                    addressAdapter.TableMappings.Add("Table", "Address");
+                    addressAdapter.SelectCommand = aCommand;
+                    addressAdapter.Fill(dataSet);
+
+                    SqlCommand eCommand = new SqlCommand(eMailQueryString, connection);
+                    eCommand.Parameters.AddWithValue("ContactId", contactId);
+                    SqlDataAdapter eMailAdapter = new SqlDataAdapter();
+                    eMailAdapter.TableMappings.Add("Table", "Email");
+                    eMailAdapter.SelectCommand = eCommand;
+                    eMailAdapter.Fill(dataSet);
+
+                    SqlCommand pCommand = new SqlCommand(phoneQueryString, connection);
+                    pCommand.Parameters.AddWithValue("ContactId", contactId);
+                    SqlDataAdapter phoneAdapter = new SqlDataAdapter();
+                    phoneAdapter.TableMappings.Add("Table", "Phone");
+                    phoneAdapter.SelectCommand = pCommand;
+                    phoneAdapter.Fill(dataSet);
+
+                    connection.Close();
+
+                    GridViewName.DataSource = dataSet.Tables["Contact"];
+                    GridViewName.DataBind();
+                    AddressGridView.DataSource = dataSet.Tables["Address"];
+                    AddressGridView.DataBind();
+                    EmailGridView.DataSource = dataSet.Tables["Email"];
+                    EmailGridView.DataBind();
+                    PhoneGridView.DataSource = dataSet.Tables["Phone"];
+                    PhoneGridView.DataBind();
+                    */
+
+//            }
         }
 
     }

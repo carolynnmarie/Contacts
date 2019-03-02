@@ -76,39 +76,12 @@ namespace ContactsEmpty {
         protected global::System.Web.UI.UpdatePanel ContactDetails;
         
         /// <summary>
-        /// GridViewName control.
+        /// ContInfoGridView control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView GridViewName;
-        
-        /// <summary>
-        /// PhoneGridView control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView PhoneGridView;
-        
-        /// <summary>
-        /// EmailGridView control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView EmailGridView;
-        
-        /// <summary>
-        /// AddressGridView control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView AddressGridView;
+        protected global::System.Web.UI.WebControls.GridView ContInfoGridView;
     }
 }

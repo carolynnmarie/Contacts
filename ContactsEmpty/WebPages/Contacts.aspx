@@ -46,6 +46,7 @@
                     <div class="Column right">
                         <asp:UpdatePanel ID="ContactDetails" runat="server" UpdateMode="Always">
                             <ContentTemplate>
+                                <%-- 
                                 <asp:GridView ID="GridViewName" DataKeyNames="ContactId" AutoGenerateColumns="False" runat="server" GridLines="None" RowStyle-HorizontalAlign="Left"
                                      RowStyle-CssClass="bottombdr">
                                     <Columns>
@@ -120,7 +121,58 @@
                                         </asp:TemplateField>
                                     </Columns>
                                 </asp:GridView>
-                               
+                                --%>
+                               <asp:GridView ID="ContInfoGridView" runat="server" AutoGenerateColumns="false" GridLines="None">  
+                                   <Columns>                                       
+                                       <asp:TemplateField>
+                                           <ItemTemplate>
+                                               <asp:Label ID="FirstNameLbl" runat="server" Text='<%# Bind("FirstName") %>' Font-Size="X-Large" Font-Bold="true"></asp:Label>
+                                               <asp:Label ID="MiddleInitialLbl" runat="server" Text='<%# Bind("MiddleInitial") %>' Font-Size="X-Large" Font-Bold="true"></asp:Label>
+                                               <asp:Label ID="LastNameLbl" runat="server" Text='<%# Bind("LastName") %>' Font-Size="X-Large" Font-Bold="true"></asp:Label>
+                                               <br />
+                                               <br />
+                                           </ItemTemplate>
+                                       </asp:TemplateField>
+                                       <asp:TemplateField HeaderStyle-HorizontalAlign="Left" HeaderText="Phone Numbers" HeaderStyle-Font-Size="Large" HeaderStyle-Font-Underline="true">
+                                           <ItemTemplate>
+                                               <br />
+                                               <asp:Label ID="TypeLabel" runat="server" Text='<%# Bind("Type") %>' Width="50px"></asp:Label>
+                                               <asp:Label ID="ACFrontParen" runat="server" Text="("></asp:Label>
+                                               <asp:Label ID="AreaCodeLabel" runat="server" Text='<%# Bind("AreaCode") %>'></asp:Label>
+                                               <asp:Label ID="ACEndParen" runat="server" Text=")"></asp:Label>
+                                               <asp:Label ID="PhoneNumberP1Label" runat="server" Text='<%# Bind("PhoneNumberPOne") %>'></asp:Label>
+                                               <asp:Label ID="DashLbl" runat="server" Text="-"></asp:Label>
+                                               <asp:Label ID="PhoneNumberP2Lbl" runat="server" Text='<%# Bind("PhoneNumberPTwo") %>'></asp:Label>
+                                               <br />
+                                               <br />
+                                               <asp:Label ID="EmailAddrLbl" runat="server" Text="E-Mail Addresses" Font-Size="Larger" Font-Bold="true" Font-Underline="true"></asp:Label>
+                                               <br />
+                                           </ItemTemplate>
+                                       </asp:TemplateField>
+                                       <asp:TemplateField HeaderText="E-Mail Addresses"  HeaderStyle-Font-Size="Large" HeaderStyle-Font-Underline="true"  HeaderStyle-HorizontalAlign="Left">
+                                           <ItemTemplate>
+                                               <asp:Label ID="UserNameLbl" runat="server" Text='<%# Bind("UserName") %>'></asp:Label>
+                                               <asp:Label ID="atLbl" runat="server" Text="@" Width="15px"></asp:Label>
+                                               <asp:Label ID="DomainLbl" runat="server" Text='<%# Bind("Domain") %>'></asp:Label>
+                                               <br />
+                                               <br />
+                                           </ItemTemplate>
+                                       </asp:TemplateField>
+                                       <asp:TemplateField HeaderStyle-HorizontalAlign="Left" HeaderText="Addresses" HeaderStyle-Font-Size="Large" HeaderStyle-Font-Underline="true">
+                                           <ItemTemplate>
+                                               <asp:Label ID="AddressLbl" runat="server" Text="Addresses" Font-Size="Larger" Font-Bold="true" Font-Underline="true"></asp:Label>
+                                               <br />
+                                               <asp:Label ID="StreetLbl" runat="server" Text='<%# Bind("Street")%>'></asp:Label>
+                                               <asp:Label ID="StreetLine2Lbl" runat="server" Text='<%# Bind("StreetLineTwo") %>'></asp:Label>
+                                               <br />
+                                               <asp:Label ID="CityLbl" runat="server" Text='<%# Bind("City") %>'></asp:Label>
+                                               <asp:Label ID="comma" runat="server" Text=", "></asp:Label>
+                                               <asp:Label ID="StateLbl" runat="server" Text='<%# Bind("State") %>'></asp:Label>
+                                               <asp:Label ID="ZipCodeLbl" runat="server" Text='<%# Bind("ZipCode") %>'></asp:Label>
+                                           </ItemTemplate>
+                                       </asp:TemplateField>
+                                   </Columns>
+                               </asp:GridView>
                             </ContentTemplate>
                         </asp:UpdatePanel>
                     </div>                
