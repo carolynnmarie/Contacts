@@ -22,7 +22,7 @@
                     <asp:Button ID="BackToContactsButton" runat="server" Text="Back To Contacts" OnClick="BackToContacts" />
                     <br />
                     <asp:GridView ID="GridView1" DataKeyNames="ContactId" AutoGenerateColumns="False" OnRowEditing="EditName" OnRowUpdating="UpdateName"
-                        runat="server" GridLines="None">
+                        runat="server" GridLines="None" OnRowCancelingEdit="OnRowCancelingEditName">
                         <Columns>
                             <asp:BoundField DataField="ContactId" Visible="false" />
                             <asp:TemplateField ItemStyle-CssClass="bottombdr" ItemStyle-HorizontalAlign="Left">
@@ -33,7 +33,7 @@
                                 </ItemTemplate>
                                 <EditItemTemplate>
                                     <asp:TextBox ID="FirstNameTxtBx" runat="server" Text='<%# Eval("FirstName") %>'></asp:TextBox>
-                                    <asp:TextBox ID="MITxtBx" runat="server" Text='<%# Eval("MiddleInitial") %>' Width="15px"></asp:TextBox>
+                                    <asp:TextBox ID="MITxtBx" runat="server" Text='<%# Eval("MiddleInitial") %>' MaxLength="3" Width="15px"></asp:TextBox>
                                     <asp:TextBox ID="LastNameTxtBx" runat="server" Text='<%# Eval("LastName") %>'></asp:TextBox>
                                 </EditItemTemplate>
                             </asp:TemplateField>
@@ -180,7 +180,7 @@
                     <asp:Button ID="AddAddressButton" runat="server" Text="Add Address" OnClick="AddAddress" CssClass="addbtn"/>
                     <br />
                     <br />
-                    <asp:Button ID="FinishedEditButton" runat="server" Text="Finish" OnClick="BackToContacts" Font-Size="Larger" />
+                    <asp:Button ID="FinishedEditButton" runat="server" Text="To Contacts" OnClick="BackToContacts" Font-Size="Larger" />
                     <br />
                     <br />
                     <asp:LinkButton ID="DeleteContactButton" runat="server" Font-Size="Large" Text="Delete Contact" OnClick="DeleteContact"

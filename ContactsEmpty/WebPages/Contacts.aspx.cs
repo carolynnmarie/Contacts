@@ -68,8 +68,6 @@ namespace ContactsEmpty{
             Response.Redirect(Request.RawUrl);
         }
 
-
-
         protected void GridView2_RowDataBound(object sender, GridViewRowEventArgs e) {
             if (e.Row.RowType == DataControlRowType.DataRow) {
                 LinkButton dltLink = (LinkButton)e.Row.Cells[3].Controls[0];
@@ -139,13 +137,6 @@ namespace ContactsEmpty{
             }           
         }
 
-        
-                /*
-
-                    */
-
-//            }
-        
 
     }
 }

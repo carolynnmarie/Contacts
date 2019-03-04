@@ -97,6 +97,7 @@ namespace ContactsEmpty {
 
 
         protected void BackToContacts(object sender, EventArgs e) {
+            
             Response.Redirect("Contacts.aspx");
         }
 
@@ -105,16 +106,22 @@ namespace ContactsEmpty {
             this.BindGrid();
         }
 
+        protected void OnRowCancelingEditName(object sender, GridViewCancelEditEventArgs e) {
+            GridView1.EditIndex = -1;
+            this.BindGrid();
+        }
+
         protected void UpdateName(object sender, GridViewUpdateEventArgs e) {
             GridViewRow row = GridView1.Rows[e.RowIndex];
+            string contact = Convert.ToInt32(GridView1.DataKeys[e.RowIndex].Value).ToString();
             string query = "UPDATE Contact SET FirstName=@FirstName, LastName=@LastName, MiddleInitial=@MiddleInitial WHERE ContactId=@ContactId";
             using (SqlConnection connection = new SqlConnection(connectionString)) {
-                string firstName = (row.FindControl("FirstNameTxtBx") as TextBox).ToString();
-                string mI = (row.FindControl("MITxtBx") as TextBox).ToString();
-                string lastName = (row.FindControl("LastNameTxtBx") as TextBox).ToString();
+                string firstName = (row.FindControl("FirstNameTxtBx") as TextBox).Text;
+                string mI = (row.FindControl("MITxtBx") as TextBox).Text;
+                string lastName = (row.FindControl("LastNameTxtBx") as TextBox).Text;
                 connection.Open();
                 SqlCommand command = new SqlCommand(query, connection);
-                command.Parameters.AddWithValue("ContactId", contactId);
+                command.Parameters.AddWithValue("ContactId", contact);
                 command.Parameters.AddWithValue("FirstName", firstName);
                 command.Parameters.AddWithValue("MiddleInitial", mI);
                 command.Parameters.AddWithValue("LastName", lastName);
