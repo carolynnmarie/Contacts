@@ -111,7 +111,7 @@
                     <br />
                     <br />
                     <asp:GridView ID="EmailGridView" runat="server" DataKeyNames="EmailId" AutoGenerateColumns="false" OnRowEditing="EditEmail" OnRowDataBound="ConfirmDeleteEmail"
-                        OnRowDeleting="DeleteEmail" OnRowUpdating="UpdateEmail" OnRowCancelingEdit="OnRowCancelingEditEmail" GridLines="None" CellPadding="4">
+                        OnRowDeleting="DeleteEmail" OnRowUpdating="UpdateEmail" OnRowCancelingEdit="OnRowCancelingEditAddress" GridLines="None" CellPadding="4">
                         <Columns>
                             <asp:BoundField DataField="EmailId" Visible="false" />
                             <asp:BoundField DataField="ContactId" Visible="false" />

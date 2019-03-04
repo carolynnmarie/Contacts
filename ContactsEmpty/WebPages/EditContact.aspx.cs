@@ -342,7 +342,7 @@ namespace ContactsEmpty {
             this.BindGrid();
         }
 
-        protected void AddressGridView_RowDataBound(object sender, GridViewRowEventArgs e) {
+        protected void ConfirmDeleteAddress(object sender, GridViewRowEventArgs e) {
             if (e.Row.RowType == DataControlRowType.DataRow && e.Row.RowIndex != AddressGridView.EditIndex) {
                 LinkButton addrDltLink = (LinkButton)e.Row.Cells[3].Controls[2];
                 addrDltLink.OnClientClick = "return confirm('Delete this address?');";
