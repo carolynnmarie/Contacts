@@ -68,7 +68,7 @@ namespace ContactsEmpty{
             Response.Redirect(Request.RawUrl);
         }
 
-        protected void GridView2_RowDataBound(object sender, GridViewRowEventArgs e) {
+        protected void ConfirmDeleteContact(object sender, GridViewRowEventArgs e) {
             if (e.Row.RowType == DataControlRowType.DataRow) {
                 LinkButton dltLink = (LinkButton)e.Row.Cells[3].Controls[0];
                 dltLink.OnClientClick= "return confirm('Delete this contact?');";
@@ -79,7 +79,7 @@ namespace ContactsEmpty{
             Response.Redirect("AddContact.aspx");
         }
 
-        protected void GridView1_SelectedIndexChanged(object sender, EventArgs e) {
+        protected void SelectContactDetails(object sender, EventArgs e) {
             string contactId = GridView2.SelectedDataKey.Value.ToString();
             DisplayContactDetails(contactId);
         }
@@ -91,9 +91,9 @@ namespace ContactsEmpty{
             string phoneQueryString = "SELECT PhoneId, Type, AreaCode, PhoneNumberPOne,PhoneNumberPTwo,Extension,PrimaryNumber, ContactId FROM Phone WHERE ContactId = @ContactId";
 
             using (SqlConnection connection = new SqlConnection(connectionString)) {
-
                 connection.Open();
                 DataSet dataSet = new DataSet();
+
                 SqlDataAdapter contactAdapter = new SqlDataAdapter();
                 contactAdapter.TableMappings.Add("Table", "Contact");
                 SqlCommand cCommand = new SqlCommand(contactQueryString, connection);

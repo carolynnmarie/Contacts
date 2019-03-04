@@ -27,7 +27,10 @@ namespace ContactsEmpty {
                 EmailGridView.DataSource = dataSet.Tables["Email"];
                 EmailGridView.DataBind();
             }
+        }
 
+        protected void BackToContacts(object sender, EventArgs e) {
+            Response.Redirect("Contacts.aspx");
         }
 
         private DataSet GetDetails(string contact) {
@@ -94,12 +97,7 @@ namespace ContactsEmpty {
             EmailGridView.DataSource = dataSet.Tables["Email"];
             EmailGridView.DataBind();
         }
-
-
-        protected void BackToContacts(object sender, EventArgs e) {
-            
-            Response.Redirect("Contacts.aspx");
-        }
+        
 
         protected void EditName(object sender, GridViewEditEventArgs e) {
             GridView1.EditIndex = e.NewEditIndex;
@@ -132,94 +130,14 @@ namespace ContactsEmpty {
             this.BindGrid();
         }
 
-        protected void EditAddress(object sender, GridViewEditEventArgs e) {
-            AddressGridView.EditIndex = e.NewEditIndex;
-            this.BindGrid();
-        }
-
-        protected void UpdateAddress(object sender, GridViewUpdateEventArgs e) {
-            GridViewRow row = AddressGridView.Rows[e.RowIndex];
-            string addressId = Convert.ToInt32(AddressGridView.DataKeys[e.RowIndex].Value).ToString();
-            string updateAddressQuery = "UPDATE Address SET Street=@Street,StreetLineTwo=@StreetLineTwo,City=@City,State=@State,ZipCode=@ZipCode" +
-                " WHERE AddressId=@AddressId AND AddressId IS NOT NULL";
-            using (SqlConnection connection = new SqlConnection(connectionString)) {
-                SqlCommand updateCommand = new SqlCommand(updateAddressQuery, connection);
-                connection.Open();
-                updateCommand.Parameters.AddWithValue("@AddressId", addressId);
-                string street = (row.FindControl("StreetTextBox") as TextBox).Text;
-                updateCommand.Parameters.AddWithValue("Street", street);
-                string streetLineTwo = (row.FindControl("StreetLine2TextBox") as TextBox).Text;
-                updateCommand.Parameters.AddWithValue("StreetLineTwo", streetLineTwo);
-                string city = (row.FindControl("CityTextBox") as TextBox).Text;
-                updateCommand.Parameters.AddWithValue("City", city);
-                string state = (row.FindControl("StateTextBox") as TextBox).Text;
-                updateCommand.Parameters.AddWithValue("State", state);
-                string zipCode = (row.FindControl("ZipCodeTextBox") as TextBox).Text;
-                updateCommand.Parameters.AddWithValue("ZipCode", zipCode);
-                updateCommand.ExecuteNonQuery();
-                connection.Close();
-            }
-            AddressGridView.EditIndex = -1;
-            this.BindGrid();
-        }
-
-        protected void OnRowCancelingEditAddress(object sender, GridViewCancelEditEventArgs e) {
-            AddressGridView.EditIndex = -1;
-            this.BindGrid();
-        }
-
-        protected void DeleteAddress(object sender, GridViewDeleteEventArgs e) {
-            string id = Convert.ToInt32(AddressGridView.DataKeys[e.RowIndex].Value).ToString();
-            string deleteQueryString = "DELETE FROM Address WHERE AddressId=@AddressId AND AddressId IS NOT NULL";
-            using (SqlConnection connection = new SqlConnection(connectionString)) {
-                using (SqlCommand deleteCommand = new SqlCommand(deleteQueryString, connection)) {
-                    connection.Open();
-                    deleteCommand.Parameters.AddWithValue("AddressId", id);
-                    deleteCommand.ExecuteNonQuery();
-                    connection.Close();
-                }
-            }
-            this.BindGrid();
-        }
-
-        protected void AddressGridView_RowDataBound(object sender, GridViewRowEventArgs e) {
-            if (e.Row.RowType == DataControlRowType.DataRow && e.Row.RowIndex != AddressGridView.EditIndex) {
-                LinkButton addrDltLink = (LinkButton)e.Row.Cells[3].Controls[2];
-                addrDltLink.OnClientClick = "return confirm('Delete this address?');";
-            }
-        }
-
-        protected void AddAddress(object sender, EventArgs e) {
-            string insertQuery = "INSERT INTO Address(Street,StreetLineTwo,City,State,ZipCode,ContactId) VALUES " +
-                "(@Street,@StreetLineTwo,@City,@State,@ZipCode,@ContactId)";
-            using (SqlConnection connection = new SqlConnection(connectionString)) {
-                SqlCommand command = new SqlCommand(insertQuery, connection);
-                connection.Open();
-                string streetLineOne = AddStreetTextBox.Text;
-                command.Parameters.AddWithValue("Street", streetLineOne);
-                string streetLineTwo = AddStrLnTwoTextBox.Text;
-                command.Parameters.AddWithValue("StreetLineTwo", streetLineTwo);
-                string city = AddCityTextBox.Text;
-                command.Parameters.AddWithValue("City", city);
-                string state = AddStateTextBox.Text;
-                command.Parameters.AddWithValue("State", state);
-                string zipCode = AddZipCodeTextBox.Text;
-                command.Parameters.AddWithValue("ZipCode", zipCode);
-                command.Parameters.AddWithValue("ContactId", contactId);
-
-                command.ExecuteNonQuery();
-                connection.Close();
-            }
-            this.BindGrid();
-            AddStreetTextBox.Text = "";
-            AddStrLnTwoTextBox.Text = "";
-            AddCityTextBox.Text = "";
-            AddStateTextBox.Text = "";
-            AddZipCodeTextBox.Text = "";
-        }
-
         protected void EditPhone(object sender, GridViewEditEventArgs e) {
             PhoneGridView.EditIndex = e.NewEditIndex;
+            this.BindGrid();
+        }
+
+
+        protected void OnRowCancelingEditPhone(object sender, GridViewCancelEditEventArgs e) {
+            PhoneGridView.EditIndex = -1;
             this.BindGrid();
         }
 
@@ -249,10 +167,6 @@ namespace ContactsEmpty {
             this.BindGrid();
         }
 
-        protected void OnRowCancelingEditPhone(object sender, GridViewCancelEditEventArgs e) {
-            PhoneGridView.EditIndex = -1;
-            this.BindGrid();
-        }
 
         protected void DeletePhone(object sender, GridViewDeleteEventArgs e) {
             string deletePhoneQuery = "DELETE FROM Phone WHERE PhoneId=@PhoneId AND PhoneId IS NOT NULL";
@@ -267,7 +181,7 @@ namespace ContactsEmpty {
             this.BindGrid();
         }
 
-        protected void PhoneGridView_RowDataBound(object sender, GridViewRowEventArgs e) {
+        protected void ConfirmDeletePhone(object sender, GridViewRowEventArgs e) {
             if (e.Row.RowType == DataControlRowType.DataRow && e.Row.RowIndex != PhoneGridView.EditIndex) {
                 LinkButton deleteLink = (LinkButton)e.Row.Cells[5].Controls[2];
                 deleteLink.OnClientClick = "return confirm('Delete this phone number?');";
@@ -275,6 +189,10 @@ namespace ContactsEmpty {
         }
 
         protected void AddPhone(object sender, EventArgs e) {
+            SavePhone();
+        }
+
+        private void SavePhone() {
             string insertQuery = "INSERT INTO Phone(Type,AreaCode,PhoneNumberPOne,PhoneNumberPTwo, Extension, ContactId) VALUES (@Type,@AreaCode," +
                 "@PhoneNumberPOne,@PhoneNumberPTwo, @Extension,@ContactId)";
             using (SqlConnection connection = new SqlConnection(connectionString)) {
@@ -308,6 +226,11 @@ namespace ContactsEmpty {
             this.BindGrid();
         }
 
+        protected void OnRowCancelingEditEmail(object sender, GridViewCancelEditEventArgs e) {
+            EmailGridView.EditIndex = -1;
+            this.BindGrid();
+        }
+
         protected void UpdateEmail(object sender, GridViewUpdateEventArgs e) {
             GridViewRow row = EmailGridView.Rows[e.RowIndex];
             string emailId = Convert.ToInt32(EmailGridView.DataKeys[e.RowIndex].Value).ToString();
@@ -327,11 +250,6 @@ namespace ContactsEmpty {
             this.BindGrid();
         }
 
-        protected void OnRowCancelingEditEmail(object sender, GridViewCancelEditEventArgs e) {
-            EmailGridView.EditIndex = -1;
-            this.BindGrid();
-        }
-
         protected void DeleteEmail(object sender, GridViewDeleteEventArgs e) {
             string emailId = Convert.ToInt32(EmailGridView.DataKeys[e.RowIndex].Value).ToString();
             string deleteQuery = "DELETE from Email WHERE EmailId=@EmailId";
@@ -345,7 +263,7 @@ namespace ContactsEmpty {
             this.BindGrid();
         }
 
-        protected void EmailGridView_RowDataBound(object sender, GridViewRowEventArgs e) {
+        protected void ConfirmDeleteEmail(object sender, GridViewRowEventArgs e) {
             if (e.Row.RowType == DataControlRowType.DataRow && e.Row.RowIndex != EmailGridView.EditIndex) {
                 LinkButton dtlEmailLink = (LinkButton)e.Row.Cells[3].Controls[2];
                 dtlEmailLink.OnClientClick = "return confirm('Delete this e-mail address?');";
@@ -353,6 +271,10 @@ namespace ContactsEmpty {
         }
 
         protected void AddEmail(object sender, EventArgs e) {
+            SaveEmail();
+        }
+
+        private void SaveEmail() {
             string insertQuery = "INSERT INTO Email(UserName,Domain,ContactId) VALUES (@UserName, @Domain, @ContactId)";
             using (SqlConnection connection = new SqlConnection(connectionString)) {
                 connection.Open();
@@ -370,6 +292,96 @@ namespace ContactsEmpty {
             AddDomainTxtBx.Text = "";
         }
 
+        protected void EditAddress(object sender, GridViewEditEventArgs e) {
+            AddressGridView.EditIndex = e.NewEditIndex;
+            this.BindGrid();
+        }
+
+        protected void OnRowCancelingEditAddress(object sender, GridViewCancelEditEventArgs e) {
+            AddressGridView.EditIndex = -1;
+            this.BindGrid();
+        }
+
+        protected void UpdateAddress(object sender, GridViewUpdateEventArgs e) {
+            GridViewRow row = AddressGridView.Rows[e.RowIndex];
+            string addressId = Convert.ToInt32(AddressGridView.DataKeys[e.RowIndex].Value).ToString();
+            string updateAddressQuery = "UPDATE Address SET Street=@Street,StreetLineTwo=@StreetLineTwo,City=@City,State=@State,ZipCode=@ZipCode" +
+                " WHERE AddressId=@AddressId AND AddressId IS NOT NULL";
+            using (SqlConnection connection = new SqlConnection(connectionString)) {
+                SqlCommand updateCommand = new SqlCommand(updateAddressQuery, connection);
+                connection.Open();
+                updateCommand.Parameters.AddWithValue("@AddressId", addressId);
+                string street = (row.FindControl("StreetTextBox") as TextBox).Text;
+                updateCommand.Parameters.AddWithValue("Street", street);
+                string streetLineTwo = (row.FindControl("StreetLine2TextBox") as TextBox).Text;
+                updateCommand.Parameters.AddWithValue("StreetLineTwo", streetLineTwo);
+                string city = (row.FindControl("CityTextBox") as TextBox).Text;
+                updateCommand.Parameters.AddWithValue("City", city);
+                string state = (row.FindControl("StateTextBox") as TextBox).Text;
+                updateCommand.Parameters.AddWithValue("State", state);
+                string zipCode = (row.FindControl("ZipCodeTextBox") as TextBox).Text;
+                updateCommand.Parameters.AddWithValue("ZipCode", zipCode);
+                updateCommand.ExecuteNonQuery();
+                connection.Close();
+            }
+            AddressGridView.EditIndex = -1;
+            this.BindGrid();
+        }
+
+        protected void DeleteAddress(object sender, GridViewDeleteEventArgs e) {
+            string id = Convert.ToInt32(AddressGridView.DataKeys[e.RowIndex].Value).ToString();
+            string deleteQueryString = "DELETE FROM Address WHERE AddressId=@AddressId AND AddressId IS NOT NULL";
+            using (SqlConnection connection = new SqlConnection(connectionString)) {
+                using (SqlCommand deleteCommand = new SqlCommand(deleteQueryString, connection)) {
+                    connection.Open();
+                    deleteCommand.Parameters.AddWithValue("AddressId", id);
+                    deleteCommand.ExecuteNonQuery();
+                    connection.Close();
+                }
+            }
+            this.BindGrid();
+        }
+
+        protected void AddressGridView_RowDataBound(object sender, GridViewRowEventArgs e) {
+            if (e.Row.RowType == DataControlRowType.DataRow && e.Row.RowIndex != AddressGridView.EditIndex) {
+                LinkButton addrDltLink = (LinkButton)e.Row.Cells[3].Controls[2];
+                addrDltLink.OnClientClick = "return confirm('Delete this address?');";
+            }
+        }
+
+        protected void AddAddress(object sender, EventArgs e) {
+            SaveAddress();
+        }
+
+        private void SaveAddress() {
+            string insertQuery = "INSERT INTO Address(Street,StreetLineTwo,City,State,ZipCode,ContactId) VALUES " +
+                "(@Street,@StreetLineTwo,@City,@State,@ZipCode,@ContactId)";
+            using (SqlConnection connection = new SqlConnection(connectionString)) {
+                SqlCommand command = new SqlCommand(insertQuery, connection);
+                connection.Open();
+                string streetLineOne = AddStreetTextBox.Text;
+                command.Parameters.AddWithValue("Street", streetLineOne);
+                string streetLineTwo = AddStrLnTwoTextBox.Text;
+                command.Parameters.AddWithValue("StreetLineTwo", streetLineTwo);
+                string city = AddCityTextBox.Text;
+                command.Parameters.AddWithValue("City", city);
+                string state = AddStateTextBox.Text;
+                command.Parameters.AddWithValue("State", state);
+                string zipCode = AddZipCodeTextBox.Text;
+                command.Parameters.AddWithValue("ZipCode", zipCode);
+                command.Parameters.AddWithValue("ContactId", contactId);
+
+                command.ExecuteNonQuery();
+                connection.Close();
+            }
+            this.BindGrid();
+            AddStreetTextBox.Text = "";
+            AddStrLnTwoTextBox.Text = "";
+            AddCityTextBox.Text = "";
+            AddStateTextBox.Text = "";
+            AddZipCodeTextBox.Text = "";
+        }
+
         protected void DeleteContact(object sender, EventArgs e) {
             string deleteQuery = "DELETE FROM Contact WHERE ContactId=@ContactId" +
                 " DELETE FROM Address WHERE ContactId=@ContactId" +
@@ -385,6 +397,19 @@ namespace ContactsEmpty {
             Response.Redirect("Contacts.aspx");
         }
 
-
+        protected void Finish(object sender, EventArgs e) {
+            if (!String.IsNullOrEmpty(AddStreetTextBox.Text) || !String.IsNullOrEmpty(AddStrLnTwoTextBox.Text) || !String.IsNullOrEmpty(AddCityTextBox.Text)
+                || !String.IsNullOrEmpty(AddStateTextBox.Text) || !String.IsNullOrEmpty(AddZipCodeTextBox.Text)) {
+                SaveAddress();
+            }
+            if (!String.IsNullOrEmpty(PhoneTypeList.Text) || !String.IsNullOrEmpty(AreaCodeTextBox.Text) || !String.IsNullOrEmpty(NumberPart1TextBox.Text) ||
+                !String.IsNullOrEmpty(NumberPart2TextBox.Text) || !String.IsNullOrEmpty(Ext.Text)) {
+                SavePhone();
+            }
+            if(!String.IsNullOrEmpty(AddDomainTxtBx.Text)|| !String.IsNullOrEmpty(AddUserNameTxtBx.Text)) {
+                SaveEmail();
+            }
+            Response.Redirect("Contacts.aspx");
+        }
     }
 }
