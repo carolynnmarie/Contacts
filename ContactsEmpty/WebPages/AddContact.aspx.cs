@@ -17,7 +17,8 @@ namespace ContactsEmpty {
             Response.Redirect("Contacts.aspx");
         }
 
-        //Client enters and saves a name and it gets the id and sends it to the edit page to enter and save all of the rest of the contact information
+        //Client enters and saves a name.  The ContactId is then retrieved and sent to the edit page as the user is directed there to
+        //input the rest of the contact information.
         protected void SaveName(object sender, EventArgs e) {
             string insertContact = "INSERT INTO Contact(LastName,FirstName,MiddleInitial) VALUES (@LastName,@FirstName,@MiddleInitial)";
             using (SqlConnection connection = new SqlConnection(connectionString)) {

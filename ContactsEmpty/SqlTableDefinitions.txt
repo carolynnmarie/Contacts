@@ -1,0 +1,56 @@
+﻿Contacts Table Definition:
+CREATE TABLE [dbo].[Contact] (
+    [ContactId]     INT          IDENTITY (1, 1) NOT NULL,
+    [LastName]      VARCHAR (50) NULL,
+    [FirstName]     VARCHAR (50) NULL,
+    [MiddleInitial] VARCHAR (5)  NULL,
+    PRIMARY KEY CLUSTERED ([ContactId] ASC)
+);
+
+Address Sql Table Definition:
+CREATE TABLE [dbo].[Address] (
+    [AddressId]      INT           IDENTITY (1, 1) NOT NULL,
+    [Street]         VARCHAR (50)  NULL,
+    [StreetLineTwo]  VARCHAR (50)  NULL,
+    [City]           VARCHAR (50)  NULL,
+    [State]          VARCHAR (2)   NULL,
+    [ZipCode]        VARCHAR (5)   NULL,
+    [Country]        VARCHAR (50)  DEFAULT ('USA') NULL,
+    [NonUSAAddress]  VARCHAR (MAX) NULL,
+    [PrimaryAddress] BIT           NULL,
+    [ContactId]      INT           NULL,
+    PRIMARY KEY CLUSTERED ([AddressId] ASC),
+    FOREIGN KEY ([ContactId]) REFERENCES [dbo].[Contact] ([ContactId]),
+    CHECK ([ZipCode] like '[0-9][0-9][0-9][0-9][0-9]' OR [ZipCode] IS NULL OR [ZipCode]='')
+);
+
+Phone Sql Table Definition:
+CREATE TABLE [dbo].[Phone] (
+    [PhoneId]         INT          IDENTITY (1, 1) NOT NULL,
+    [Type]            VARCHAR (50) NULL,
+    [CountryCode]     VARCHAR (6)  DEFAULT ('1') NULL,
+    [AreaCode]        VARCHAR (3)  NULL,
+    [PhoneNumberPOne] VARCHAR (3)  NULL,
+    [PhoneNumberPTwo] VARCHAR (4)  NULL,
+    [Extension]       VARCHAR (10) NULL,
+    [PrimaryNumber]   BIT          NULL,
+    [ContactId]       INT          NULL,
+    PRIMARY KEY CLUSTERED ([PhoneId] ASC),
+    FOREIGN KEY ([ContactId]) REFERENCES [dbo].[Contact] ([ContactId]),
+    CHECK ([Extension] like '%[0-9]%' OR [Extension]='' OR [Extension] IS NULL),
+    CHECK ([PhoneNumberPOne] like '[0-9][0-9][0-9]' OR [PhoneNumberPOne]='' OR [PhoneNumberPOne] IS NULL),
+    CHECK ([PhoneNumberPTwo] like '[0-9][0-9][0-9][0-9]' OR [PhoneNumberPTwo]='' OR [PhoneNumberPTwo] IS NULL),
+    CHECK ([AreaCode] like '[0-9][0-9][0-9]' OR [AreaCode]='' OR [AreaCode] IS NULL),
+    CHECK ([CountryCode] like '%[0-9]%' OR [CountryCode]='' OR [CountryCode] IS NULL)
+);
+
+Email Sql Table Definition:
+CREATE TABLE [dbo].[Email] (
+    [EmailId]      INT           IDENTITY (1, 1) NOT NULL,
+    [UserName]     VARCHAR (64)  NULL,
+    [Domain]       VARCHAR (250) NULL,
+    [PrimaryEmail] BIT           NULL,
+    [ContactId]    INT           NULL,
+    PRIMARY KEY CLUSTERED ([EmailId] ASC),
+    CONSTRAINT [FK_Contact] FOREIGN KEY ([ContactId]) REFERENCES [dbo].[Contact] ([ContactId])
+);

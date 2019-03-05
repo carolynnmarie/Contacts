@@ -76,6 +76,7 @@
     <Content Include="WebPages\Contacts.aspx" />
     <Content Include="WebPages\EditContact.aspx" />
     <Content Include="WebPages\AddContact.aspx" />
+    <Content Include="SqlTableDefinitions.txt" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ContactName.cs" />

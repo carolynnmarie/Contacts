@@ -141,8 +141,12 @@ namespace ContactsEmpty {
             this.BindGrid();
         }
 
-        protected void UpdatePhone(object sender, GridViewUpdateEventArgs e) {
 
+        //Handled user input error exception: I put binding the data and changing the edit index inside the 
+        //try block and changed the text for a label in the catch block- if the user inputs a letter any of the fields, upon hitting update the 
+        //field stays in edit mode and a message appears underneath and it stays that way until the user corrects the issue or hits the cancel button.
+        //Upon successful update the value of the label is set to an empty string.
+        protected void UpdatePhone(object sender, GridViewUpdateEventArgs e) {
             string updatePhoneQuery = "UPDATE Phone SET Type=@Type,AreaCode=@AreaCode,PhoneNumberPOne=@PhoneNumberPOne," +
                 "PhoneNumberPTwo=@PhoneNumberPTwo,Extension=@Extension WHERE PhoneId=@PhoneId AND PhoneId IS NOT NULL";
             string phoneId = Convert.ToInt32(PhoneGridView.DataKeys[e.RowIndex].Value).ToString();
@@ -196,10 +200,16 @@ namespace ContactsEmpty {
             }
         }
 
+        //I moved the insert query to a separate method so that it could be called if there is unsaved user
+        //input when they leave the page, the method for that is at the bottom of the class.
         protected void AddPhone(object sender, EventArgs e) {
             SavePhone();
         }
 
+        //Handled user input error exception: I put binding the data and changing the edit index inside the 
+        //try block and changed the text for a label in the catch block- if the user inputs a letter any of the fields, upon hitting update the 
+        //field stays in edit mode and a message appears underneath and it stays that way until the user corrects the issue.  Upon successful save the
+        //value of the label is set to an empty string.
         private void SavePhone() {
             string insertQuery = "INSERT INTO Phone(Type,AreaCode,PhoneNumberPOne,PhoneNumberPTwo, Extension, ContactId) VALUES (@Type,@AreaCode," +
                 "@PhoneNumberPOne,@PhoneNumberPTwo, @Extension,@ContactId)";
@@ -284,6 +294,8 @@ namespace ContactsEmpty {
             }
         }
 
+        //I moved the insert query to a separate method so that it could be called if there is unsaved user
+        //input when they leave the page, the method for that is at the bottom of the class.
         protected void AddEmail(object sender, EventArgs e) {
             SaveEmail();
         }
@@ -316,6 +328,10 @@ namespace ContactsEmpty {
             this.BindGrid();
         }
 
+        //Handled user input error exception: I put binding the data and changing the edit index inside the 
+        //try block and changed the text for a label in the catch block- if the user inputs a letter into the zip code, upon hitting update the 
+        //field stays in edit mode and a message appears underneath and it stays that way until the user corrects the issue or hits the cancel 
+        //Upon successful update the value of the label is set to an empty string.
         protected void UpdateAddress(object sender, GridViewUpdateEventArgs e) {
             GridViewRow row = AddressGridView.Rows[e.RowIndex];
             string addressId = Convert.ToInt32(AddressGridView.DataKeys[e.RowIndex].Value).ToString();
@@ -323,17 +339,16 @@ namespace ContactsEmpty {
                 " WHERE AddressId=@AddressId AND AddressId IS NOT NULL";
             using (SqlConnection connection = new SqlConnection(connectionString)) {
                 SqlCommand updateCommand = new SqlCommand(updateAddressQuery, connection);
-
-                updateCommand.Parameters.AddWithValue("@AddressId", addressId);
                 string street = (row.FindControl("StreetTextBox") as TextBox).Text;
-                updateCommand.Parameters.AddWithValue("Street", street);
                 string streetLineTwo = (row.FindControl("StreetLine2TextBox") as TextBox).Text;
-                updateCommand.Parameters.AddWithValue("StreetLineTwo", streetLineTwo);
                 string city = (row.FindControl("CityTextBox") as TextBox).Text;
-                updateCommand.Parameters.AddWithValue("City", city);
                 string state = (row.FindControl("StateTextBox") as TextBox).Text;
-                updateCommand.Parameters.AddWithValue("State", state);
                 string zipCode = (row.FindControl("ZipCodeTextBox") as TextBox).Text;
+                updateCommand.Parameters.AddWithValue("@AddressId", addressId);
+                updateCommand.Parameters.AddWithValue("Street", street);
+                updateCommand.Parameters.AddWithValue("StreetLineTwo", streetLineTwo);
+                updateCommand.Parameters.AddWithValue("City", city);
+                updateCommand.Parameters.AddWithValue("State", state);
                 updateCommand.Parameters.AddWithValue("ZipCode", zipCode);
                 try{
                     connection.Open();
@@ -369,16 +384,21 @@ namespace ContactsEmpty {
             }
         }
 
+        //I moved the insert query to a separate method so that it could be called if there is unsaved user
+        //input when they leave the page. The method for that is at the bottom of the class.
         protected void AddAddress(object sender, EventArgs e) {
             SaveAddress();
         }
 
+        //Handled user input error exception: I put binding the data and changing the edit index inside the 
+        //try block, change the text of a label in the catch- if the user inputs a letter into the zip code, upon hitting update the 
+        //field stays in edit mode and a message appears underneath and it stays that way until the user corrects the issue.
+        //Upon successful update the value of the label is set to an empty string.
         private void SaveAddress() {
             string insertQuery = "INSERT INTO Address(Street,StreetLineTwo,City,State,ZipCode,ContactId) VALUES " +
                 "(@Street,@StreetLineTwo,@City,@State,@ZipCode,@ContactId)";
             using (SqlConnection connection = new SqlConnection(connectionString)) {
                 SqlCommand command = new SqlCommand(insertQuery, connection);
-
                 string streetLineOne = AddStreetTextBox.Text;
                 command.Parameters.AddWithValue("Street", streetLineOne);
                 string streetLineTwo = AddStrLnTwoTextBox.Text;
@@ -422,6 +442,8 @@ namespace ContactsEmpty {
             Response.Redirect("Contacts.aspx");
         }
 
+        //checked to see if any of the user input error labels were not empty strings, indicating that a try/catch had been tripped upon attemptint to save, and only
+        //redirects the user back to the main contacts page once the problem was corrected.
         protected void Finish(object sender, EventArgs e) {
             if (!String.IsNullOrEmpty(AddStreetTextBox.Text) || !String.IsNullOrEmpty(AddStrLnTwoTextBox.Text) || !String.IsNullOrEmpty(AddCityTextBox.Text)
                 || !String.IsNullOrEmpty(AddStateTextBox.Text) || !String.IsNullOrEmpty(AddZipCodeTextBox.Text)) {
