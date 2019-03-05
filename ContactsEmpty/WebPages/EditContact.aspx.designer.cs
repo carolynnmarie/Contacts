@@ -67,6 +67,15 @@ namespace ContactsEmpty {
         protected global::System.Web.UI.WebControls.GridView PhoneGridView;
         
         /// <summary>
+        /// SqlPhoneUpdateError control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label SqlPhoneUpdateError;
+        
+        /// <summary>
         /// PhoneTypeList control.
         /// </summary>
         /// <remarks>
@@ -146,6 +155,15 @@ namespace ContactsEmpty {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox ExtTextBox;
+        
+        /// <summary>
+        /// SqlPhoneInsertError control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label SqlPhoneInsertError;
         
         /// <summary>
         /// AddPhoneButton control.
@@ -299,6 +317,15 @@ namespace ContactsEmpty {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox AddZipCodeTextBox;
+        
+        /// <summary>
+        /// SqlZipCodeError control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label SqlZipCodeError;
         
         /// <summary>
         /// AddAddressButton control.

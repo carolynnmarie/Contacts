@@ -37,26 +37,23 @@ namespace ContactsEmpty{
             }           
         }
 
-        protected void DeleteContactButton_Command(object sender, CommandEventArgs e) {
-            string contactId = Convert.ToInt32(e.CommandArgument).ToString();
-            DisplayContactDetails(contactId);
-            string commandQuery = "DELETE FROM Address WHERE ContactId=@ContactId;  DELETE FROM Phone WHERE ContactId=@ContactId; " +
-                                    "DELETE FROM Email WHERE ContactId=@ContactId; DELETE FROM Contact WHERE ContactId=@ContactId;";
-            using (SqlConnection connection = new SqlConnection(connectionString)) {
-                connection.Open();
-                SqlCommand deleteCommand = new SqlCommand(commandQuery, connection);
-                deleteCommand.Parameters.AddWithValue("ContactId", contactId);
-                deleteCommand.ExecuteNonQuery();
-                connection.Close();
+        //popup on the top of the screen to confirm you want to delete the contact, so you don't delete it accidentally
+        protected void ConfirmDeleteContact(object sender, GridViewRowEventArgs e) {
+            if (e.Row.RowType == DataControlRowType.DataRow) {
+                LinkButton dltLink = (LinkButton)e.Row.Cells[3].Controls[0];
+                dltLink.OnClientClick = "return confirm('Delete this contact?');";
             }
-            GridView2.DataBind();
         }
 
+
+        //Deletes contact and all information after confirmation
         protected void DeleteContact(object sender, GridViewDeleteEventArgs e) {
             string contactId = Convert.ToInt32(GridView2.DataKeys[e.RowIndex].Value).ToString();
             DisplayContactDetails(contactId);
-            string commandQuery = "DELETE FROM Address WHERE ContactId=@ContactId;  DELETE FROM Phone WHERE ContactId=@ContactId; " + 
-                "DELETE FROM Email WHERE ContactId=@ContactId; DELETE FROM Contact WHERE ContactId=@ContactId;";
+            string commandQuery = "DELETE FROM Address WHERE ContactId=@ContactId;  " +
+                "DELETE FROM Phone WHERE ContactId=@ContactId; " + 
+                "DELETE FROM Email WHERE ContactId=@ContactId; " +
+                "DELETE FROM Contact WHERE ContactId=@ContactId;";
             using (SqlConnection connection = new SqlConnection(connectionString)) {
                 connection.Open();
                 SqlCommand deleteCommand = new SqlCommand(commandQuery, connection);
@@ -68,22 +65,18 @@ namespace ContactsEmpty{
             Response.Redirect(Request.RawUrl);
         }
 
-        protected void ConfirmDeleteContact(object sender, GridViewRowEventArgs e) {
-            if (e.Row.RowType == DataControlRowType.DataRow) {
-                LinkButton dltLink = (LinkButton)e.Row.Cells[3].Controls[0];
-                dltLink.OnClientClick= "return confirm('Delete this contact?');";
-            }
-        }
-        
+
+        //the Add button: sends to the add contact page
         protected void Add(Object sender, EventArgs e) {
             Response.Redirect("AddContact.aspx");
         }
 
+        //gets the ContactId for the selected name and sends it to the method below 
         protected void SelectContactDetails(object sender, EventArgs e) {
             string contactId = GridView2.SelectedDataKey.Value.ToString();
             DisplayContactDetails(contactId);
         }
-
+        //for displaying contact information on the second editor pane
         private void DisplayContactDetails(string contactId) {
             string contactQueryString = "SELECT ContactId, LastName, FirstName, MiddleInitial FROM Contact WHERE ContactId = @ContactId";
             string addressQueryString = "SELECT AddressId, Street, StreetLineTwo,City,State,ZipCode,PrimaryAddress, ContactId FROM Address WHERE ContactId = @ContactId";

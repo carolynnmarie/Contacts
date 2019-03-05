@@ -142,31 +142,39 @@ namespace ContactsEmpty {
         }
 
         protected void UpdatePhone(object sender, GridViewUpdateEventArgs e) {
+
             string updatePhoneQuery = "UPDATE Phone SET Type=@Type,AreaCode=@AreaCode,PhoneNumberPOne=@PhoneNumberPOne," +
                 "PhoneNumberPTwo=@PhoneNumberPTwo,Extension=@Extension WHERE PhoneId=@PhoneId AND PhoneId IS NOT NULL";
             string phoneId = Convert.ToInt32(PhoneGridView.DataKeys[e.RowIndex].Value).ToString();
             GridViewRow row = PhoneGridView.Rows[e.RowIndex];
             using (SqlConnection connection = new SqlConnection(connectionString)) {
+
                 SqlCommand command = new SqlCommand(updatePhoneQuery, connection);
-                connection.Open();
                 string type = (row.FindControl("TypeTextBox") as TextBox).Text;
-                command.Parameters.AddWithValue("Type", type);
                 string areaCode = (row.FindControl("AreaCodeTextBox") as TextBox).Text;
-                command.Parameters.AddWithValue("AreaCode", areaCode);
                 string phoneNumberP1 = (row.FindControl("PhoneNumberP1TextBox") as TextBox).Text;
-                command.Parameters.AddWithValue("PhoneNumberPOne", phoneNumberP1);
                 string phoneNumberP2 = (row.FindControl("PhoneNumberP2TextBox") as TextBox).Text;
-                command.Parameters.AddWithValue("PhoneNumberPTwo", phoneNumberP2);
                 string ext = (row.FindControl("ExtTextBox") as TextBox).Text;
+                string phoneNumber = areaCode + phoneNumberP1 + phoneNumberP2 + ext;
+                command.Parameters.AddWithValue("Type", type);
+                command.Parameters.AddWithValue("AreaCode", areaCode);
+                command.Parameters.AddWithValue("PhoneNumberPOne", phoneNumberP1);
+                command.Parameters.AddWithValue("PhoneNumberPTwo", phoneNumberP2);
                 command.Parameters.AddWithValue("Extension", ext);
                 command.Parameters.AddWithValue("PhoneId", phoneId);
-                command.ExecuteNonQuery();
-                connection.Close();
+                try {
+                    connection.Open();
+                    command.ExecuteNonQuery();
+                    connection.Close();
+                    PhoneGridView.EditIndex = -1;
+                    this.BindGrid();
+                    SqlPhoneUpdateError.Text = "";
+                } catch (SqlException nmbEx) {                   
+                    SqlPhoneUpdateError.Text = "*Invalid entry. Use numeric digits only. <br />";
+                }
             }
-            PhoneGridView.EditIndex = -1;
-            this.BindGrid();
         }
-
+             
 
         protected void DeletePhone(object sender, GridViewDeleteEventArgs e) {
             string deletePhoneQuery = "DELETE FROM Phone WHERE PhoneId=@PhoneId AND PhoneId IS NOT NULL";
@@ -197,7 +205,7 @@ namespace ContactsEmpty {
                 "@PhoneNumberPOne,@PhoneNumberPTwo, @Extension,@ContactId)";
             using (SqlConnection connection = new SqlConnection(connectionString)) {
                 SqlCommand command = new SqlCommand(insertQuery, connection);
-                connection.Open();
+                
                 string type = PhoneTypeList.Text;
                 command.Parameters.AddWithValue("Type", type);
                 string areaCode = AreaCodeTextBox.Text;
@@ -209,16 +217,22 @@ namespace ContactsEmpty {
                 string ext = ExtTextBox.Text;
                 command.Parameters.AddWithValue("Extension", ext);
                 command.Parameters.AddWithValue("ContactId", contactId);
-                command.ExecuteNonQuery();
-                connection.Close();
-            }
-            PhoneGridView.EditIndex = -1;
-            this.BindGrid();
-            PhoneTypeList.ClearSelection();
-            AreaCodeTextBox.Text = "";
-            NumberPart1TextBox.Text = "";
-            NumberPart2TextBox.Text = "";
-            ExtTextBox.Text = "";
+                try {
+                    connection.Open();
+                    command.ExecuteNonQuery();
+                    connection.Close();
+                    PhoneGridView.EditIndex = -1;
+                    this.BindGrid();
+                    PhoneTypeList.ClearSelection();
+                    AreaCodeTextBox.Text = "";
+                    NumberPart1TextBox.Text = "";
+                    NumberPart2TextBox.Text = "";
+                    ExtTextBox.Text = "";
+                    SqlPhoneInsertError.Text = "";
+                } catch (SqlException) {
+                    SqlPhoneInsertError.Text = "<br />*Invalid entry. Use numeric digits only. ";
+                }                
+            }          
         }
 
         protected void EditEmail(object sender, GridViewEditEventArgs e) {
@@ -247,9 +261,9 @@ namespace ContactsEmpty {
                 connection.Close();
             }
             EmailGridView.EditIndex = -1;
-            this.BindGrid();
+            this.BindGrid();           
         }
-
+       
         protected void DeleteEmail(object sender, GridViewDeleteEventArgs e) {
             string emailId = Convert.ToInt32(EmailGridView.DataKeys[e.RowIndex].Value).ToString();
             string deleteQuery = "DELETE from Email WHERE EmailId=@EmailId";
@@ -309,7 +323,7 @@ namespace ContactsEmpty {
                 " WHERE AddressId=@AddressId AND AddressId IS NOT NULL";
             using (SqlConnection connection = new SqlConnection(connectionString)) {
                 SqlCommand updateCommand = new SqlCommand(updateAddressQuery, connection);
-                connection.Open();
+
                 updateCommand.Parameters.AddWithValue("@AddressId", addressId);
                 string street = (row.FindControl("StreetTextBox") as TextBox).Text;
                 updateCommand.Parameters.AddWithValue("Street", street);
@@ -321,11 +335,17 @@ namespace ContactsEmpty {
                 updateCommand.Parameters.AddWithValue("State", state);
                 string zipCode = (row.FindControl("ZipCodeTextBox") as TextBox).Text;
                 updateCommand.Parameters.AddWithValue("ZipCode", zipCode);
-                updateCommand.ExecuteNonQuery();
-                connection.Close();
+                try{
+                    connection.Open();
+                    updateCommand.ExecuteNonQuery();
+                    connection.Close();
+                    AddressGridView.EditIndex = -1;
+                    this.BindGrid();
+                    SqlZipCodeError.Text = "";
+                } catch(SqlException) {
+                    SqlZipCodeError.Text = "Zip Code must be numeric digits";
+                }               
             }
-            AddressGridView.EditIndex = -1;
-            this.BindGrid();
         }
 
         protected void DeleteAddress(object sender, GridViewDeleteEventArgs e) {
@@ -358,7 +378,7 @@ namespace ContactsEmpty {
                 "(@Street,@StreetLineTwo,@City,@State,@ZipCode,@ContactId)";
             using (SqlConnection connection = new SqlConnection(connectionString)) {
                 SqlCommand command = new SqlCommand(insertQuery, connection);
-                connection.Open();
+
                 string streetLineOne = AddStreetTextBox.Text;
                 command.Parameters.AddWithValue("Street", streetLineOne);
                 string streetLineTwo = AddStrLnTwoTextBox.Text;
@@ -370,16 +390,21 @@ namespace ContactsEmpty {
                 string zipCode = AddZipCodeTextBox.Text;
                 command.Parameters.AddWithValue("ZipCode", zipCode);
                 command.Parameters.AddWithValue("ContactId", contactId);
-
-                command.ExecuteNonQuery();
-                connection.Close();
-            }
-            this.BindGrid();
-            AddStreetTextBox.Text = "";
-            AddStrLnTwoTextBox.Text = "";
-            AddCityTextBox.Text = "";
-            AddStateTextBox.Text = "";
-            AddZipCodeTextBox.Text = "";
+                try{
+                    connection.Open();
+                    command.ExecuteNonQuery();
+                    connection.Close();
+                    this.BindGrid();
+                    AddStreetTextBox.Text = "";
+                    AddStrLnTwoTextBox.Text = "";
+                    AddCityTextBox.Text = "";
+                    AddStateTextBox.Text = "";
+                    AddZipCodeTextBox.Text = "";
+                    SqlZipCodeError.Text = "";
+                } catch (SqlException) {
+                    SqlZipCodeError.Text = "Zip Code must be numeric digits";
+                }
+            }            
         }
 
         protected void DeleteContact(object sender, EventArgs e) {
@@ -409,7 +434,12 @@ namespace ContactsEmpty {
             if(!String.IsNullOrEmpty(AddDomainTxtBx.Text)|| !String.IsNullOrEmpty(AddUserNameTxtBx.Text)) {
                 SaveEmail();
             }
+            if(String.IsNullOrEmpty(SqlZipCodeError.Text)&&String.IsNullOrEmpty(SqlPhoneInsertError.Text)){
             Response.Redirect("Contacts.aspx");
+            }
+            
         }
+
+        
     }
 }

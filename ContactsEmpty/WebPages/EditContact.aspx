@@ -72,7 +72,7 @@
                                         MaxLength="3" Width="25px"></asp:TextBox>
                                     <asp:Label ID="DashLblEdit" runat="server" Text="-"></asp:Label>
                                     <asp:TextBox ID="PhoneNumberP2TextBox" runat="server" Text='<%# Eval("PhoneNumberPTwo") %>'
-                                        MaxLength="4" Width="35px"></asp:TextBox>
+                                        MaxLength="4" Width="35px"></asp:TextBox>                                         
                                 </EditItemTemplate>
                             </asp:TemplateField>
                             <asp:TemplateField>
@@ -89,6 +89,7 @@
                             <asp:CommandField ButtonType="Link" ShowEditButton="true" ShowDeleteButton="true" ControlStyle-CssClass="editbtn" />
                         </Columns>
                     </asp:GridView>
+                    <asp:Label ID="SqlPhoneUpdateError" runat="server"></asp:Label>
                     <asp:DropDownList ID="PhoneTypeList" AutoPostBack="true" runat="server">
                         <asp:ListItem Selected="True" Value="">Select</asp:ListItem>
                         <asp:ListItem Value="Mobile">Mobile</asp:ListItem>
@@ -106,6 +107,7 @@
                     <asp:TextBox ID="NumberPart2TextBox" runat="server" MaxLength="4" Width="35px" CssClass="linemrgn"></asp:TextBox>
                     <asp:Label ID="Ext" runat="server" Text="Ext: " Width="30px" CssClass="linemrgn"></asp:Label>
                     <asp:TextBox ID="ExtTextBox" runat="server" Width="50px" CssClass="linemrgn"></asp:TextBox>
+                    <asp:Label ID="SqlPhoneInsertError" runat="server"></asp:Label>
                     <br />
                     <asp:Button ID="AddPhoneButton" runat="server" Text="Add Phone Number" OnClick="AddPhone" CssClass="addbtn" />
                     <br />
@@ -176,6 +178,7 @@
                     <asp:TextBox ID="AddStateTextBox" runat="server" MaxLength="2" Width="25px"></asp:TextBox>
                     <asp:Label ID="AddZipCodeLabel" runat="server" Text="ZipCode: "></asp:Label>
                     <asp:TextBox ID="AddZipCodeTextBox" runat="server" Width="45px" MaxLength="5"></asp:TextBox>
+                    <asp:Label ID="SqlZipCodeError" runat="server"></asp:Label>
                     <br />
                     <asp:Button ID="AddAddressButton" runat="server" Text="Add Address" OnClick="AddAddress" CssClass="addbtn" />
                     <br />
