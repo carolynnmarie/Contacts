@@ -62,6 +62,7 @@
                                     <asp:Label ID="PhoneNumberP1Label" runat="server" Text='<%# Bind("PhoneNumberPOne") %>'></asp:Label>
                                     <asp:Label ID="DashLbl" runat="server" Text="-"></asp:Label>
                                     <asp:Label ID="PhoneNumberP2Lbl" runat="server" Text='<%# Bind("PhoneNumberPTwo") %>'></asp:Label>
+                                    
                                 </ItemTemplate>
                                 <EditItemTemplate>
                                     <asp:Label ID="ACFrontParenEdit" runat="server" Text="("></asp:Label>
@@ -72,18 +73,23 @@
                                         MaxLength="3" Width="25px"></asp:TextBox>
                                     <asp:Label ID="DashLblEdit" runat="server" Text="-"></asp:Label>
                                     <asp:TextBox ID="PhoneNumberP2TextBox" runat="server" Text='<%# Eval("PhoneNumberPTwo") %>'
-                                        MaxLength="4" Width="35px"></asp:TextBox>                                         
+                                        MaxLength="4" Width="35px"></asp:TextBox>    
+                                    
                                 </EditItemTemplate>
                             </asp:TemplateField>
                             <asp:TemplateField>
                                 <ItemTemplate>
                                     <asp:Label ID="Ext" runat="server" Text="ext:" Width="25px"></asp:Label>
                                     <asp:Label ID="ExtLabel" runat="server" Text='<%# Bind("Extension") %>' Width="45" Visible="true"></asp:Label>
+                                    <asp:Label ID="PrimaryPhoneLbl" runat="server" Text="Primary" Width="50px"></asp:Label>
+                                    <asp:CheckBox ID="PrimaryNumberChkBx" runat="server" Enabled="false" AutoPostBack="true" Checked='<%# Convert.ToBoolean(Eval("PrimaryNumber")) %>'/>
                                 </ItemTemplate>
                                 <EditItemTemplate>
                                     <asp:Label ID="Ext" runat="server" Text="ext:" Width="25px"></asp:Label>
                                     <asp:TextBox ID="ExtTextBox" runat="server" Text='<%# Eval("Extension") %>'
                                         Width="45px"></asp:TextBox>
+                                    <asp:Label ID="PrimaryPhoneLblEdit" runat="server" Text="Primary" Width="50px"></asp:Label>
+                                    <asp:CheckBox ID="PrimaryNumberChkBxEdit" runat="server" Enabled="true" AutoPostBack="true" Checked='<%# Convert.ToBoolean(Eval("PrimaryNumber")) %>'  /> 
                                 </EditItemTemplate>
                             </asp:TemplateField>
                             <asp:CommandField ButtonType="Link" ShowEditButton="true" ShowDeleteButton="true" ControlStyle-CssClass="editbtn" />
@@ -108,6 +114,8 @@
                     <asp:Label ID="Ext" runat="server" Text="Ext: " Width="30px" CssClass="linemrgn"></asp:Label>
                     <asp:TextBox ID="ExtTextBox" runat="server" Width="50px" CssClass="linemrgn"></asp:TextBox>
                     <asp:Label ID="SqlPhoneInsertError" runat="server"></asp:Label>
+                    <asp:Label ID="PrimaryPhoneLbl" runat="server" Text="Primary" Width="50px"></asp:Label>
+                    <asp:CheckBox ID="PrimaryNumberChkBxAdd" runat="server" Enabled="true" AutoPostBack="true" /> 
                     <br />
                     <asp:Button ID="AddPhoneButton" runat="server" Text="Add Phone Number" OnClick="AddPhone" CssClass="addbtn" />
                     <br />
@@ -151,7 +159,6 @@
                                     <asp:Label ID="StreetLine2Lbl" runat="server" Text='<%# Bind("StreetLineTwo") %>'></asp:Label>
                                     <br />
                                     <asp:Label ID="CityLbl" runat="server" Text='<%# Bind("City") %>'></asp:Label>
-                                    <asp:Label ID="comma" runat="server" Text=", "></asp:Label>
                                     <asp:Label ID="StateLbl" runat="server" Text='<%# Bind("State") %>'></asp:Label>
                                     <asp:Label ID="ZipCodeLbl" runat="server" Text='<%# Bind("ZipCode") %>'></asp:Label>
                                 </ItemTemplate>

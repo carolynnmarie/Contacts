@@ -148,7 +148,7 @@ namespace ContactsEmpty {
         //Upon successful update the value of the label is set to an empty string.
         protected void UpdatePhone(object sender, GridViewUpdateEventArgs e) {
             string updatePhoneQuery = "UPDATE Phone SET Type=@Type,AreaCode=@AreaCode,PhoneNumberPOne=@PhoneNumberPOne," +
-                "PhoneNumberPTwo=@PhoneNumberPTwo,Extension=@Extension WHERE PhoneId=@PhoneId AND PhoneId IS NOT NULL";
+                "PhoneNumberPTwo=@PhoneNumberPTwo,Extension=@Extension,PrimaryNumber=@PrimaryNumber WHERE PhoneId=@PhoneId AND PhoneId IS NOT NULL";
             string phoneId = Convert.ToInt32(PhoneGridView.DataKeys[e.RowIndex].Value).ToString();
             GridViewRow row = PhoneGridView.Rows[e.RowIndex];
             using (SqlConnection connection = new SqlConnection(connectionString)) {
@@ -159,12 +159,15 @@ namespace ContactsEmpty {
                 string phoneNumberP1 = (row.FindControl("PhoneNumberP1TextBox") as TextBox).Text;
                 string phoneNumberP2 = (row.FindControl("PhoneNumberP2TextBox") as TextBox).Text;
                 string ext = (row.FindControl("ExtTextBox") as TextBox).Text;
+                bool primaryNumber = (row.FindControl("PrimaryNumberChkBxEdit") as CheckBox).Checked;
+                string pNStr = primaryNumber.ToString();
                 string phoneNumber = areaCode + phoneNumberP1 + phoneNumberP2 + ext;
                 command.Parameters.AddWithValue("Type", type);
                 command.Parameters.AddWithValue("AreaCode", areaCode);
                 command.Parameters.AddWithValue("PhoneNumberPOne", phoneNumberP1);
                 command.Parameters.AddWithValue("PhoneNumberPTwo", phoneNumberP2);
                 command.Parameters.AddWithValue("Extension", ext);
+                command.Parameters.AddWithValue("PrimaryNumber", pNStr);
                 command.Parameters.AddWithValue("PhoneId", phoneId);
                 try {
                     connection.Open();
@@ -173,7 +176,7 @@ namespace ContactsEmpty {
                     PhoneGridView.EditIndex = -1;
                     this.BindGrid();
                     SqlPhoneUpdateError.Text = "";
-                } catch (SqlException nmbEx) {                   
+                } catch (SqlException) {                   
                     SqlPhoneUpdateError.Text = "*Invalid entry. Use numeric digits only. <br />";
                 }
             }
@@ -197,6 +200,8 @@ namespace ContactsEmpty {
             if (e.Row.RowType == DataControlRowType.DataRow && e.Row.RowIndex != PhoneGridView.EditIndex) {
                 LinkButton deleteLink = (LinkButton)e.Row.Cells[5].Controls[2];
                 deleteLink.OnClientClick = "return confirm('Delete this phone number?');";
+                CheckBox checkBox = (CheckBox)e.Row.FindControl("PrimaryNumberChkBxEdit");
+
             }
         }
 
@@ -211,8 +216,8 @@ namespace ContactsEmpty {
         //field stays in edit mode and a message appears underneath and it stays that way until the user corrects the issue.  Upon successful save the
         //value of the label is set to an empty string.
         private void SavePhone() {
-            string insertQuery = "INSERT INTO Phone(Type,AreaCode,PhoneNumberPOne,PhoneNumberPTwo, Extension, ContactId) VALUES (@Type,@AreaCode," +
-                "@PhoneNumberPOne,@PhoneNumberPTwo, @Extension,@ContactId)";
+            string insertQuery = "INSERT INTO Phone(Type,AreaCode,PhoneNumberPOne,PhoneNumberPTwo, Extension, PrimaryNumber, ContactId) VALUES (@Type,@AreaCode," +
+                "@PhoneNumberPOne,@PhoneNumberPTwo, @Extension,@PrimaryNumber,@ContactId)";
             using (SqlConnection connection = new SqlConnection(connectionString)) {
                 SqlCommand command = new SqlCommand(insertQuery, connection);
                 
@@ -226,6 +231,8 @@ namespace ContactsEmpty {
                 command.Parameters.AddWithValue("PhoneNumberPTwo", phoneP2);
                 string ext = ExtTextBox.Text;
                 command.Parameters.AddWithValue("Extension", ext);
+                string primaryNumber = PrimaryNumberChkBxAdd.Checked.ToString();
+                command.Parameters.AddWithValue("PrimaryNumber", primaryNumber);
                 command.Parameters.AddWithValue("ContactId", contactId);
                 try {
                     connection.Open();
@@ -400,10 +407,13 @@ namespace ContactsEmpty {
             using (SqlConnection connection = new SqlConnection(connectionString)) {
                 SqlCommand command = new SqlCommand(insertQuery, connection);
                 string streetLineOne = AddStreetTextBox.Text;
-                command.Parameters.AddWithValue("Street", streetLineOne);
                 string streetLineTwo = AddStrLnTwoTextBox.Text;
+                if (!String.IsNullOrEmpty(streetLineTwo)) {
+                    streetLineTwo = "<br />" + streetLineTwo;
+                }
+                command.Parameters.AddWithValue("Street", streetLineOne);
                 command.Parameters.AddWithValue("StreetLineTwo", streetLineTwo);
-                string city = AddCityTextBox.Text;
+                string city = AddCityTextBox.Text + ",";
                 command.Parameters.AddWithValue("City", city);
                 string state = AddStateTextBox.Text;
                 command.Parameters.AddWithValue("State", state);
@@ -462,6 +472,8 @@ namespace ContactsEmpty {
             
         }
 
-        
+        protected void PrimaryNumberChkBxEdit_CheckedChanged(object sender, EventArgs e) {
+            
+        }
     }
 }

@@ -82,6 +82,12 @@
                                             <asp:Label ID="ExtLabel" runat="server" Text='<%# Bind("Extension") %>'></asp:Label>
                                         </ItemTemplate>
                                     </asp:TemplateField>
+                                    <asp:TemplateField>
+                                        <ItemTemplate>
+                                            <asp:CheckBox ID="PrimaryPhoneChkBx" runat="server" Enabled="false" Text='<%# Bind("PrimaryNumber") %>' />
+                                        </ItemTemplate>
+                                    </asp:TemplateField>
+
                                 </Columns>
                             </asp:GridView>
                             <br />

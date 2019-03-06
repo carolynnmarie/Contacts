@@ -166,6 +166,24 @@ namespace ContactsEmpty {
         protected global::System.Web.UI.WebControls.Label SqlPhoneInsertError;
         
         /// <summary>
+        /// PrimaryPhoneLbl control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label PrimaryPhoneLbl;
+        
+        /// <summary>
+        /// PrimaryNumberChkBxAdd control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox PrimaryNumberChkBxAdd;
+        
+        /// <summary>
         /// AddPhoneButton control.
         /// </summary>
         /// <remarks>
