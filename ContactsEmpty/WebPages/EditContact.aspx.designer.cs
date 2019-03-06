@@ -229,6 +229,24 @@ namespace ContactsEmpty {
         protected global::System.Web.UI.WebControls.TextBox AddDomainTxtBx;
         
         /// <summary>
+        /// PrimaryEmailLbl control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label PrimaryEmailLbl;
+        
+        /// <summary>
+        /// PEmailChkBxAdd control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox PEmailChkBxAdd;
+        
+        /// <summary>
         /// AddEmailButton control.
         /// </summary>
         /// <remarks>
@@ -335,6 +353,24 @@ namespace ContactsEmpty {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox AddZipCodeTextBox;
+        
+        /// <summary>
+        /// PrimaryAddrLblAdd control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label PrimaryAddrLblAdd;
+        
+        /// <summary>
+        /// PrimaryAddrChkBxAdd control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox PrimaryAddrChkBxAdd;
         
         /// <summary>
         /// SqlZipCodeError control.

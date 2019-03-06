@@ -51,7 +51,14 @@
                                     <asp:Label ID="TypeLabel" runat="server" Text='<%# Bind("Type") %>'></asp:Label>
                                 </ItemTemplate>
                                 <EditItemTemplate>
-                                    <asp:TextBox ID="TypeTextBox" runat="server" Width="40px" Text='<%# Eval("Type") %>'></asp:TextBox>
+                                    <asp:DropDownList ID="TypeList" runat="server" AppendDataBoundItems="true">                                       
+                                        <asp:ListItem Value="Mobile">Mobile</asp:ListItem>
+                                        <asp:ListItem Value="Home">Home</asp:ListItem>
+                                        <asp:ListItem Value="Work">Work</asp:ListItem>
+                                        <asp:ListItem Value="Fax">Fax</asp:ListItem>
+                                        <asp:ListItem Value="Google">Google</asp:ListItem>
+                                        <asp:ListItem Value="Other">Other</asp:ListItem>
+                                    </asp:DropDownList>
                                 </EditItemTemplate>
                             </asp:TemplateField>
                             <asp:TemplateField ItemStyle-HorizontalAlign="Left" HeaderText="Phone Numbers" HeaderStyle-Font-Size="Large" HeaderStyle-Font-Underline="true">
@@ -62,7 +69,6 @@
                                     <asp:Label ID="PhoneNumberP1Label" runat="server" Text='<%# Bind("PhoneNumberPOne") %>'></asp:Label>
                                     <asp:Label ID="DashLbl" runat="server" Text="-"></asp:Label>
                                     <asp:Label ID="PhoneNumberP2Lbl" runat="server" Text='<%# Bind("PhoneNumberPTwo") %>'></asp:Label>
-                                    
                                 </ItemTemplate>
                                 <EditItemTemplate>
                                     <asp:Label ID="ACFrontParenEdit" runat="server" Text="("></asp:Label>
@@ -73,8 +79,7 @@
                                         MaxLength="3" Width="25px"></asp:TextBox>
                                     <asp:Label ID="DashLblEdit" runat="server" Text="-"></asp:Label>
                                     <asp:TextBox ID="PhoneNumberP2TextBox" runat="server" Text='<%# Eval("PhoneNumberPTwo") %>'
-                                        MaxLength="4" Width="35px"></asp:TextBox>    
-                                    
+                                        MaxLength="4" Width="35px"></asp:TextBox>
                                 </EditItemTemplate>
                             </asp:TemplateField>
                             <asp:TemplateField>
@@ -82,14 +87,14 @@
                                     <asp:Label ID="Ext" runat="server" Text="ext:" Width="25px"></asp:Label>
                                     <asp:Label ID="ExtLabel" runat="server" Text='<%# Bind("Extension") %>' Width="45" Visible="true"></asp:Label>
                                     <asp:Label ID="PrimaryPhoneLbl" runat="server" Text="Primary" Width="50px"></asp:Label>
-                                    <asp:CheckBox ID="PrimaryNumberChkBx" runat="server" Enabled="false" AutoPostBack="true" Checked='<%# Convert.ToBoolean(Eval("PrimaryNumber")) %>'/>
+                                    <asp:CheckBox ID="PrimaryNumberChkBx" runat="server" Enabled="false" AutoPostBack="true" Checked='<%# Convert.ToBoolean(Eval("PrimaryNumber")) %>' />
                                 </ItemTemplate>
                                 <EditItemTemplate>
                                     <asp:Label ID="Ext" runat="server" Text="ext:" Width="25px"></asp:Label>
                                     <asp:TextBox ID="ExtTextBox" runat="server" Text='<%# Eval("Extension") %>'
                                         Width="45px"></asp:TextBox>
                                     <asp:Label ID="PrimaryPhoneLblEdit" runat="server" Text="Primary" Width="50px"></asp:Label>
-                                    <asp:CheckBox ID="PrimaryNumberChkBxEdit" runat="server" Enabled="true" AutoPostBack="true" Checked='<%# Convert.ToBoolean(Eval("PrimaryNumber")) %>'  /> 
+                                    <asp:CheckBox ID="PrimaryNumberChkBxEdit" runat="server" Enabled="true" AutoPostBack="true" Checked='<%# Convert.ToBoolean(Eval("PrimaryNumber")) %>' />
                                 </EditItemTemplate>
                             </asp:TemplateField>
                             <asp:CommandField ButtonType="Link" ShowEditButton="true" ShowDeleteButton="true" ControlStyle-CssClass="editbtn" />
@@ -137,12 +142,24 @@
                                     <asp:TextBox ID="DomainTxtBx" runat="server" Text='<%# Eval("Domain") %>'></asp:TextBox>
                                 </EditItemTemplate>
                             </asp:TemplateField>
+                            <asp:TemplateField>
+                                <ItemTemplate>
+                                    <asp:Label ID="PrimaryEmailLbl" runat="server" Text="Primary" Width="50px"></asp:Label>
+                                    <asp:CheckBox ID="PEmailChkBx" runat="server" Enabled="false" AutoPostBack="true" Checked='<%#Convert.ToBoolean(Eval("PrimaryEmail")) %>' />
+                                </ItemTemplate>
+                                <EditItemTemplate>
+                                    <asp:Label ID="PrimaryEmailLblEdit" runat="server" Text="Primary" Width="50px"></asp:Label>
+                                    <asp:CheckBox ID="PEmailChkBxEdit" runat="server" Enabled="true" AutoPostBack="true" Checked='<%#Convert.ToBoolean(Eval("PrimaryEmail")) %>' />
+                                </EditItemTemplate>
+                            </asp:TemplateField>
                             <asp:CommandField ButtonType="Link" ShowEditButton="true" ShowDeleteButton="true" ControlStyle-CssClass="editbtn" />
                         </Columns>
                     </asp:GridView>
                     <asp:TextBox ID="AddUserNameTxtBx" runat="server" CssClass="linemrgn"></asp:TextBox>
                     <asp:Label ID="At" runat="server" Text="@" CssClass="linemrgn"></asp:Label>
                     <asp:TextBox ID="AddDomainTxtBx" runat="server" CssClass="linemrgn"></asp:TextBox>
+                    <asp:Label ID="PrimaryEmailLbl" runat="server" Text="Primary" Width="50px"></asp:Label>
+                    <asp:CheckBox ID="PEmailChkBxAdd" runat="server" Enabled="true" AutoPostBack="true" />
                     <br />
                     <asp:Button ID="AddEmailButton" runat="server" Text="Add E-Mail Address" OnClick="AddEmail" CssClass="addbtn" />
                     <br />
@@ -160,7 +177,7 @@
                                     <br />
                                     <asp:Label ID="CityLbl" runat="server" Text='<%# Bind("City") %>'></asp:Label>
                                     <asp:Label ID="StateLbl" runat="server" Text='<%# Bind("State") %>'></asp:Label>
-                                    <asp:Label ID="ZipCodeLbl" runat="server" Text='<%# Bind("ZipCode") %>'></asp:Label>
+                                    <asp:Label ID="ZipCodeLbl" runat="server" Text='<%# Bind("ZipCode") %>' Width="50px"></asp:Label>                              
                                 </ItemTemplate>
                                 <EditItemTemplate>
                                     <asp:TextBox ID="StreetTextBox" runat="server" Text='<%# Eval("Street")%>'></asp:TextBox>
@@ -168,7 +185,17 @@
                                     <br />
                                     <asp:TextBox ID="CityTextBox" runat="server" Text='<%# Eval("City") %>'></asp:TextBox>
                                     <asp:TextBox ID="StateTextBox" runat="server" Text='<%# Eval("State") %>'></asp:TextBox>
-                                    <asp:TextBox ID="ZipCodeTextBox" runat="server" Text='<%# Eval("ZipCode") %>'></asp:TextBox>
+                                    <asp:TextBox ID="ZipCodeTextBox" runat="server" Text='<%# Eval("ZipCode") %>'></asp:TextBox>                               
+                                </EditItemTemplate>
+                            </asp:TemplateField>
+                            <asp:TemplateField>
+                                <ItemTemplate>
+                                    <asp:Label ID="PrimaryAddrLbl" runat="server" Text="Primary" Width="50px"></asp:Label>
+                                    <asp:CheckBox ID="PrimaryAddrChkBx" runat="server" Enabled="false" AutoPostBack="true" Checked='<%#Convert.ToBoolean(Eval("PrimaryAddress")) %>' />
+                                </ItemTemplate>
+                                <EditItemTemplate>
+                                    <asp:Label ID="PrimaryAddrLbl" runat="server" Text="Primary" Width="50px" ></asp:Label>
+                                    <asp:CheckBox ID="PrimaryAddrChkBxEdit" runat="server" Enabled="true" AutoPostBack="true" Checked='<%#Convert.ToBoolean(Eval("PrimaryAddress")) %>' />
                                 </EditItemTemplate>
                             </asp:TemplateField>
                             <asp:CommandField ButtonType="Link" ShowEditButton="true" ShowDeleteButton="true" ControlStyle-CssClass="editbtn" />
@@ -185,6 +212,8 @@
                     <asp:TextBox ID="AddStateTextBox" runat="server" MaxLength="2" Width="25px"></asp:TextBox>
                     <asp:Label ID="AddZipCodeLabel" runat="server" Text="ZipCode: "></asp:Label>
                     <asp:TextBox ID="AddZipCodeTextBox" runat="server" Width="45px" MaxLength="5"></asp:TextBox>
+                    <asp:Label ID="PrimaryAddrLblAdd" runat="server" Text="Primary" Width="50px"></asp:Label>
+                    <asp:CheckBox ID="PrimaryAddrChkBxAdd" runat="server" Enabled="true" AutoPostBack="true" />
                     <asp:Label ID="SqlZipCodeError" runat="server"></asp:Label>
                     <br />
                     <asp:Button ID="AddAddressButton" runat="server" Text="Add Address" OnClick="AddAddress" CssClass="addbtn" />

@@ -154,7 +154,7 @@ namespace ContactsEmpty {
             using (SqlConnection connection = new SqlConnection(connectionString)) {
 
                 SqlCommand command = new SqlCommand(updatePhoneQuery, connection);
-                string type = (row.FindControl("TypeTextBox") as TextBox).Text;
+                string type1 = (row.FindControl("TypeList") as DropDownList).Text;
                 string areaCode = (row.FindControl("AreaCodeTextBox") as TextBox).Text;
                 string phoneNumberP1 = (row.FindControl("PhoneNumberP1TextBox") as TextBox).Text;
                 string phoneNumberP2 = (row.FindControl("PhoneNumberP2TextBox") as TextBox).Text;
@@ -162,7 +162,7 @@ namespace ContactsEmpty {
                 bool primaryNumber = (row.FindControl("PrimaryNumberChkBxEdit") as CheckBox).Checked;
                 string pNStr = primaryNumber.ToString();
                 string phoneNumber = areaCode + phoneNumberP1 + phoneNumberP2 + ext;
-                command.Parameters.AddWithValue("Type", type);
+                command.Parameters.AddWithValue("Type", type1);
                 command.Parameters.AddWithValue("AreaCode", areaCode);
                 command.Parameters.AddWithValue("PhoneNumberPOne", phoneNumberP1);
                 command.Parameters.AddWithValue("PhoneNumberPTwo", phoneNumberP2);
@@ -265,7 +265,7 @@ namespace ContactsEmpty {
         protected void UpdateEmail(object sender, GridViewUpdateEventArgs e) {
             GridViewRow row = EmailGridView.Rows[e.RowIndex];
             string emailId = Convert.ToInt32(EmailGridView.DataKeys[e.RowIndex].Value).ToString();
-            string updateQuery = "UPDATE Email SET UserName=@UserName, Domain=@Domain WHERE EmailId=@EmailId";
+            string updateQuery = "UPDATE Email SET UserName=@UserName, Domain=@Domain, PrimaryEmail=@PrimaryEmail WHERE EmailId=@EmailId";
             using (SqlConnection connection = new SqlConnection(connectionString)) {
                 SqlCommand command = new SqlCommand(updateQuery, connection);
                 connection.Open();
@@ -273,6 +273,8 @@ namespace ContactsEmpty {
                 command.Parameters.AddWithValue("UserName", userName);
                 string domain = (row.FindControl("DomainTxtBx") as TextBox).Text;
                 command.Parameters.AddWithValue("Domain", domain);
+                string primaryEmail = (row.FindControl("PEmailChkBxEdit") as CheckBox).Checked.ToString();
+                command.Parameters.AddWithValue("PrimaryEmail", primaryEmail);
                 command.Parameters.AddWithValue("EmailId", emailId);
                 command.ExecuteNonQuery();
                 connection.Close();
@@ -296,7 +298,7 @@ namespace ContactsEmpty {
 
         protected void ConfirmDeleteEmail(object sender, GridViewRowEventArgs e) {
             if (e.Row.RowType == DataControlRowType.DataRow && e.Row.RowIndex != EmailGridView.EditIndex) {
-                LinkButton dtlEmailLink = (LinkButton)e.Row.Cells[3].Controls[2];
+                LinkButton dtlEmailLink = (LinkButton)e.Row.Cells[4].Controls[2];
                 dtlEmailLink.OnClientClick = "return confirm('Delete this e-mail address?');";
             }
         }
@@ -308,7 +310,7 @@ namespace ContactsEmpty {
         }
 
         private void SaveEmail() {
-            string insertQuery = "INSERT INTO Email(UserName,Domain,ContactId) VALUES (@UserName, @Domain, @ContactId)";
+            string insertQuery = "INSERT INTO Email(UserName,Domain,PrimaryEmail,ContactId) VALUES (@UserName, @Domain,@PrimaryEmail, @ContactId)";
             using (SqlConnection connection = new SqlConnection(connectionString)) {
                 connection.Open();
                 SqlCommand command = new SqlCommand(insertQuery, connection);
@@ -316,6 +318,8 @@ namespace ContactsEmpty {
                 command.Parameters.AddWithValue("UserName", userName);
                 string domain = AddDomainTxtBx.Text;
                 command.Parameters.AddWithValue("Domain", domain);
+                string primaryEmail = PEmailChkBxAdd.Checked.ToString();
+                command.Parameters.AddWithValue("PrimaryEmail", primaryEmail);
                 command.Parameters.AddWithValue("ContactId", contactId);
                 command.ExecuteNonQuery();
                 connection.Close();
@@ -323,6 +327,7 @@ namespace ContactsEmpty {
             this.BindGrid();
             AddUserNameTxtBx.Text = "";
             AddDomainTxtBx.Text = "";
+            PEmailChkBxAdd.Checked = false;
         }
 
         protected void EditAddress(object sender, GridViewEditEventArgs e) {
@@ -343,7 +348,7 @@ namespace ContactsEmpty {
             GridViewRow row = AddressGridView.Rows[e.RowIndex];
             string addressId = Convert.ToInt32(AddressGridView.DataKeys[e.RowIndex].Value).ToString();
             string updateAddressQuery = "UPDATE Address SET Street=@Street,StreetLineTwo=@StreetLineTwo,City=@City,State=@State,ZipCode=@ZipCode" +
-                " WHERE AddressId=@AddressId AND AddressId IS NOT NULL";
+                ",PrimaryAddress=@PrimaryAddress WHERE AddressId=@AddressId AND AddressId IS NOT NULL";
             using (SqlConnection connection = new SqlConnection(connectionString)) {
                 SqlCommand updateCommand = new SqlCommand(updateAddressQuery, connection);
                 string street = (row.FindControl("StreetTextBox") as TextBox).Text;
@@ -351,12 +356,14 @@ namespace ContactsEmpty {
                 string city = (row.FindControl("CityTextBox") as TextBox).Text;
                 string state = (row.FindControl("StateTextBox") as TextBox).Text;
                 string zipCode = (row.FindControl("ZipCodeTextBox") as TextBox).Text;
-                updateCommand.Parameters.AddWithValue("@AddressId", addressId);
+                string primaryAddress = (row.FindControl("PrimaryAddrChkBxEdit") as CheckBox).Checked.ToString();
+                updateCommand.Parameters.AddWithValue("AddressId", addressId);
                 updateCommand.Parameters.AddWithValue("Street", street);
                 updateCommand.Parameters.AddWithValue("StreetLineTwo", streetLineTwo);
                 updateCommand.Parameters.AddWithValue("City", city);
                 updateCommand.Parameters.AddWithValue("State", state);
                 updateCommand.Parameters.AddWithValue("ZipCode", zipCode);
+                updateCommand.Parameters.AddWithValue("PrimaryAddress", primaryAddress);
                 try{
                     connection.Open();
                     updateCommand.ExecuteNonQuery();
@@ -386,7 +393,7 @@ namespace ContactsEmpty {
 
         protected void ConfirmDeleteAddress(object sender, GridViewRowEventArgs e) {
             if (e.Row.RowType == DataControlRowType.DataRow && e.Row.RowIndex != AddressGridView.EditIndex) {
-                LinkButton addrDltLink = (LinkButton)e.Row.Cells[3].Controls[2];
+                LinkButton addrDltLink = (LinkButton)e.Row.Cells[4].Controls[2];
                 addrDltLink.OnClientClick = "return confirm('Delete this address?');";
             }
         }
@@ -402,8 +409,8 @@ namespace ContactsEmpty {
         //field stays in edit mode and a message appears underneath and it stays that way until the user corrects the issue.
         //Upon successful update the value of the label is set to an empty string.
         private void SaveAddress() {
-            string insertQuery = "INSERT INTO Address(Street,StreetLineTwo,City,State,ZipCode,ContactId) VALUES " +
-                "(@Street,@StreetLineTwo,@City,@State,@ZipCode,@ContactId)";
+            string insertQuery = "INSERT INTO Address(Street,StreetLineTwo,City,State,ZipCode,PrimaryAddress,ContactId) VALUES " +
+                "(@Street,@StreetLineTwo,@City,@State,@ZipCode,@PrimaryAddress,@ContactId)";
             using (SqlConnection connection = new SqlConnection(connectionString)) {
                 SqlCommand command = new SqlCommand(insertQuery, connection);
                 string streetLineOne = AddStreetTextBox.Text;
@@ -419,6 +426,8 @@ namespace ContactsEmpty {
                 command.Parameters.AddWithValue("State", state);
                 string zipCode = AddZipCodeTextBox.Text;
                 command.Parameters.AddWithValue("ZipCode", zipCode);
+                string primaryAddress = PrimaryAddrChkBxAdd.Checked.ToString();
+                command.Parameters.AddWithValue("PrimaryAddress", primaryAddress);
                 command.Parameters.AddWithValue("ContactId", contactId);
                 try{
                     connection.Open();
@@ -431,6 +440,7 @@ namespace ContactsEmpty {
                     AddStateTextBox.Text = "";
                     AddZipCodeTextBox.Text = "";
                     SqlZipCodeError.Text = "";
+                    PrimaryAddrChkBxAdd.Checked = false;
                 } catch (SqlException) {
                     SqlZipCodeError.Text = "Zip Code must be numeric digits";
                 }

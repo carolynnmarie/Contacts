@@ -7,7 +7,7 @@
     [ZipCode]        VARCHAR (5)   NULL,
     [Country]        VARCHAR (50)  DEFAULT ('USA') NULL,
     [NonUSAAddress]  VARCHAR (MAX) NULL,
-    [PrimaryAddress] BIT           NULL,
+    [PrimaryAddress] BIT           NULL DEFAULT ((0)),
     [ContactId]      INT           NULL,
     PRIMARY KEY CLUSTERED ([AddressId] ASC),
     FOREIGN KEY ([ContactId]) REFERENCES [dbo].[Contact] ([ContactId]),
