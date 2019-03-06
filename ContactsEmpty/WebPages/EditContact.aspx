@@ -5,6 +5,11 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <title></title>
+    <script type="text/javascript">
+        function ConfirmDelete() {
+            return confirm("Delete this contact and all contact information?");
+        }
+    </script>
     <link rel="stylesheet" type="text/css" href="../StyleSheet1.css" />
     <style>
         body {
@@ -223,7 +228,7 @@
                     <br />
                     <br />
                     <asp:LinkButton ID="DeleteContactButton" runat="server" Font-Size="Large" Text="Delete Contact" OnClick="DeleteContact"
-                        OnClientClick="if (!confirm('Do you want to delete this contact and all of the contact's information?')) return false;" />
+                        OnClientClick="return ConfirmDelete();" />
                 </ContentTemplate>
             </asp:UpdatePanel>
         </div>

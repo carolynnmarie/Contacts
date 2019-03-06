@@ -124,9 +124,7 @@ namespace ContactsEmpty{
                 EmailGridView.DataSource = dataSet.Tables["Email"];
                 EmailGridView.DataBind();
                 PhoneGridView.DataSource = dataSet.Tables["Phone"];
-                PhoneGridView.DataBind();
-
-                
+                PhoneGridView.DataBind();                
             }           
         }
 

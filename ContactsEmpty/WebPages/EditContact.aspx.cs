@@ -448,18 +448,22 @@ namespace ContactsEmpty {
         }
 
         protected void DeleteContact(object sender, EventArgs e) {
-            string deleteQuery = "DELETE FROM Contact WHERE ContactId=@ContactId" +
-                " DELETE FROM Address WHERE ContactId=@ContactId" +
-                " DELETE FROM Phone WHERE ContactId=@ContactId" +
-                " DELETE FROM Email WHERE ContactId=@ContactId";
+            string deleteQuery = "DELETE FROM Address WHERE ContactId=@ContactId;" +
+                " DELETE FROM Phone WHERE ContactId=@ContactId;" +
+                " DELETE FROM Email WHERE ContactId=@ContactId;" +
+                " DELETE FROM Contact WHERE ContactId=@ContactId";
             using (SqlConnection connection = new SqlConnection(connectionString)) {
-                connection.Open();
                 SqlCommand deleteCommand = new SqlCommand(deleteQuery, connection);
                 deleteCommand.Parameters.AddWithValue("ContactId", contactId);
-                deleteCommand.ExecuteNonQuery();
-                connection.Close();
+                    connection.Open();
+                    deleteCommand.ExecuteNonQuery();
+                    connection.Close();
             }
             Response.Redirect("Contacts.aspx");
+        }
+
+        protected void ConfirmDeleteContact(object sender, EventArgs e) {
+            
         }
 
         //checked to see if any of the user input error labels were not empty strings, indicating that a try/catch had been tripped upon attemptint to save, and only
@@ -481,9 +485,7 @@ namespace ContactsEmpty {
             }
             
         }
-
-        protected void PrimaryNumberChkBxEdit_CheckedChanged(object sender, EventArgs e) {
-            
-        }
+  
+        
     }
 }
