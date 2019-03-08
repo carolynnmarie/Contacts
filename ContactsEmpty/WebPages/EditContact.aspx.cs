@@ -27,6 +27,7 @@ namespace ContactsEmpty {
                 EmailGridView.DataSource = dataSet.Tables["Email"];
                 EmailGridView.DataBind();
             }
+            
         }
 
         protected void BackToContacts(object sender, EventArgs e) {
@@ -35,9 +36,9 @@ namespace ContactsEmpty {
 
         private DataSet GetDetails(string contact) {
             string contactQueryString = "SELECT * FROM Contact WHERE ContactId =@ContactId;";
-            string addressQueryString = "SELECT AddressId, Street, StreetLineTwo,City,State,ZipCode,PrimaryAddress, ContactId FROM Address WHERE ContactId =@ContactId;";
+            string addressQueryString = "SELECT AddressId, Street, StreetLineTwo,City,State,ZipCode,PrimaryAddress, InternationalAddress, ContactId FROM Address WHERE ContactId =@ContactId;";
             string eMailQueryString = "SELECT EmailId, UserName,Domain,PrimaryEmail, ContactId FROM Email WHERE ContactId =@ContactId;";
-            string phoneQueryString = "SELECT PhoneId, Type, AreaCode, PhoneNumberPOne,PhoneNumberPTwo,Extension,PrimaryNumber, ContactId FROM Phone WHERE ContactId =@ContactId;";
+            string phoneQueryString = "SELECT PhoneId, Type, CountryCode, AreaCode, PhoneNumberPOne,PhoneNumberPTwo,Extension,PrimaryNumber, ContactId, International FROM Phone WHERE ContactId =@ContactId;";
             DataSet dataSet = new DataSet();
 
             using (SqlConnection connection = new SqlConnection(connectionString)) {
@@ -414,13 +415,10 @@ namespace ContactsEmpty {
             using (SqlConnection connection = new SqlConnection(connectionString)) {
                 SqlCommand command = new SqlCommand(insertQuery, connection);
                 string streetLineOne = AddStreetTextBox.Text;
-                string streetLineTwo = AddStrLnTwoTextBox.Text;
-                if (!String.IsNullOrEmpty(streetLineTwo)) {
-                    streetLineTwo = "<br />" + streetLineTwo;
-                }
+                string streetLineTwo = AddStrLnTwoTextBox.Text;               
                 command.Parameters.AddWithValue("Street", streetLineOne);
                 command.Parameters.AddWithValue("StreetLineTwo", streetLineTwo);
-                string city = AddCityTextBox.Text + ",";
+                string city = AddCityTextBox.Text;
                 command.Parameters.AddWithValue("City", city);
                 string state = AddStateTextBox.Text;
                 command.Parameters.AddWithValue("State", state);
@@ -482,10 +480,37 @@ namespace ContactsEmpty {
             }
             if(String.IsNullOrEmpty(SqlZipCodeError.Text)&&String.IsNullOrEmpty(SqlPhoneInsertError.Text)){
             Response.Redirect("Contacts.aspx");
-            }
+            }            
+        }
+
+        protected void GoToIntInfo(object sender, EventArgs e) {
+            DataSet dataSet = GetDetails(contactId);
+            IntPhoneGridView.DataSource = dataSet.Tables["Phone"];
+            IntPhoneGridView.DataBind();
+            InternationalPhoneNumber.Text = "Works";
+            //Page.Response.Redirect(Page.Request.Url.ToString(),false);
+            //Response.Redirect(Request.RawUrl);
+        }
+
+
+        protected void IntPhoneGridView_RowEditing(object sender, GridViewEditEventArgs e) {
+
+        }
+
+        protected void IntPhoneGridView_RowDataBound(object sender, GridViewRowEventArgs e) {
+
+        }
+
+        protected void IntPhoneGridView_RowCancelingEdit(object sender, GridViewCancelEditEventArgs e) {
+
+        }
+
+        protected void IntPhoneGridView_RowDeleting(object sender, GridViewDeleteEventArgs e) {
+
+        }
+
+        protected void IntPhoneGridView_DataBound(object sender, EventArgs e) {
             
         }
-  
-        
     }
 }

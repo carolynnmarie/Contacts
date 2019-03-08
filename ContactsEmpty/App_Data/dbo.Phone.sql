@@ -8,6 +8,7 @@
     [Extension]       VARCHAR (10) NULL,
     [PrimaryNumber]   BIT          DEFAULT ((0)) NULL,
     [ContactId]       INT          NULL,
+	[International]   VARCHAR(50)  NULL, 
     PRIMARY KEY CLUSTERED ([PhoneId] ASC),
     FOREIGN KEY ([ContactId]) REFERENCES [dbo].[Contact] ([ContactId]),
     CHECK ([PhoneNumberPOne] like '[0-9][0-9][0-9]' OR [PhoneNumberPOne]='' OR [PhoneNumberPOne] IS NULL),

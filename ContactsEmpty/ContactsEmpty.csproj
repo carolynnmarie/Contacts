@@ -77,6 +77,7 @@
     <Content Include="WebPages\EditContact.aspx" />
     <Content Include="WebPages\AddContact.aspx" />
     <Content Include="SqlTableDefinitions.txt" />
+    <Content Include="WebPages\EditInternational.aspx" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ContactName.cs" />
@@ -101,6 +102,13 @@
     </Compile>
     <Compile Include="WebPages\AddContact.aspx.designer.cs">
       <DependentUpon>AddContact.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="WebPages\EditInternational.aspx.cs">
+      <DependentUpon>EditInternational.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WebPages\EditInternational.aspx.designer.cs">
+      <DependentUpon>EditInternational.aspx</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>

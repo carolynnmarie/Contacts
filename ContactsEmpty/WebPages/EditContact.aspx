@@ -22,6 +22,8 @@
         <asp:ScriptManager ID="ScriptManager1" runat="server">
         </asp:ScriptManager>
         <div id="DetailsGridDiv">
+            <div class="row">
+                <div class="Column leftInt">
             <asp:UpdatePanel ID="UpdateContactDetailPanel" runat="server">
                 <ContentTemplate>
                     <asp:Button ID="BackToContactsButton" runat="server" Text="Back To Contacts" OnClick="BackToContacts" />
@@ -45,6 +47,8 @@
                             <asp:CommandField ButtonType="Link" ShowEditButton="true" />
                         </Columns>
                     </asp:GridView>
+                    <br />
+                    <asp:LinkButton ID="IntInfoLink" runat="server"  OnClick="GoToIntInfo" Text="Click to add international contact information"></asp:LinkButton>
                     <br />
                     <asp:GridView ID="PhoneGridView" runat="server" AutoGenerateColumns="false" DataKeyNames="PhoneId" GridLines="None" OnRowDataBound="ConfirmDeletePhone"
                         OnRowEditing="EditPhone" OnRowUpdating="UpdatePhone" OnRowDeleting="DeletePhone" OnRowCancelingEdit="OnRowCancelingEditPhone" CellPadding="4">
@@ -231,7 +235,31 @@
                         OnClientClick="return ConfirmDelete();" />
                 </ContentTemplate>
             </asp:UpdatePanel>
-        </div>
+           </div>
+                <div class="Column rightInt">
+                    <asp:UpdatePanel ID="InternationalPanel" runat="server">
+                        <ContentTemplate>
+                            <asp:Label ID="InternationalPhoneNumber" runat="server"></asp:Label>
+                            <br />
+                            <asp:GridView ID="IntPhoneGridView" runat="server" AutoGenerateColumns="false" DataKeyNames="PhoneId" OnDataBound="IntPhoneGridView_DataBound" OnRowDataBound="IntPhoneGridView_RowDataBound"
+                                 OnRowEditing="IntPhoneGridView_RowEditing" OnRowCancelingEdit="IntPhoneGridView_RowCancelingEdit" OnRowDeleting="IntPhoneGridView_RowDeleting">
+                                <Columns>
+                                    <asp:BoundField DataField="PhoneId" Visible="false" />
+                                    <asp:BoundField DataField="ContactId" Visible="false" />
+                                    <asp:TemplateField>
+                                        <ItemTemplate>
+                                            <asp:Label ID="CodeLbl" runat="server" Text="Country Code: "></asp:Label>
+                                            <asp:Label ID="CountryCode" runat="server" Text='<%#Bind("CountryCode") %>'></asp:Label>
+                                        </ItemTemplate>
+                                    </asp:TemplateField>
+                                </Columns>
+                            </asp:GridView>
+
+                        </ContentTemplate>
+                    </asp:UpdatePanel>
+                </div>
+           </div>
+         </div>
     </form>
 </body>
 </html>

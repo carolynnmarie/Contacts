@@ -58,6 +58,15 @@ namespace ContactsEmpty {
         protected global::System.Web.UI.WebControls.GridView GridView1;
         
         /// <summary>
+        /// IntInfoLink control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton IntInfoLink;
+        
+        /// <summary>
         /// PhoneGridView control.
         /// </summary>
         /// <remarks>
@@ -407,5 +416,32 @@ namespace ContactsEmpty {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.LinkButton DeleteContactButton;
+        
+        /// <summary>
+        /// InternationalPanel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.UpdatePanel InternationalPanel;
+        
+        /// <summary>
+        /// InternationalPhoneNumber control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label InternationalPhoneNumber;
+        
+        /// <summary>
+        /// IntPhoneGridView control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.GridView IntPhoneGridView;
     }
 }
