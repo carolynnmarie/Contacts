@@ -49,6 +49,15 @@ namespace ContactsEmpty {
         protected global::System.Web.UI.WebControls.Button BackToContactsButton;
         
         /// <summary>
+        /// IntInfoLink control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button IntInfoLink;
+        
+        /// <summary>
         /// GridView1 control.
         /// </summary>
         /// <remarks>
@@ -56,15 +65,6 @@ namespace ContactsEmpty {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.GridView GridView1;
-        
-        /// <summary>
-        /// IntInfoLink control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton IntInfoLink;
         
         /// <summary>
         /// PhoneGridView control.
@@ -382,15 +382,6 @@ namespace ContactsEmpty {
         protected global::System.Web.UI.WebControls.CheckBox PrimaryAddrChkBxAdd;
         
         /// <summary>
-        /// SqlZipCodeError control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label SqlZipCodeError;
-        
-        /// <summary>
         /// AddAddressButton control.
         /// </summary>
         /// <remarks>
@@ -398,6 +389,15 @@ namespace ContactsEmpty {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button AddAddressButton;
+        
+        /// <summary>
+        /// SqlZipCodeError control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label SqlZipCodeError;
         
         /// <summary>
         /// FinishedEditButton control.
@@ -427,13 +427,13 @@ namespace ContactsEmpty {
         protected global::System.Web.UI.UpdatePanel InternationalPanel;
         
         /// <summary>
-        /// InternationalPhoneNumber control.
+        /// InternationalInformation control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label InternationalPhoneNumber;
+        protected global::System.Web.UI.WebControls.Label InternationalInformation;
         
         /// <summary>
         /// IntPhoneGridView control.
@@ -443,5 +443,77 @@ namespace ContactsEmpty {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.GridView IntPhoneGridView;
+        
+        /// <summary>
+        /// IPhnDropDownList control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList IPhnDropDownList;
+        
+        /// <summary>
+        /// CntryCd control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label CntryCd;
+        
+        /// <summary>
+        /// AddCountryCdTxtBx control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox AddCountryCdTxtBx;
+        
+        /// <summary>
+        /// IPhoneLbl control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label IPhoneLbl;
+        
+        /// <summary>
+        /// AddIntPhoneTxtBx control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox AddIntPhoneTxtBx;
+        
+        /// <summary>
+        /// IAddPrimaryLbl control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label IAddPrimaryLbl;
+        
+        /// <summary>
+        /// AddIPhoneChkBx control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox AddIPhoneChkBx;
+        
+        /// <summary>
+        /// AddIPhoneBtn control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button AddIPhoneBtn;
     }
 }

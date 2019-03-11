@@ -26,7 +26,8 @@
                 <div class="Column leftInt">
             <asp:UpdatePanel ID="UpdateContactDetailPanel" runat="server">
                 <ContentTemplate>
-                    <asp:Button ID="BackToContactsButton" runat="server" Text="Back To Contacts" OnClick="BackToContacts" />
+                    <asp:Button ID="BackToContactsButton" runat="server" Text="< Back To Contacts" OnClick="BackToContacts" Font-Size="Medium" />
+                    <asp:Button ID="IntInfoLink" runat="server"  OnClick="GoToIntInfo" Text="International Information >" Font-Size="Medium" CssClass="alignRightLbl"></asp:Button>
                     <br />
                     <asp:GridView ID="GridView1" DataKeyNames="ContactId" AutoGenerateColumns="False" OnRowEditing="EditName" OnRowUpdating="UpdateName"
                         runat="server" GridLines="None" OnRowCancelingEdit="OnRowCancelingEditName">
@@ -48,7 +49,7 @@
                         </Columns>
                     </asp:GridView>
                     <br />
-                    <asp:LinkButton ID="IntInfoLink" runat="server"  OnClick="GoToIntInfo" Text="Click to add international contact information"></asp:LinkButton>
+                    
                     <br />
                     <asp:GridView ID="PhoneGridView" runat="server" AutoGenerateColumns="false" DataKeyNames="PhoneId" GridLines="None" OnRowDataBound="ConfirmDeletePhone"
                         OnRowEditing="EditPhone" OnRowUpdating="UpdatePhone" OnRowDeleting="DeletePhone" OnRowCancelingEdit="OnRowCancelingEditPhone" CellPadding="4">
@@ -100,8 +101,7 @@
                                 </ItemTemplate>
                                 <EditItemTemplate>
                                     <asp:Label ID="Ext" runat="server" Text="ext:" Width="25px"></asp:Label>
-                                    <asp:TextBox ID="ExtTextBox" runat="server" Text='<%# Eval("Extension") %>'
-                                        Width="45px"></asp:TextBox>
+                                    <asp:TextBox ID="ExtTextBox" runat="server" Text='<%# Eval("Extension") %>' Width="45px"></asp:TextBox>
                                     <asp:Label ID="PrimaryPhoneLblEdit" runat="server" Text="Primary" Width="50px"></asp:Label>
                                     <asp:CheckBox ID="PrimaryNumberChkBxEdit" runat="server" Enabled="true" AutoPostBack="true" Checked='<%# Convert.ToBoolean(Eval("PrimaryNumber")) %>' />
                                 </EditItemTemplate>
@@ -130,8 +130,7 @@
                     <asp:Label ID="SqlPhoneInsertError" runat="server"></asp:Label>
                     <asp:Label ID="PrimaryPhoneLbl" runat="server" Text="Primary" Width="50px"></asp:Label>
                     <asp:CheckBox ID="PrimaryNumberChkBxAdd" runat="server" Enabled="true" AutoPostBack="true" /> 
-                    <br />
-                    <asp:Button ID="AddPhoneButton" runat="server" Text="Add Phone Number" OnClick="AddPhone" CssClass="addbtn" />
+                    <asp:Button ID="AddPhoneButton" runat="server" Text="Add" OnClick="AddPhone" CssClass="addbtn" />
                     <br />
                     <br />
                     <asp:GridView ID="EmailGridView" runat="server" DataKeyNames="EmailId" AutoGenerateColumns="false" OnRowEditing="EditEmail" OnRowDataBound="ConfirmDeleteEmail"
@@ -169,8 +168,7 @@
                     <asp:TextBox ID="AddDomainTxtBx" runat="server" CssClass="linemrgn"></asp:TextBox>
                     <asp:Label ID="PrimaryEmailLbl" runat="server" Text="Primary" Width="50px"></asp:Label>
                     <asp:CheckBox ID="PEmailChkBxAdd" runat="server" Enabled="true" AutoPostBack="true" />
-                    <br />
-                    <asp:Button ID="AddEmailButton" runat="server" Text="Add E-Mail Address" OnClick="AddEmail" CssClass="addbtn" />
+                    <asp:Button ID="AddEmailButton" runat="server" Text="Add" OnClick="AddEmail" CssClass="addbtn" />
                     <br />
                     <br />
                     <asp:GridView ID="AddressGridView" runat="server" AutoGenerateColumns="false" DataKeyNames="AddressId" OnRowEditing="EditAddress"
@@ -193,8 +191,8 @@
                                     <asp:TextBox ID="StreetLine2TextBox" runat="server" Text='<%# Eval("StreetLineTwo") %>'></asp:TextBox>
                                     <br />
                                     <asp:TextBox ID="CityTextBox" runat="server" Text='<%# Eval("City") %>'></asp:TextBox>
-                                    <asp:TextBox ID="StateTextBox" runat="server" Text='<%# Eval("State") %>'></asp:TextBox>
-                                    <asp:TextBox ID="ZipCodeTextBox" runat="server" Text='<%# Eval("ZipCode") %>'></asp:TextBox>                               
+                                    <asp:TextBox ID="StateTextBox" runat="server" Text='<%# Eval("State") %>' Width="25px"></asp:TextBox>
+                                    <asp:TextBox ID="ZipCodeTextBox" runat="server" Text='<%# Eval("ZipCode") %>' Width="50px"></asp:TextBox>                               
                                 </EditItemTemplate>
                             </asp:TemplateField>
                             <asp:TemplateField>
@@ -210,12 +208,12 @@
                             <asp:CommandField ButtonType="Link" ShowEditButton="true" ShowDeleteButton="true" ControlStyle-CssClass="editbtn" />
                         </Columns>
                     </asp:GridView>
-                    <asp:Label ID="AddStreetLabel" runat="server" Text="Street: " Width="60px" CssClass="linemrgn"></asp:Label>
+                    <asp:Label ID="AddStreetLabel" runat="server" Text="Street: " Width="55px" CssClass="linemrgn"></asp:Label>
                     <asp:TextBox ID="AddStreetTextBox" runat="server" CssClass="linemrgn"></asp:TextBox>
                     <asp:Label ID="AddStrLnTwoLabel" runat="server" Text="Street Line Two: " Width="120px" CssClass="linemrgn"></asp:Label>
-                    <asp:TextBox ID="AddStrLnTwoTextBox" runat="server" CssClass="linemrgn"></asp:TextBox>
+                    <asp:TextBox ID="AddStrLnTwoTextBox" runat="server" CssClass="linemrgn" Width="130px"></asp:TextBox>
                     <br />
-                    <asp:Label ID="AddCityLabel" runat="server" Text="City: " Width="60px"></asp:Label>
+                    <asp:Label ID="AddCityLabel" runat="server" Text="City: " Width="55px"></asp:Label>
                     <asp:TextBox ID="AddCityTextBox" runat="server"></asp:TextBox>
                     <asp:Label ID="AddStateLabel" runat="server" Text="State: "></asp:Label>
                     <asp:TextBox ID="AddStateTextBox" runat="server" MaxLength="2" Width="25px"></asp:TextBox>
@@ -223,10 +221,9 @@
                     <asp:TextBox ID="AddZipCodeTextBox" runat="server" Width="45px" MaxLength="5"></asp:TextBox>
                     <asp:Label ID="PrimaryAddrLblAdd" runat="server" Text="Primary" Width="50px"></asp:Label>
                     <asp:CheckBox ID="PrimaryAddrChkBxAdd" runat="server" Enabled="true" AutoPostBack="true" />
+                    <asp:Button ID="AddAddressButton" runat="server" Text="Add" OnClick="AddAddress" CssClass="addbtn" />
+                    <br />
                     <asp:Label ID="SqlZipCodeError" runat="server"></asp:Label>
-                    <br />
-                    <asp:Button ID="AddAddressButton" runat="server" Text="Add Address" OnClick="AddAddress" CssClass="addbtn" />
-                    <br />
                     <br />
                     <asp:Button ID="FinishedEditButton" runat="server" Text="Finish" OnClick="Finish" Font-Size="Larger" Font-Bold="true" CssClass="addbtn" />
                     <br />
@@ -239,22 +236,76 @@
                 <div class="Column rightInt">
                     <asp:UpdatePanel ID="InternationalPanel" runat="server">
                         <ContentTemplate>
-                            <asp:Label ID="InternationalPhoneNumber" runat="server"></asp:Label>
+                            <asp:Label ID="InternationalInformation" runat="server" Font-Bold="true" Font-Size="X-Large" Font-Underline="true"></asp:Label>
                             <br />
-                            <asp:GridView ID="IntPhoneGridView" runat="server" AutoGenerateColumns="false" DataKeyNames="PhoneId" OnDataBound="IntPhoneGridView_DataBound" OnRowDataBound="IntPhoneGridView_RowDataBound"
-                                 OnRowEditing="IntPhoneGridView_RowEditing" OnRowCancelingEdit="IntPhoneGridView_RowCancelingEdit" OnRowDeleting="IntPhoneGridView_RowDeleting">
+                            <br />
+                            <br />
+                            <asp:GridView ID="IntPhoneGridView" runat="server" AutoGenerateColumns="false" DataKeyNames="PhoneId" OnDataBound="IntPhoneGridView_DataBound" 
+                                OnRowDataBound="IntPhoneGridView_RowDataBound" OnRowEditing="IntPhoneGridView_RowEditing" OnRowCancelingEdit="IntPhoneGridView_RowCancelingEdit" 
+                                OnRowDeleting="IntPhoneGridView_RowDeleting" OnRowUpdating="IntPhoneGridView_RowUpdating" GridLines="None" CellPadding="4">
                                 <Columns>
                                     <asp:BoundField DataField="PhoneId" Visible="false" />
                                     <asp:BoundField DataField="ContactId" Visible="false" />
                                     <asp:TemplateField>
                                         <ItemTemplate>
+                                            <asp:Label ID="iPType" runat="server" Text='<%# Bind("Type") %>'></asp:Label>
+                                        </ItemTemplate>
+                                        <EditItemTemplate>
+                                             <asp:DropDownList ID="iPTypeList" runat="server" AppendDataBoundItems="true">
+                                                <asp:ListItem Value="Mobile">Mobile</asp:ListItem>
+                                                <asp:ListItem Value="Home">Home</asp:ListItem>
+                                                <asp:ListItem Value="Work">Work</asp:ListItem>
+                                                <asp:ListItem Value="Fax">Fax</asp:ListItem>
+                                                <asp:ListItem Value="Google">Google</asp:ListItem>
+                                                <asp:ListItem Value="Other">Other</asp:ListItem>
+                                            </asp:DropDownList>
+                                        </EditItemTemplate>
+                                    </asp:TemplateField>
+                                    <asp:TemplateField HeaderText="International Phone Numbers" HeaderStyle-Font-Size="Large" HeaderStyle-Font-Bold="true" HeaderStyle-HorizontalAlign="Left"
+                                        HeaderStyle-Font-Underline="true">
+                                        <ItemTemplate>                                            
                                             <asp:Label ID="CodeLbl" runat="server" Text="Country Code: "></asp:Label>
                                             <asp:Label ID="CountryCode" runat="server" Text='<%#Bind("CountryCode") %>'></asp:Label>
+                                            <asp:Label ID="InterPhoneLbl" runat="server" Text="Phone Number: "></asp:Label>
+                                            <asp:Label ID="IPhoneNumber" runat="server" Text='<%#Bind("International")%>'></asp:Label>
                                         </ItemTemplate>
+                                        <EditItemTemplate>                                           
+                                            <asp:Label ID="CodeLblE" runat="server" Text="Country Code: "></asp:Label>
+                                            <asp:TextBox ID="CountryCodeTxtBx" runat="server" Text='<%# Eval("CountryCode") %>' Width="50px"></asp:TextBox>
+                                            <asp:Label ID="InterPhoneLblE" runat="server" Text="Phone Number: "></asp:Label>
+                                            <asp:TextBox ID="IPhoneNumberTxtBx" runat="server" Text='<%# Eval("International") %>'></asp:TextBox>
+                                        </EditItemTemplate>
                                     </asp:TemplateField>
+                                    <asp:TemplateField>
+                                        <ItemTemplate>
+                                            <asp:Label ID="PrimaryPhoneLbl" runat="server" Text="Primary" Width="50px"></asp:Label>
+                                            <asp:CheckBox ID="PrimaryNumberChkBx" runat="server" Enabled="false" AutoPostBack="true" Checked='<%# Convert.ToBoolean(Eval("PrimaryNumber")) %>' />
+                                        </ItemTemplate>
+                                        <EditItemTemplate>
+                                            <asp:Label ID="PrimaryPhoneLblEdit" runat="server" Text="Primary" Width="50px"></asp:Label>
+                                            <asp:CheckBox ID="PrimaryNumberChkBxEdit" runat="server" Enabled="true" AutoPostBack="true" Checked='<%# Convert.ToBoolean(Eval("PrimaryNumber")) %>' />
+                                        </EditItemTemplate>                                        
+                                    </asp:TemplateField>
+                                    <asp:CommandField ButtonType="Link" ShowEditButton="true" ShowDeleteButton="true" ControlStyle-CssClass="editbtn" />
                                 </Columns>
                             </asp:GridView>
-
+                            <br />
+                            <asp:DropDownList ID="IPhnDropDownList" runat="server" Visible="false">
+                                <asp:ListItem Selected="True" Value="">Select</asp:ListItem>
+                                <asp:ListItem Value="Mobile">Mobile</asp:ListItem>
+                                <asp:ListItem Value="Home">Home</asp:ListItem>
+                                <asp:ListItem Value="Work">Work</asp:ListItem>
+                                <asp:ListItem Value="Fax">Fax</asp:ListItem>
+                                <asp:ListItem Value="Google">Google</asp:ListItem>
+                                <asp:ListItem Value="Other">Other</asp:ListItem>
+                            </asp:DropDownList>
+                            <asp:Label ID="CntryCd" runat="server" Text="Country Code: " Visible="false"></asp:Label>
+                            <asp:TextBox ID="AddCountryCdTxtBx" runat="server" Width="60px" Visible="false"></asp:TextBox>
+                            <asp:Label ID="IPhoneLbl" runat="server" Text="Phone Number: " Visible="false"></asp:Label>
+                            <asp:TextBox ID="AddIntPhoneTxtBx" runat="server" Visible="false"></asp:TextBox>
+                            <asp:Label ID="IAddPrimaryLbl" runat="server" Text="Primary" Width="50px" Visible="false"></asp:Label>
+                            <asp:CheckBox ID="AddIPhoneChkBx" runat="server" Enabled="true" AutoPostBack="true" Visible="false"/>
+                            <asp:Button ID="AddIPhoneBtn" runat="server" OnClick="InsertInternationalPhone" Text="Add" CssCssClass="addbtn"  Visible="false"/>
                         </ContentTemplate>
                     </asp:UpdatePanel>
                 </div>

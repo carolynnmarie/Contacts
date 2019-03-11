@@ -60,8 +60,8 @@
                             </asp:GridView>
                             <br />
                             <br />
-                            <asp:GridView ID="PhoneGridView" runat="server" AutoGenerateColumns="false" DataKeyNames="PhoneId" RowStyle-HorizontalAlign="Left" GridLines="None"
-                                RowStyle-CssClass="contactdisplay">
+                            <asp:GridView ID="PhoneGridView" runat="server" AutoGenerateColumns="false" DataKeyNames="PhoneId" RowStyle-HorizontalAlign="Left" 
+                                GridLines="None" CellPadding="4">
                                 <Columns>
                                     <asp:BoundField DataField="PhoneId" Visible="false" />
                                     <asp:BoundField DataField="ContactId" Visible="false" />
@@ -79,21 +79,17 @@
                                     <asp:TemplateField>
                                         <ItemTemplate>
                                             <asp:Label ID="Ext" runat="server" Text="ext:" Width="25px"></asp:Label>
-                                            <asp:Label ID="ExtLabel" runat="server" Text='<%# Bind("Extension") %>'></asp:Label>
+                                            <asp:Label ID="ExtLabel" runat="server" Text='<%# Bind("Extension") %>' Width="35px"></asp:Label>
+                                            <asp:Label ID="PrimaryPhoneLbl" runat="server" Text="Primary" Width="50px"></asp:Label>
+                                            <asp:CheckBox ID="PrimaryPhoneChkBx" runat="server" Enabled="false" Checked='<%# Convert.ToBoolean(Eval("PrimaryNumber")) %>' />
                                         </ItemTemplate>
-                                    </asp:TemplateField>
-                                    <asp:TemplateField>
-                                        <ItemTemplate>
-                                            <asp:CheckBox ID="PrimaryPhoneChkBx" runat="server" Enabled="false" Text='<%# Bind("PrimaryNumber") %>' />
-                                        </ItemTemplate>
-                                    </asp:TemplateField>
-
+                                    </asp:TemplateField>                                    
                                 </Columns>
                             </asp:GridView>
                             <br />
                             <br />
                             <asp:GridView ID="EmailGridView" runat="server" DataKeyNames="EmailId" AutoGenerateColumns="false" HeaderStyle-HorizontalAlign="Left" GridLines="None"
-                                RowStyle-CssClass="contactdisplay">
+                                 CellPadding="4">
                                 <Columns>
                                     <asp:BoundField DataField="EmailId" Visible="false" />
                                     <asp:BoundField DataField="ContactId" Visible="false" />
@@ -105,10 +101,16 @@
                                             <asp:Label ID="DomainLbl" runat="server" Text='<%# Bind("Domain") %>'></asp:Label>
                                         </ItemTemplate>
                                     </asp:TemplateField>
+                                    <asp:TemplateField>
+                                        <ItemTemplate>
+                                            <asp:Label ID="PrimaryEmailLbl" runat="server" Text="Primary" Width="50px" CssClass="leftpdg"></asp:Label>
+                                            <asp:CheckBox ID="PEmailChkBx" runat="server" Enabled="false" AutoPostBack="true" Checked='<%#Convert.ToBoolean(Eval("PrimaryEmail")) %>' />
+                                        </ItemTemplate>
+                                    </asp:TemplateField>
                                 </Columns>
                             </asp:GridView>
                             <br />
-                            <asp:GridView ID="AddressGridView" runat="server" AutoGenerateColumns="false" DataKeyNames="AddressId" GridLines="None" RowStyle-CssClass="contactdisplay">
+                            <asp:GridView ID="AddressGridView" runat="server" AutoGenerateColumns="false" DataKeyNames="AddressId" GridLines="None" CellPadding="4">
                                 <Columns>
                                     <asp:BoundField DataField="AddressId" Visible="false" />
                                     <asp:BoundField DataField="ContactId" Visible="false" />
@@ -121,6 +123,33 @@
                                             <asp:Label ID="comma" runat="server" Text=", "></asp:Label>
                                             <asp:Label ID="StateLbl" runat="server" Text='<%# Bind("State") %>'></asp:Label>
                                             <asp:Label ID="ZipCodeLbl" runat="server" Text='<%# Bind("ZipCode") %>'></asp:Label>
+                                        </ItemTemplate>
+                                    </asp:TemplateField>
+                                    <asp:TemplateField>
+                                        <ItemTemplate>
+                                            <asp:Label ID="PrimaryAddrLbl" runat="server" Text="Primary" Width="50px"></asp:Label>
+                                            <asp:CheckBox ID="PrimaryAddrChkBx" runat="server" Enabled="false" AutoPostBack="true" Checked='<%#Convert.ToBoolean(Eval("PrimaryAddress")) %>' />
+                                        </ItemTemplate>
+                                    </asp:TemplateField>
+                                </Columns>
+                            </asp:GridView>
+                            <br />
+                            <br />
+                            <asp:GridView ID="InternationalPhoneGridView" runat="server" AutoGenerateColumns="false" DataKeyNames="PhoneId" GridLines="None" CellPadding="4">
+                                <Columns>
+                                    <asp:TemplateField HeaderStyle-HorizontalAlign="Left" HeaderText="International Numbers" HeaderStyle-Font-Size="Large" HeaderStyle-Font-Underline="true">
+                                        <ItemTemplate>
+                                            <asp:Label ID="TypeLabel" runat="server" Text='<%# Bind("Type") %>' Width="50px"></asp:Label>
+                                            <asp:Label ID="CodeLbl" runat="server" Text="Country Code: "></asp:Label>
+                                            <asp:Label ID="CountryCode" runat="server" Text='<%#Bind("CountryCode") %>' Width="40px"></asp:Label>
+                                            <asp:Label ID="InterPhoneLbl" runat="server" Text="Phone Number: "></asp:Label>
+                                            <asp:Label ID="IPhoneNumber" runat="server" Text='<%#Bind("International")%>'></asp:Label>                                            
+                                        </ItemTemplate>
+                                    </asp:TemplateField>
+                                    <asp:TemplateField>
+                                        <ItemTemplate>
+                                            <asp:Label ID="PrimaryIPhoneLbl" runat="server" Text="Primary" Width="50px"></asp:Label>
+                                            <asp:CheckBox ID="PrimaryIPhoneChkBx" runat="server" Enabled="false" AutoPostBack="true" Checked='<%#Convert.ToBoolean(Eval("PrimaryNumber")) %>' />
                                         </ItemTemplate>
                                     </asp:TemplateField>
                                 </Columns>

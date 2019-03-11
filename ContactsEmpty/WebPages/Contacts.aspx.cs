@@ -11,8 +11,7 @@ namespace ContactsEmpty{
         private string connectionString = "Data Source=LAPTOP-8VAG7JTV\\SQLEXPRESS;Initial Catalog=ContactsDataBase;Integrated Security=True;" +
             "Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
 
-        protected void Page_Load(object sender, EventArgs e) {
-            
+        protected void Page_Load(object sender, EventArgs e) {           
             GridView2.DataSource = getContacts();
             GridView2.DataBind();
         }
@@ -37,7 +36,6 @@ namespace ContactsEmpty{
             }           
         }
 
-        //popup on the top of the screen to confirm you want to delete the contact, so you don't delete it accidentally
         protected void ConfirmDeleteContact(object sender, GridViewRowEventArgs e) {
             if (e.Row.RowType == DataControlRowType.DataRow) {
                 LinkButton dltLink = (LinkButton)e.Row.Cells[3].Controls[0];
@@ -45,8 +43,6 @@ namespace ContactsEmpty{
             }
         }
 
-
-        //Deletes contact and all information after confirmation
         protected void DeleteContact(object sender, GridViewDeleteEventArgs e) {
             string contactId = Convert.ToInt32(GridView2.DataKeys[e.RowIndex].Value).ToString();
             DisplayContactDetails(contactId);
@@ -66,23 +62,23 @@ namespace ContactsEmpty{
         }
 
 
-        //the Add button: sends to the add contact page
         protected void Add(Object sender, EventArgs e) {
             Response.Redirect("AddContact.aspx");
         }
 
-        //gets the ContactId for the selected name and sends it to the method below 
         protected void SelectContactDetails(object sender, EventArgs e) {
             string contactId = GridView2.SelectedDataKey.Value.ToString();
             DisplayContactDetails(contactId);
         }
-        //for displaying contact information on the second editor pane
+
         private void DisplayContactDetails(string contactId) {
             string contactQueryString = "SELECT ContactId, LastName, FirstName, MiddleInitial FROM Contact WHERE ContactId = @ContactId";
-            string addressQueryString = "SELECT AddressId, Street, StreetLineTwo,City,State,ZipCode,PrimaryAddress, ContactId FROM Address WHERE ContactId = @ContactId";
+            string addressQueryString = "SELECT AddressId, Street, StreetLineTwo,City,State,ZipCode,PrimaryAddress, ContactId FROM Address " +
+                "WHERE ContactId = @ContactId AND Country='USA'";
             string eMailQueryString = "SELECT EmailId, UserName,Domain,PrimaryEmail, ContactId FROM Email WHERE ContactId = @ContactId";
-            string phoneQueryString = "SELECT PhoneId, Type, AreaCode, PhoneNumberPOne,PhoneNumberPTwo,Extension,PrimaryNumber, ContactId FROM Phone WHERE ContactId = @ContactId";
-
+            string phoneQueryString = "SELECT PhoneId, Type, AreaCode, PhoneNumberPOne,PhoneNumberPTwo,Extension,PrimaryNumber, ContactId " +
+                "FROM Phone WHERE ContactId = @ContactId AND CountryCode='1'";
+            string internationalPhone = "SELECT PhoneId, Type, CountryCode, PrimaryNumber, ContactId, International FROM Phone WHERE ContactId=@ContactId AND CountryCode!='1'";            
             using (SqlConnection connection = new SqlConnection(connectionString)) {
                 connection.Open();
                 DataSet dataSet = new DataSet();
@@ -115,6 +111,13 @@ namespace ContactsEmpty{
                 phoneAdapter.SelectCommand = pCommand;
                 phoneAdapter.Fill(dataSet);
 
+                SqlCommand iPCommand = new SqlCommand(internationalPhone, connection);
+                iPCommand.Parameters.AddWithValue("ContactId", contactId);
+                SqlDataAdapter iPAdapter = new SqlDataAdapter();
+                iPAdapter.TableMappings.Add("Table", "InternationalPhone");
+                iPAdapter.SelectCommand = iPCommand;
+                iPAdapter.Fill(dataSet);                
+
                 connection.Close();
 
                 GridViewName.DataSource = dataSet.Tables["Contact"];
@@ -124,7 +127,9 @@ namespace ContactsEmpty{
                 EmailGridView.DataSource = dataSet.Tables["Email"];
                 EmailGridView.DataBind();
                 PhoneGridView.DataSource = dataSet.Tables["Phone"];
-                PhoneGridView.DataBind();                
+                PhoneGridView.DataBind();
+                InternationalPhoneGridView.DataSource = dataSet.Tables["InternationalPhone"];
+                InternationalPhoneGridView.DataBind();
             }           
         }
 

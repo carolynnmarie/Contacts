@@ -24,15 +24,6 @@
     border-color: black;
 }
 
-.contactdisplay {
-    padding-top: 3px;
-    padding-bottom: 3px;
-    padding-right: 2px;
-    text-align: left;
-    border-style: solid;
-    border-width: 1px;
-    border-color: black;
-}
 
 .itempdg {
     border-bottom:solid;
@@ -102,9 +93,14 @@
     width:50%;
     right:0;
     background-color:white;
+    padding-left:20px;
+    padding-top:30px;
 }
 
-
+.alignRightLbl{
+    margin-left:60px;
+    margin-right:0px;
+}
 
 @media screen and (max-width:600px){
    .leftColumn,.rightColumn{
