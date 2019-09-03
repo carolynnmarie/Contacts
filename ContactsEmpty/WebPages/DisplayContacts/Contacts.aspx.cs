@@ -78,7 +78,8 @@ namespace ContactsEmpty{
             string eMailQueryString = "SELECT EmailId, UserName,Domain,PrimaryEmail, ContactId FROM Email WHERE ContactId = @ContactId";
             string phoneQueryString = "SELECT PhoneId, Type, AreaCode, PhoneNumberPOne,PhoneNumberPTwo,Extension,PrimaryNumber, ContactId " +
                 "FROM Phone WHERE ContactId = @ContactId AND CountryCode='1'";
-            string internationalPhone = "SELECT PhoneId, Type, CountryCode, PrimaryNumber, ContactId, International FROM Phone WHERE ContactId=@ContactId AND CountryCode!='1'";            
+            string internationalPhone = "SELECT PhoneId, Type, CountryCode, PrimaryNumber, ContactId, International FROM Phone " + 
+                "WHERE ContactId=@ContactId AND CountryCode!='1'";            
             using (SqlConnection connection = new SqlConnection(connectionString)) {
                 connection.Open();
                 DataSet dataSet = new DataSet();

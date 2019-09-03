@@ -38,8 +38,8 @@ namespace ContactsEmpty {
             string addressQueryString = "SELECT AddressId, Street, StreetLineTwo,City,State,ZipCode,PrimaryAddress, ContactId FROM Address " +
                 "WHERE ContactId =@ContactId AND Country='USA';";
             string eMailQueryString = "SELECT EmailId, UserName,Domain,PrimaryEmail, ContactId FROM Email WHERE ContactId =@ContactId;";
-            string phoneQueryString = "SELECT PhoneId, Type, AreaCode, PhoneNumberPOne,PhoneNumberPTwo,Extension,PrimaryNumber, ContactId FROM Phone " +
-                "WHERE ContactId=@ContactId AND CountryCode='1';";            
+            string phoneQueryString = "SELECT PhoneId, Type, AreaCode, PhoneNumberPOne,PhoneNumberPTwo,Extension,PrimaryNumber, " +
+            "ContactId FROM Phone WHERE ContactId=@ContactId AND CountryCode='1';";            
             DataSet dataSet = new DataSet();
 
             using (SqlConnection connection = new SqlConnection(connectionString)) {
@@ -202,8 +202,8 @@ namespace ContactsEmpty {
         }
 
         private void SavePhone() {
-            string insertQuery = "INSERT INTO Phone(Type,AreaCode,PhoneNumberPOne,PhoneNumberPTwo, Extension, PrimaryNumber, ContactId) VALUES (@Type,@AreaCode," +
-                "@PhoneNumberPOne,@PhoneNumberPTwo, @Extension,@PrimaryNumber,@ContactId)";
+            string insertQuery = "INSERT INTO Phone(Type,AreaCode,PhoneNumberPOne,PhoneNumberPTwo, Extension, PrimaryNumber, ContactId)" + 
+            " VALUES (@Type,@AreaCode,@PhoneNumberPOne,@PhoneNumberPTwo, @Extension,@PrimaryNumber,@ContactId)";
             using (SqlConnection connection = new SqlConnection(connectionString)) {
                 SqlCommand command = new SqlCommand(insertQuery, connection);                
                 command.Parameters.AddWithValue("Type", PhoneTypeList.Text);
@@ -427,8 +427,9 @@ namespace ContactsEmpty {
 
 
         protected void Finish(object sender, EventArgs e) {
-            if (!String.IsNullOrEmpty(AddStreetTextBox.Text) || !String.IsNullOrEmpty(AddStrLnTwoTextBox.Text) || !String.IsNullOrEmpty(AddCityTextBox.Text)
-                || !String.IsNullOrEmpty(AddStateTextBox.Text) || !String.IsNullOrEmpty(AddZipCodeTextBox.Text)) {
+            if (!String.IsNullOrEmpty(AddStreetTextBox.Text) || !String.IsNullOrEmpty(AddStrLnTwoTextBox.Text) || 
+            !String.IsNullOrEmpty(AddCityTextBox.Text) || !String.IsNullOrEmpty(AddStateTextBox.Text) || 
+            !String.IsNullOrEmpty(AddZipCodeTextBox.Text)) {
                 SaveAddress();
             }
             if (!String.IsNullOrEmpty(AreaCodeTextBox.Text) || !String.IsNullOrEmpty(NumberPart1TextBox.Text) ||
@@ -461,7 +462,8 @@ namespace ContactsEmpty {
 
         private DataSet GetInternationalData() {
             DataSet set = new DataSet();
-            string iPhoneQuery = "SELECT PhoneId,Type,CountryCode,PrimaryNumber,ContactId,International FROM Phone WHERE ContactId=@ContactId AND CountryCode!='1'";           
+            string iPhoneQuery = "SELECT PhoneId,Type,CountryCode,PrimaryNumber,ContactId,International FROM Phone " + 
+            "WHERE ContactId=@ContactId AND CountryCode!='1'";           
             using (SqlConnection connection = new SqlConnection(connectionString)) {
                 connection.Open();
                 SqlCommand iPCommand = new SqlCommand(iPhoneQuery, connection);
@@ -500,8 +502,8 @@ namespace ContactsEmpty {
         protected void IntPhoneGridView_RowUpdating(object sender, GridViewUpdateEventArgs e) {
             GridViewRow row = IntPhoneGridView.Rows[e.RowIndex];
             string phoneId = Convert.ToInt32(IntPhoneGridView.DataKeys[e.RowIndex].Value).ToString();
-            string update = "UPDATE Phone SET CountryCode=@CountryCode, PrimaryNumber=@PrimaryNumber, International=@International WHERE PhoneId=@PhoneId AND PhoneId" +
-                "IS NOT NULL";
+            string update = "UPDATE Phone SET CountryCode=@CountryCode, PrimaryNumber=@PrimaryNumber, International=@International" + 
+            " WHERE PhoneId=@PhoneId AND PhoneId IS NOT NULL";
             using(SqlConnection connection=new SqlConnection(connectionString)) {
                 string countryCode = (row.FindControl("CountryCodeTxtBx") as TextBox).Text;
                 string phone = (row.FindControl("IPhoneNumberTxtBx") as TextBox).Text;
@@ -537,7 +539,8 @@ namespace ContactsEmpty {
         }
 
         private void SaveInternationalPhone() {
-            string insert = "INSERT INTO Phone(Type,CountryCode,International,PrimaryNumber,ContactId) VALUES (@Type,@CountryCode,@International,@PrimaryNumber,@ContactId);";
+            string insert = "INSERT INTO Phone(Type,CountryCode,International,PrimaryNumber,ContactId)" + 
+            " VALUES (@Type,@CountryCode,@International,@PrimaryNumber,@ContactId);";
             using (SqlConnection connection = new SqlConnection(connectionString)) {
                 SqlCommand command = new SqlCommand(insert, connection);
                 command.Parameters.AddWithValue("Type", IPhnDropDownList.Text);
